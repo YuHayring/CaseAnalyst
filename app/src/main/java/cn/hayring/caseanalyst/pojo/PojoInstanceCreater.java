@@ -1,6 +1,4 @@
-package cn.hayring.caseanalyst;
-
-import org.junit.Test;
+package cn.hayring.caseanalyst.pojo;
 
 import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.pojo.Event;
@@ -10,21 +8,8 @@ import cn.hayring.caseanalyst.pojo.ManManRelationship;
 import cn.hayring.caseanalyst.pojo.ManThingRelationship;
 import cn.hayring.caseanalyst.pojo.Person;
 
-import static org.junit.Assert.*;
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
-
-    @Test
-    public Case test() {
+public class PojoInstanceCreater {
+    public static Case getConanCase() {
         Case mainCase = new Case();
 
         //定义案件
@@ -33,7 +18,7 @@ public class ExampleUnitTest {
         //Time time = new Time(new Date("2000-01-01 00:00:00"),new Date("2000-06-30 23:59:59"));
         //mainCase.setTime(time);
 
-        //定义人物
+        /*//定义人物
         Person shiJi, gin;
         shiJi = mainCase.createPerson("工藤新一", false, "变小的名侦探真实身份是工藤新一");
         shiJi.setAge(17);
@@ -57,13 +42,7 @@ public class ExampleUnitTest {
         Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
         mainEvent.getEvidences().put(APTX4869.getName(), APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
-        new ManThingRelationship(gin, APTX4869, "凶器使用者");
-
-        println("OK");
+        new ManThingRelationship(gin, APTX4869, "凶器使用者");*/
         return mainCase;
-    }
-
-    public static void println(String a) {
-        System.out.println(a);
     }
 }

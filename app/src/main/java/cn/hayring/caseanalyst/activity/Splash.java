@@ -1,10 +1,12 @@
-package cn.hayring.caseanalyst;
+package cn.hayring.caseanalyst.activity;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
+
+import cn.hayring.caseanalyst.R;
 
 public class Splash extends AppCompatActivity {
 
@@ -18,8 +20,8 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    sleep(5000);//使程序休眠五秒
-                    Intent it = new Intent(getApplicationContext(), MainActivity.class);//启动MainActivity
+                    sleep(1000);//使程序休眠五秒
+                    Intent it = new Intent(getApplicationContext(), CaseListActivity.class);//启动MainActivity
                     startActivity(it);
                     finish();//关闭当前活动
                 } catch (Exception e) {

@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">CaseAnalyst</string>
     <string name="head_name">Git pushed!</string>
+    <string name="title_activity_main_page">MainPage</string>
+    <string name="title_activity_case_list">CaseList</string>
+    <string name="title_activity_value_setter">Sign in</string>
+
+    <string name="save">保存</string>
+
+    <!--案件属性 case value setter -->
+    <string name="case_name">案件名称</string>
+    <string name="case_info">案件信息</string>
+
 </resources>
