@@ -27,6 +27,9 @@ public class CaseListActivity extends AppCompatActivity {
     RecyclerView caseList;
     CaseListAdapter mainCaseListAdapter;
 
+    public RecyclerView getCaseList() {
+        return caseList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +61,17 @@ public class CaseListActivity extends AppCompatActivity {
         caseList.addItemDecoration(dividerItemDecoration);
 
 
+
         Case caseInstance = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
-        mainCaseListAdapter.addNewItem(caseInstance);
+        mainCaseListAdapter.addItem(caseInstance);
         createCaseButton.setOnClickListener(new CreateNewCaseListener());
 
 
     }
 
-
+    /***
+     * 新案件点击监听器
+     */
     class CreateNewCaseListener implements View.OnClickListener {
 
         /***
@@ -75,20 +81,40 @@ public class CaseListActivity extends AppCompatActivity {
          */
         @Override
         public void onClick(View view) {
+
             Intent caseTransporter = new Intent(CaseListActivity.this, ValueSetter.class);
+            //交流类型为案件
             caseTransporter.putExtra(ValueSetter.TYPE, ValueSetter.CASE);
+            //行为:新建数据行为
             caseTransporter.putExtra(ValueSetter.CREATE_OR_NOT, true);
+            //启动新Activity
             startActivityForResult(caseTransporter, REQUESTCODE);
 
         }
     }
 
+
+    /***
+     * 编辑案件点击监听器
+     * @author Hayring
+     */
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent caseTransporter) {
         super.onActivityResult(requestCode, resultCode, caseTransporter);
-        Case newCase = (Case) caseTransporter.getSerializableExtra(ValueSetter.NEW_CASE);
-        //内部已实现Notificate UI 变化
-        mainCaseListAdapter.addNewItem(newCase);
+        if (caseTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, false)) {
+            Case newCase = (Case) caseTransporter.getSerializableExtra(ValueSetter.DATA);
+            //内部已实现Notificate UI 变化
+            mainCaseListAdapter.addItem(newCase);
+        } else if (!caseTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true)) {
+            int position = caseTransporter.getIntExtra(ValueSetter.POSITION, 0);
+            Case caseInstance = (Case) caseTransporter.getSerializableExtra(ValueSetter.DATA);
+
+            mainCaseListAdapter.setItem(position, caseInstance);
+        }
+
+
     }
 
 

@@ -9,12 +9,15 @@ import cn.hayring.caseanalyst.pojo.ManThingRelationship;
 import cn.hayring.caseanalyst.pojo.Person;
 
 public class PojoInstanceCreater {
-    public static Case getConanCase() {
-        Case mainCase = new Case();
+
+    private static Case caseInstance;
+
+    static {
+        caseInstance = new Case();
 
         //定义案件
-        mainCase.setName("名侦探柯南");
-        mainCase.setInfo("追查黑衣组织测试数据结构");
+        caseInstance.setName("名侦探柯南");
+        caseInstance.setInfo("追查黑衣组织测试数据结构");
         //Time time = new Time(new Date("2000-01-01 00:00:00"),new Date("2000-06-30 23:59:59"));
         //mainCase.setTime(time);
 
@@ -43,6 +46,10 @@ public class PojoInstanceCreater {
         mainEvent.getEvidences().put(APTX4869.getName(), APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
         new ManThingRelationship(gin, APTX4869, "凶器使用者");*/
-        return mainCase;
     }
+
+    public static Case getConanCase() {
+        return caseInstance;
+    }
+
 }
