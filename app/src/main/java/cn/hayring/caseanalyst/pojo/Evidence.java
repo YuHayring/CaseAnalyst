@@ -1,7 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /***
  * 物件，痕迹，证物
@@ -32,17 +32,19 @@ public class Evidence implements Serializable {
      * 证物与能动单元关系集合,字符串为能动单位的名字
      * String-ActiveUnit's name;
      */
-    protected HashMap<String, ManThingRelationship> relationships;
+    protected ArrayList<ManThingRelationship> relationships;
 
     /***
      * 证物信息
      */
     protected String info;
 
-
-    public Evidence() {
-        relationships = new HashMap<String, ManThingRelationship>();
-        events = new HashMap<String, Event>();
+    /***
+     * 保护构造器，初始化各种集合
+     */
+    protected Evidence() {
+        relationships = new ArrayList<ManThingRelationship>();
+        events = new ArrayList<Event>();
     }
 
     public Evidence(String name, String info) {
@@ -51,7 +53,9 @@ public class Evidence implements Serializable {
         this.info = info;
     }
 
-    protected HashMap<String, Event> events;
+    protected ArrayList<Event> events;
+
+
 
 
     @Override
@@ -92,11 +96,11 @@ public class Evidence implements Serializable {
         this.createdPlace = createdPlace;
     }
 
-    public HashMap<String, ManThingRelationship> getRelationships() {
+    public ArrayList<ManThingRelationship> getRelationships() {
         return relationships;
     }
 
-    public void setRelationships(HashMap<String, ManThingRelationship> relationships) {
+    public void setRelationships(ArrayList<ManThingRelationship> relationships) {
         this.relationships = relationships;
     }
 
@@ -108,11 +112,11 @@ public class Evidence implements Serializable {
         this.info = info;
     }
 
-    public HashMap<String, Event> getEvents() {
+    public ArrayList<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(HashMap<String, Event> events) {
+    public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
 }

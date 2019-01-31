@@ -1,6 +1,6 @@
 package cn.hayring.caseanalyst.pojo;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /***
  * 能动单元
@@ -20,9 +20,14 @@ public interface ActiveUnit {
      */
     public Boolean isOrganization();
 
-    public HashMap<String, ManThingRelationship> getManThingRelationships();
+    public ArrayList<ManThingRelationship> getManThingRelationships();
 
-    public HashMap<String, ManEventRelationship> getManEventRelationships();
+    public ArrayList<ManEventRelationship> getManEventRelationships();
+
+
+
+
+
 
 
 }

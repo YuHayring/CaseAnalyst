@@ -1,8 +1,9 @@
 package cn.hayring.caseanalyst.pojo;
 
 
+
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /***
  * 一个团伙或者组织
@@ -39,31 +40,33 @@ public class Organization implements ActiveUnit, Serializable {
     protected String info;
 
     /***
-     * 组织与证物关系集合，字符串为证物名字
+     * 组织与证物关系集合
      */
-    protected HashMap<String, ManThingRelationship> manThingRelationships;
+    protected ArrayList<ManThingRelationship> manThingRelationships;
 
 
     /***
-     * 事件与组织关系集合,字符串为事件的名字
-     * String-ActiveUnit's name;
+     * 事件与组织关系集合
      */
-    protected HashMap<String, ManEventRelationship> manEventRelationships;
+    protected ArrayList<ManEventRelationship> manEventRelationships;
 
     /***
      *  组织与组织的关系
      */
-    protected HashMap<String, OrgOrgRelationship> orgOrgRelationship;
+    protected ArrayList<OrgOrgRelationship> orgOrgRelationship;
 
     /***
      * 组织与个人的关系,待实现
      */
 
 
-    public Organization() {
-        manThingRelationships = new HashMap<String, ManThingRelationship>();
-        manEventRelationships = new HashMap<String, ManEventRelationship>();
-        orgOrgRelationship = new HashMap<String, OrgOrgRelationship>();
+    /***
+     * 私有构造器，初始化各种集合
+     */
+    protected Organization() {
+        manThingRelationships = new ArrayList<ManThingRelationship>();
+        manEventRelationships = new ArrayList<ManEventRelationship>();
+        orgOrgRelationship = new ArrayList<OrgOrgRelationship>();
     }
 
     public Organization(String name, String info) {
@@ -91,27 +94,27 @@ public class Organization implements ActiveUnit, Serializable {
         this.info = info;
     }
 
-    public HashMap<String, ManThingRelationship> getManThingRelationships() {
+    public ArrayList<ManThingRelationship> getManThingRelationships() {
         return manThingRelationships;
     }
 
-    public void setManThingRelationships(HashMap<String, ManThingRelationship> manThingRelationships) {
+    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
     }
 
-    public HashMap<String, ManEventRelationship> getManEventRelationships() {
+    public ArrayList<ManEventRelationship> getManEventRelationships() {
         return manEventRelationships;
     }
 
-    public void setManEventRelationships(HashMap<String, ManEventRelationship> manEventRelationships) {
+    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
         this.manEventRelationships = manEventRelationships;
     }
 
-    public HashMap<String, OrgOrgRelationship> getOrgOrgRelationship() {
+    public ArrayList<OrgOrgRelationship> getOrgOrgRelationship() {
         return orgOrgRelationship;
     }
 
-    public void setOrgOrgRelationship(HashMap<String, OrgOrgRelationship> orgOrgRelationship) {
+    public void setOrgOrgRelationship(ArrayList<OrgOrgRelationship> orgOrgRelationship) {
         this.orgOrgRelationship = orgOrgRelationship;
     }
 }

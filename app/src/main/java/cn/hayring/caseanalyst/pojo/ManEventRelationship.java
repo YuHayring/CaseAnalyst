@@ -26,8 +26,8 @@ public class ManEventRelationship implements Serializable {
         this.activeUnit = activeUnit;
         this.event = event;
         this.key = key;
-        activeUnit.getManEventRelationships().put(event.getName(), this);
-        event.getManEventRelationships().put(activeUnit.getName(), this);
+        activeUnit.getManEventRelationships().add(this);
+        event.getManEventRelationships().add(this);
     }
 
 

@@ -29,8 +29,8 @@ public class ManManRelationship implements Serializable {
         this.b = b;
         this.key = key;
         this.directional = directional;
-        a.getManManRelationships().put(b.getName(), this);//这样写不知道符不符合思想
-        b.getManManRelationships().put(a.getName(), this);
+        a.getManManRelationships().add(this);//这样写不知道符不符合思想
+        b.getManManRelationships().add(this);
     }
 
 

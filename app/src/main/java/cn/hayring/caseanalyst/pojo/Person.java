@@ -1,8 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /***
  * 案件参与的人
@@ -63,34 +62,33 @@ public class Person implements ActiveUnit, Serializable {
 
     /***
      * 人与证物关系集合
-     * String-ActiveUnit's name;
      */
-    protected HashMap<String, ManThingRelationship> manThingRelationships;
+    protected ArrayList<ManThingRelationship> manThingRelationships;
 
     /***
-     * 事件与人关系集合,字符串为事件的名字
-     * String-ActiveUnit's name;
+     * 事件与人关系集合
      */
-    protected HashMap<String, ManEventRelationship> manEventRelationships;
+    protected ArrayList<ManEventRelationship> manEventRelationships;
 
     /***
-     * 其他身份，字符串为对方名字
-     * String-Other's name;
+     * 其他身份
      */
-    protected HashMap<String, Person> multipleIdentities;
+    protected ArrayList<Person> multipleIdentities;
 
     /***
      * 人与人关系集合
-     * String-ActiveUnit's name;
      */
-    protected HashMap<String, ManManRelationship> manManRelationships;
+    protected ArrayList<ManManRelationship> manManRelationships;
 
 
-    public Person() {
-        manEventRelationships = new HashMap<String, ManEventRelationship>();
-        manThingRelationships = new HashMap<String, ManThingRelationship>();
-        multipleIdentities = new HashMap<String, Person>();
-        manManRelationships = new HashMap<String, ManManRelationship>();
+    /***
+     * 保护构造器，初始化各种集合
+     */
+    protected Person() {
+        manEventRelationships = new ArrayList<ManEventRelationship>();
+        manThingRelationships = new ArrayList<ManThingRelationship>();
+        multipleIdentities = new ArrayList<Person>();
+        manManRelationships = new ArrayList<ManManRelationship>();
     }
 
     public Person(String name, Boolean suspect, String info) {
@@ -100,7 +98,10 @@ public class Person implements ActiveUnit, Serializable {
         this.info = info;
     }
 
-
+    /***
+     * 显示名字
+     * @return it's name
+     */
     @Override
     public String toString() {
         return name;
@@ -143,19 +144,19 @@ public class Person implements ActiveUnit, Serializable {
         this.info = info;
     }
 
-    public HashMap<String, ManThingRelationship> getManThingRelationships() {
+    public ArrayList<ManThingRelationship> getManThingRelationships() {
         return manThingRelationships;
     }
 
-    public void setManThingRelationships(HashMap<String, ManThingRelationship> manThingRelationships) {
+    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
     }
 
-    public HashMap<String, ManEventRelationship> getManEventRelationships() {
+    public ArrayList<ManEventRelationship> getManEventRelationships() {
         return manEventRelationships;
     }
 
-    public void setManEventRelationships(HashMap<String, ManEventRelationship> manEventRelationships) {
+    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
         this.manEventRelationships = manEventRelationships;
     }
 
@@ -175,20 +176,20 @@ public class Person implements ActiveUnit, Serializable {
         this.bloodType = bloodType;
     }
 
-    public HashMap<String, Person> getMultipleIdentities() {
+    public ArrayList<Person> getMultipleIdentities() {
         return multipleIdentities;
     }
 
-    public void setMultipleIdentities(HashMap<String, Person> multipleIdentities) {
+    public void setMultipleIdentities(ArrayList<Person> multipleIdentities) {
         this.multipleIdentities = multipleIdentities;
     }
 
 
-    public HashMap<String, ManManRelationship> getManManRelationships() {
+    public ArrayList<ManManRelationship> getManManRelationships() {
         return manManRelationships;
     }
 
-    public void setManManRelationships(HashMap<String, ManManRelationship> manManRelationships) {
+    public void setManManRelationships(ArrayList<ManManRelationship> manManRelationships) {
         this.manManRelationships = manManRelationships;
     }
 }

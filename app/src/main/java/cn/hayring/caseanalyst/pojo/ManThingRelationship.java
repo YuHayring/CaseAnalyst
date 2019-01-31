@@ -26,8 +26,8 @@ public class ManThingRelationship implements Serializable {
         this.activeUnit = activeUnit;
         this.evidence = evidence;
         this.key = key;
-        activeUnit.getManThingRelationships().put(evidence.getName(), this);
-        evidence.getRelationships().put(activeUnit.getName(), this);
+        activeUnit.getManThingRelationships().add(this);
+        evidence.getRelationships().add(this);
     }
 
 

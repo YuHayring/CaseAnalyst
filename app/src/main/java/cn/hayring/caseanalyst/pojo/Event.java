@@ -1,7 +1,8 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.ArrayList;
 
 /***
  * 事件
@@ -19,27 +20,24 @@ public class Event implements Serializable {
     protected Time time;
 
     /***
-     * 事件与能动单元关系集合,字符串为能动单位的名字
-     * String-ActiveUnit's name;
+     * 事件与能动单元关系集合
      */
-    protected HashMap<String, ManEventRelationship> manEventRelationships;
+    protected ArrayList<ManEventRelationship> manEventRelationships;
 
     /***
-     * 证物与能动关系集合，字符串为证物的名字
-     * String-Evidence's name;
+     * 证物与能动关系集合
      */
-    protected HashMap<String, ManThingRelationship> manThingRelationships;
+    protected ArrayList<ManThingRelationship> manThingRelationships;
 
     /***
      * 事件所参与的能动单位的集合-----是否存在有待考量
-     * String-ActiveUnit's name;
      */
-    protected HashMap<String, ActiveUnit> activeUnits;
+    protected ArrayList<ActiveUnit> activeUnits;
 
     /***
      * 事件所参与的证物的集合-----是否存在有待考量
      */
-    protected HashMap<String, Evidence> evidences;
+    protected ArrayList<Evidence> evidences;
 
     /***
      * 事件信息
@@ -54,40 +52,68 @@ public class Event implements Serializable {
     /***
      * 因素集
      */
-    protected HashMap<String, Event> factors;
+    protected ArrayList<Event> factors;
 
     /***
      * 结果集
      */
-    protected HashMap<String, Event> results;
+    protected ArrayList<Event> results;
+
+    /***
+     * 所属案件
+     */
+    protected Case parentCase;
 
 
-    public Event() {
-        manEventRelationships = new HashMap<String, ManEventRelationship>();
-        manThingRelationships = new HashMap<String, ManThingRelationship>();
-        activeUnits = new HashMap<String, ActiveUnit>();
-        evidences = new HashMap<String, Evidence>();
-        factors = new HashMap<String, Event>();
-        results = new HashMap<String, Event>();
+    /***
+     * 保护构造器，初始化各种集合
+     */
+    protected Event() {
+        manEventRelationships = new ArrayList<ManEventRelationship>();
+        manThingRelationships = new ArrayList<ManThingRelationship>();
+        activeUnits = new ArrayList<ActiveUnit>();
+        evidences = new ArrayList<Evidence>();
+        factors = new ArrayList<Event>();
+        results = new ArrayList<Event>();
     }
 
+    /***
+     * 赋值
+     * @param name
+     * @param info
+     */
     public Event(String name, String info) {
         this();
         this.name = name;
         this.info = info;
     }
 
+    /***
+     * 新建并注册证据
+     * @param name
+     * @param info
+     * @return
+     */
     public Evidence createEvidence(String name, String info) {
         Evidence evidence = new Evidence(name, info);
-        evidences.put(evidence.getName(), evidence);
+        evidences.add(evidence);
+        parentCase.getEvidences().add(evidence);
         return evidence;
     }
 
-    public void putEvidence(Evidence evidence) {
-        evidences.put(evidence.getName(), evidence);
-        evidence.getEvents().put(this.name, this);
+    /***
+     * 添加证据
+     * @param evidence
+     */
+    public void addEvidence(Evidence evidence) {
+        evidences.add(evidence);
+        evidence.getEvents().add(this);
     }
 
+    /***
+     * 显示名字
+     * @return it's name
+     */
     @Override
     public String toString() {
         return name;
@@ -110,35 +136,35 @@ public class Event implements Serializable {
         this.time = time;
     }
 
-    public HashMap<String, ManEventRelationship> getManEventRelationships() {
+    public ArrayList<ManEventRelationship> getManEventRelationships() {
         return manEventRelationships;
     }
 
-    public void setManEventRelationships(HashMap<String, ManEventRelationship> manEventRelationships) {
+    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
         this.manEventRelationships = manEventRelationships;
     }
 
-    public HashMap<String, ManThingRelationship> getManThingRelationships() {
+    public ArrayList<ManThingRelationship> getManThingRelationships() {
         return manThingRelationships;
     }
 
-    public void setManThingRelationships(HashMap<String, ManThingRelationship> manThingRelationships) {
+    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
     }
 
-    public HashMap<String, ActiveUnit> getActiveUnits() {
+    public ArrayList<ActiveUnit> getActiveUnits() {
         return activeUnits;
     }
 
-    public void setActiveUnits(HashMap<String, ActiveUnit> activeUnits) {
+    public void setActiveUnits(ArrayList<ActiveUnit> activeUnits) {
         this.activeUnits = activeUnits;
     }
 
-    public HashMap<String, Evidence> getEvidences() {
+    public ArrayList<Evidence> getEvidences() {
         return evidences;
     }
 
-    public void setEvidences(HashMap<String, Evidence> evidences) {
+    public void setEvidences(ArrayList<Evidence> evidences) {
         this.evidences = evidences;
     }
 
@@ -158,19 +184,27 @@ public class Event implements Serializable {
         this.place = place;
     }
 
-    public HashMap<String, Event> getFactors() {
+    public ArrayList<Event> getFactors() {
         return factors;
     }
 
-    public void setFactors(HashMap<String, Event> factors) {
+    public void setFactors(ArrayList<Event> factors) {
         this.factors = factors;
     }
 
-    public HashMap<String, Event> getResults() {
+    public ArrayList<Event> getResults() {
         return results;
     }
 
-    public void setResults(HashMap<String, Event> results) {
+    public void setResults(ArrayList<Event> results) {
         this.results = results;
+    }
+
+    public Case getParentCase() {
+        return parentCase;
+    }
+
+    public void setParentCase(Case parentCase) {
+        this.parentCase = parentCase;
     }
 }

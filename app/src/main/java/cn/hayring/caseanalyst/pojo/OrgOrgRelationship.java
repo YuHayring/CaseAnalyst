@@ -29,8 +29,8 @@ public class OrgOrgRelationship implements Serializable {
         this.b = b;
         this.key = key;
         this.directional = directional;
-        a.getOrgOrgRelationship().put(b.getName(), this);
-        b.getOrgOrgRelationship().put(a.getName(), this);
+        a.getOrgOrgRelationship().add(this);
+        b.getOrgOrgRelationship().add(this);
     }
 
     @Override
