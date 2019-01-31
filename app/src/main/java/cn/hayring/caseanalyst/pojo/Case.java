@@ -2,7 +2,7 @@ package cn.hayring.caseanalyst.pojo;
 
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /***
  * 案件
@@ -28,28 +28,27 @@ public class Case implements Serializable {
     /***
      * 能动单元集合
      */
-    protected HashMap<String, ActiveUnit> activeUnits;
+    protected ArrayList<ActiveUnit> activeUnits;
 
     /***
      * 证物集合
      */
-    protected HashMap<String, Evidence> evidences;
+    protected ArrayList<Evidence> evidences;
 
     /***
      * 事件集合
      */
-    protected HashMap<String, Event> events;
+    protected ArrayList<Event> events;
 
     /***
      * 主要能动单位
      */
-    protected ActiveUnit mainActiveUnit;
-
+    //protected ActiveUnit mainActiveUnit;
 
     public Case() {
-        activeUnits = new HashMap<String, ActiveUnit>();
-        evidences = new HashMap<String, Evidence>();
-        events = new HashMap<String, Event>();
+        activeUnits = new ArrayList<ActiveUnit>();
+        evidences = new ArrayList<Evidence>();
+        events = new ArrayList<Event>();
     }
 
     public Case(String name, String info) {
@@ -59,31 +58,62 @@ public class Case implements Serializable {
     }
 
 
+    /***
+     * 时间生成并注册
+     * Create Event and reg it
+     * @param name
+     * @param info
+     * @return new Event
+     */
     public Event createEvent(String name, String info) {
         Event event = new Event(name, info);
-        events.put(event.getName(), event);
+        events.add(event);
+        event.setParentCase(this);
         return event;
     }
 
+    /***
+     * 人生成并注册
+     * Create Person and reg it
+     * @param name
+     * @param suspect
+     * @param info
+     * @return
+     */
     public Person createPerson(String name, Boolean suspect, String info) {
         Person person = new Person(name, suspect, info);
-        activeUnits.put(person.getName(), person);
+        activeUnits.add(person);
         return person;
     }
 
+    /***
+     * 组织生成并注册
+     * Create Org and reg it
+     * @param name
+     * @param info
+     * @return
+     */
     public Organization createOrganization(String name, String info) {
         Organization org = new Organization(name, info);
-        activeUnits.put(org.getName(), org);
+        activeUnits.add(org);
         return org;
     }
 
-
+    /***
+     * 显示名字
+     * @return it's name
+     */
     @Override
     public String toString() {
         return name;
     }
 
 
+
+
+
+
+    /*
     public ActiveUnit getMainActiveUnit() {
         return mainActiveUnit;
     }
@@ -91,6 +121,7 @@ public class Case implements Serializable {
     public void setMainActiveUnit(ActiveUnit mainActiveUnit) {
         this.mainActiveUnit = mainActiveUnit;
     }
+    */
 
     public String getName() {
         return name;
@@ -116,27 +147,27 @@ public class Case implements Serializable {
         this.info = info;
     }
 
-    public HashMap<String, ActiveUnit> getActiveUnits() {
+    public ArrayList<ActiveUnit> getActiveUnits() {
         return activeUnits;
     }
 
-    public void setActiveUnits(HashMap<String, ActiveUnit> activeUnits) {
+    public void setActiveUnits(ArrayList<ActiveUnit> activeUnits) {
         this.activeUnits = activeUnits;
     }
 
-    public HashMap<String, Evidence> getEvidences() {
+    public ArrayList<Evidence> getEvidences() {
         return evidences;
     }
 
-    public void setEvidences(HashMap<String, Evidence> evidences) {
+    public void setEvidences(ArrayList<Evidence> evidences) {
         this.evidences = evidences;
     }
 
-    public HashMap<String, Event> getEvents() {
+    public ArrayList<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(HashMap<String, Event> events) {
+    public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
 

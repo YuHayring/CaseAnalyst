@@ -47,13 +47,13 @@ public class ValueSetter extends AppCompatActivity {
     public static final String CREATE_OR_NOT = "create_or_not";
     public static final int CASE = 0;
     public static final String NEW_CASE = "new_case";
-
+    private Intent requestInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_value_setter);
-        Intent requestInfo = getIntent();
+        requestInfo = getIntent();
         switch (requestInfo.getIntExtra(TYPE, -1)) {
             case CASE: {
                 //加载页面并设置
