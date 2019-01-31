@@ -55,7 +55,6 @@ public class ExampleUnitTest {
 
 
         Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
-        mainEvent.getEvidences().put(APTX4869.getName(), APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
         new ManThingRelationship(gin, APTX4869, "凶器使用者");
 
