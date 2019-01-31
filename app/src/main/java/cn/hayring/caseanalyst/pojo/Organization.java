@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /***
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements ActiveUnit {
+public class Organization implements ActiveUnit, Serializable {
     /***
      * 名字
      */

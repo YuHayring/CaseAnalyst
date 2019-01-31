@@ -1,12 +1,13 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /***
  * 物件，痕迹，证物
  * @author Hayring
  */
-public class Evidence {
+public class Evidence implements Serializable {
     /***
      * 证物名称
      */

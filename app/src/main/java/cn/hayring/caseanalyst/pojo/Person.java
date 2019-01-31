@@ -1,5 +1,6 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -7,7 +8,7 @@ import java.util.HashSet;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements ActiveUnit {
+public class Person implements ActiveUnit, Serializable {
     /***
      * 姓名
      */

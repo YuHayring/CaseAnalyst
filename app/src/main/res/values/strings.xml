@@ -3,7 +3,7 @@
     <string name="head_name">Git pushed!</string>
     <string name="title_activity_main_page">MainPage</string>
     <string name="title_activity_case_list">CaseList</string>
-    <string name="title_activity_value_setter">Sign in</string>
+    <string name="title_activity_value_setter">Value Setter</string>
 
     <string name="save">保存</string>
 

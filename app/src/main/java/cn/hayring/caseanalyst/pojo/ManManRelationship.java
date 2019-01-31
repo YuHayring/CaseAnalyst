@@ -1,10 +1,12 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
+
 /***
  * 人与人之间的关系
  * @author Hayring
  */
-public class ManManRelationship {
+public class ManManRelationship implements Serializable {
     /***
      * 建立关系的两个人
      */

@@ -1,12 +1,13 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /***
  * 模糊时间
  * @author Hayring
  */
-public class Time {
+public class Time implements Serializable {
     public final boolean TIME_POINT = true;
     public final boolean TIME_FRAME = false;
 

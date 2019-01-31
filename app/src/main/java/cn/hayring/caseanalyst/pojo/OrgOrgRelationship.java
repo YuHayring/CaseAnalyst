@@ -1,10 +1,12 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
+
 /***
  * 组织与组织的关系
  * @author Hayring
  */
-public class OrgOrgRelationship {
+public class OrgOrgRelationship implements Serializable {
     /***
      * 建立关系的两个组织
      */

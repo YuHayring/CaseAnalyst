@@ -1,10 +1,12 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
+
 /***
  * 能动单位与证物的关系
  * @author Hayring
  */
-public class ManThingRelationship {
+public class ManThingRelationship implements Serializable {
     /***
      * 能动单位
      */

@@ -1,10 +1,12 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
+
 /***
  * 地点
  * @author Hayring
  */
-public class Place {
+public class Place implements Serializable {
     /***
      * 地点名称
      */

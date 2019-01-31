@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.CaseListActivity"
-    tools:showIn="@layout/activity_case_list">
+    tools:showIn="@layout/activity_list">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/case_list" />
+        android:id="@+id/recycler_list"
+
+        />
 </android.support.constraint.ConstraintLayout>

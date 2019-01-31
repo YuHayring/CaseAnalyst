@@ -1,12 +1,13 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /***
  * 事件
  * @author Hayring
  */
-public class Event {
+public class Event implements Serializable {
     /***
      * 事件名称
      */
