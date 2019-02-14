@@ -115,6 +115,20 @@ public class ValueSetter extends AppCompatActivity {
             finish();
         }
     }
+
+
+    public static int getItemType(Object a) {
+        if (a instanceof Case)
+            return CASE;
+        throw new IllegalArgumentException("ERROR TYPE");
+    }
+
+    public static int getItemType(Class a) {
+
+        if (a == Case.class)
+            return CASE;
+        throw new IllegalArgumentException("ERROR TYPE");
+    }
 }
 
 

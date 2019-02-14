@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 案件
  * @author Hayring
  */
-public class Case implements Serializable {
+public class Case implements Serializable, Listable {
     /***
      * 名字
      */

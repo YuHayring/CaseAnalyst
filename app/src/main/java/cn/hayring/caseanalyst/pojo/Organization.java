@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements ActiveUnit, Serializable {
+public class Organization implements ActiveUnit, Serializable, Listable {
     /***
      * 名字
      */

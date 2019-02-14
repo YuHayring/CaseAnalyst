@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 人与人之间的关系
  * @author Hayring
  */
-public class ManManRelationship implements Serializable {
+public class ManManRelationship implements Serializable, Listable {
     /***
      * 建立关系的两个人
      */
@@ -71,4 +71,15 @@ public class ManManRelationship implements Serializable {
     public void setDirectional(boolean directional) {
         this.directional = directional;
     }
+
+    @Override
+    public String getName() {
+        return key;
+    }
+
+    @Override
+    public String getInfo() {
+        return toString();
+    }
+
 }

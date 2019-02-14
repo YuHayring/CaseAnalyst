@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 组织与组织的关系
  * @author Hayring
  */
-public class OrgOrgRelationship implements Serializable {
+public class OrgOrgRelationship implements Serializable, Listable {
     /***
      * 建立关系的两个组织
      */
@@ -69,6 +69,16 @@ public class OrgOrgRelationship implements Serializable {
 
     public void setDirectional(boolean directional) {
         this.directional = directional;
+    }
+
+    @Override
+    public String getName() {
+        return key;
+    }
+
+    @Override
+    public String getInfo() {
+        return toString();
     }
 
 

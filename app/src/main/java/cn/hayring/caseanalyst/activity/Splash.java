@@ -21,7 +21,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(1000);//使程序休眠五秒
-                    Intent it = new Intent(getApplicationContext(), CaseListActivity.class);
+                    Intent it = new Intent(getApplicationContext(), MyCaseListActivity.class);
                     startActivity(it);
                     finish();//关闭当前活动
                 } catch (Exception e) {
@@ -31,4 +31,7 @@ public class Splash extends AppCompatActivity {
         };
         myThread.start();
     }
+
+
 }
+

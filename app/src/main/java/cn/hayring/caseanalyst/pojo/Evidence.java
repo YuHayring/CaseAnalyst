@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 物件，痕迹，证物
  * @author Hayring
  */
-public class Evidence implements Serializable {
+public class Evidence implements Serializable, Listable {
     /***
      * 证物名称
      */

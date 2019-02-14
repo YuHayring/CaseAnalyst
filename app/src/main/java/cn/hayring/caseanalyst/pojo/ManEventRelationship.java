@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 人与事件的关系
  * @author Hayring
  */
-public class ManEventRelationship implements Serializable {
+public class ManEventRelationship implements Serializable, Listable {
     /***
      * 能动单位
      */
@@ -59,5 +59,15 @@ public class ManEventRelationship implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @Override
+    public String getName() {
+        return key;
+    }
+
+    @Override
+    public String getInfo() {
+        return toString();
     }
 }

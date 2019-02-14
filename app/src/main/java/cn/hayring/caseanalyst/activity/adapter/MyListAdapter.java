@@ -1,6 +1,6 @@
 package cn.hayring.caseanalyst.activity.adapter;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,19 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.activity.CaseListActivity;
-import cn.hayring.caseanalyst.activity.MainActivity;
+import cn.hayring.caseanalyst.activity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter;
-import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.pojo.Listable;
 
 /***
  * 案件列表设置器
  * @author Hayring
  */
-public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.VH> {
+public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyListAdapter.VH> {
     /***
      * holder对应两个TextView
      * holder include two TextView
@@ -32,27 +32,26 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.VH> {
 
         public VH(View v) {
             super(v);
-            name = v.findViewById(R.id.case_name_item);
-            info = v.findViewById(R.id.case_info_item);
+            name = v.findViewById(R.id.item_list_name_item);
+            info = v.findViewById(R.id.item_list_info_item);
         }
     }
 
-    private int changedPosition;
 
     /***
      * 案件集合
      */
-    private List<Case> cases;
+    private List<T> items;
 
-    private CaseListActivity mActivity;
+    private MyListActivity mActivity;
 
     /***
      * 输入案件
-     * @param cases
+     * @param items
      */
-    public CaseListAdapter(CaseListActivity mActivity, List<Case> cases) {
+    public MyListAdapter(MyListActivity mActivity, List<T> items) {
         this.mActivity = mActivity;
-        this.cases = cases;
+        this.items = items;
     }
 
 
@@ -64,46 +63,46 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.VH> {
      */
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        holder.name.setText(cases.get(position).getName());
-        String info = cases.get(position).getInfo();
+        holder.name.setText(items.get(position).getName());
+        String info = items.get(position).getInfo();
         if (info.length() > 16) {
             info = info.substring(0, 14) + "...";
         }
         holder.info.setText(info);
 
-        holder.itemView.setOnClickListener(new EditCaseListener());
+        holder.itemView.setOnClickListener(new EditItemListener());
     }
 
 
     /***
      * 案件编辑点击监听器
      */
-    public class EditCaseListener implements View.OnClickListener {
+    public class EditItemListener implements View.OnClickListener {
 
 
         /***
          * 编辑案件
-         * Edit Case
+         * Edit Item
          * @param view
          */
         @Override
         public void onClick(View view) {
 
-            Intent caseTransporter = new Intent(mActivity, ValueSetter.class);
+            Intent itemTransporter = new Intent(mActivity, ValueSetter.class);
 
-            int position = mActivity.getCaseList().getChildAdapterPosition(view);
+            int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
 
-            Case caseInstance = cases.get(position);
+            T item = items.get(position);
 
-            //交流类型为案件
-            caseTransporter.putExtra(ValueSetter.TYPE, ValueSetter.CASE);
+            //交流类型
+            itemTransporter.putExtra(ValueSetter.TYPE, ValueSetter.getItemType(item));
             //行为:修改数据行为
-            caseTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
-            //绑定Case
-            caseTransporter.putExtra(ValueSetter.DATA, caseInstance);
+            itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
+            //绑定Item
+            itemTransporter.putExtra(ValueSetter.DATA, item);
             //点击位置
-            caseTransporter.putExtra(ValueSetter.POSITION, position);
-            mActivity.startActivityForResult(caseTransporter, CaseListActivity.REQUESTCODE);
+            itemTransporter.putExtra(ValueSetter.POSITION, position);
+            mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUESTCODE);
 
         }
     }
@@ -115,7 +114,7 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.VH> {
      */
     @Override
     public int getItemCount() {
-        return cases.size();
+        return items.size();
     }
 
     /***
@@ -127,23 +126,23 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.VH> {
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         //LayoutInflater.from指定写法
-        View v = LayoutInflater.from(mActivity).inflate(R.layout.single_case_frame, parent, false);
+        View v = LayoutInflater.from(mActivity).inflate(R.layout.single_item_list_frame, parent, false);
         return new VH(v);
     }
 
-    public void addItem(Case caseInstance) {
-        cases.add(caseInstance);
+    public void addItem(T item) {
+        items.add(item);
         ////更新数据集不是用adapter.notifyDataSetChanged()而是notifyItemInserted(position)与notifyItemRemoved(position) 否则没有动画效果。
-        notifyItemInserted(cases.size() - 1);
+        notifyItemInserted(items.size() - 1);
     }
 
-    public void setItem(int position, Case caseInstance) {
-        cases.set(position, caseInstance);
+    public void setItem(int position, T item) {
+        items.set(position, item);
         notifyItemChanged(position);
     }
 
     public void deleteItem(int position) {
-        cases.remove(position);
+        items.remove(position);
         notifyItemRemoved(position);
     }
 }

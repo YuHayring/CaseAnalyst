@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 事件
  * @author Hayring
  */
-public class Event implements Serializable {
+public class Event implements Serializable, Listable {
     /***
      * 事件名称
      */

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 地点
  * @author Hayring
  */
-public class Place implements Serializable {
+public class Place implements Serializable, Listable {
     /***
      * 地点名称
      */
