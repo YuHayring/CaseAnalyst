@@ -23,12 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MyCaseListActivity"
+            android:name=".activity.CaseListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
-            android:name=".activity.ValueSetter"
-            android:label="@string/title_activity_value_setter"></activity>
+            android:name=".activity.CaseValueSetter"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

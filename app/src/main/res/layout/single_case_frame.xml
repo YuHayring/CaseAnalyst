@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/case_name"
-        android:layout_gravity="left|center"
+        android:layout_gravity="start|center"
         android:textSize="27sp" />
 
     <TextView
         android:id="@+id/case_info_item"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="right|center"
+        android:layout_gravity="end|center"
         android:textSize="15sp"
         android:text="@string/case_info" />
 

@@ -24,6 +24,8 @@ import cn.hayring.caseanalyst.pojo.Listable;
 public abstract class MyListActivity<T extends Listable> extends AppCompatActivity {
     public abstract Class<T> getTClass();
 
+    public abstract Class getValueSetterClass();
+
 
     public static final int REQUESTCODE = 1;
     Toolbar toolbar;
@@ -70,12 +72,12 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
         itemListRecycler.addItemDecoration(dividerItemDecoration);
 
+        createItemButton.setOnClickListener(new MyListActivity.CreateNewItemListener());
 
         /*
         //原始数据添加
         T item = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
         mainItemListAdapter.addItem(item);
-        createItemButton.setOnClickListener(new MyListActivity.CreateNewItemListener());
         */
 
 
@@ -94,9 +96,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         @Override
         public void onClick(View view) {
 
-            Intent itemTransporter = new Intent(MyListActivity.this, ValueSetter.class);
-            //交流类型
-            itemTransporter.putExtra(ValueSetter.TYPE, ValueSetter.getItemType(getTClass()));
+            Intent itemTransporter = new Intent(MyListActivity.this, getValueSetterClass());
             //行为:新建数据行为
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, true);
             //启动新Activity

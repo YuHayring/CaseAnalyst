@@ -88,14 +88,13 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
         @Override
         public void onClick(View view) {
 
-            Intent itemTransporter = new Intent(mActivity, ValueSetter.class);
+
+            Intent itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
 
             int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
 
             T item = items.get(position);
 
-            //交流类型
-            itemTransporter.putExtra(ValueSetter.TYPE, ValueSetter.getItemType(item));
             //行为:修改数据行为
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
             //绑定Item
