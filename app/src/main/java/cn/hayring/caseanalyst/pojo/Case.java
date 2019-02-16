@@ -15,15 +15,15 @@ public class Case implements Serializable, Listable {
     protected String name;
 
     /***
+     * 案件信息
+     */
+    protected String info;
+
+    /***
      * 案件发生的时间
      * Time when case happened;
      */
     protected Time time;
-
-    /***
-     * 案件信息
-     */
-    protected String info;
 
     /***
      * 能动单元集合

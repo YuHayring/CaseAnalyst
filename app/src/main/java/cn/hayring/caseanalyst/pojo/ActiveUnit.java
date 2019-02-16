@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * A dynamic unit may be a person, a group or an organization.
  * @author Hayring
  */
-public interface ActiveUnit {
+public interface ActiveUnit extends Listable {
     /***
      *
      * @return name

@@ -27,6 +27,9 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     public abstract Class getValueSetterClass();
 
 
+    protected Intent requestInfo;
+
+
     public static final int REQUESTCODE = 1;
     Toolbar toolbar;
     //添加元素按钮
@@ -84,12 +87,12 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     }
 
     /***
-     * 新案件点击监听器
+     * 新元素点击监听器
      */
     class CreateNewItemListener implements View.OnClickListener {
 
         /***
-         * 创建新案件
+         * 创建新元素
          * Create new Item
          * @param view
          */

@@ -31,6 +31,15 @@
             android:name=".activity.CaseValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.ActiveUnitListActivity"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PersonValueSetter"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

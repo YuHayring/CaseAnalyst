@@ -11,8 +11,17 @@
     <string name="case_name">案件名称</string>
     <string name="case_info">案件信息</string>
 
+    <!--人属性 person value setter-->
+    <string name="person_name">人名</string>
+    <string name="person_info">人物信息</string>
+
+    <!--组织属性 org value setter-->
+    <string name="org_name">组织名称</string>
+    <string name="org_info">组织信息</string>
+
     <string name="name">名称</string>
     <string name="info">信息</string>
 
+    <string name="active_unit_list_enter">查看能动单位</string>
 
 </resources>

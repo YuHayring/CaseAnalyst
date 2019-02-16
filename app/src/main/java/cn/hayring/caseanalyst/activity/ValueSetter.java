@@ -1,5 +1,6 @@
 package cn.hayring.caseanalyst.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +10,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
 
 public abstract class ValueSetter extends AppCompatActivity {
+    public static final int ACTIVE_UNIT_LIST = 3;
+    public static final String TYPE = "type";
     public static final String DATA = "data";
     public static final String CREATE_OR_NOT = "create_or_not";
     public static final String POSITION = "position";
@@ -96,6 +100,31 @@ public abstract class ValueSetter extends AppCompatActivity {
 
 
     }
+
+    abstract class ListEnterListener implements View.OnClickListener {
+
+        private Context packageContext;
+
+        public ListEnterListener(Context packageContext) {
+            this.packageContext = packageContext;
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            Intent dataTransporter = new Intent(packageContext, getListViewClass());
+            dataTransporter.putExtra(ValueSetter.DATA, setData());
+
+            //启动新Activity
+            startActivityForResult(dataTransporter, 1);
+        }
+
+        abstract Class getListViewClass();
+
+        abstract Serializable setData();
+    }
+
+
 
 
 }

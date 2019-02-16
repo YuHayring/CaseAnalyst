@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements ActiveUnit, Serializable, Listable {
+public class Person implements ActiveUnit, Serializable {
     /***
      * 姓名
      */

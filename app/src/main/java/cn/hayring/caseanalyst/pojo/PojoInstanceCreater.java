@@ -21,16 +21,16 @@ public class PojoInstanceCreater {
         //Time time = new Time(new Date("2000-01-01 00:00:00"),new Date("2000-06-30 23:59:59"));
         //mainCase.setTime(time);
 
-        /*//定义人物
+        //定义人物
         Person shiJi, gin;
-        shiJi = mainCase.createPerson("工藤新一", false, "变小的名侦探真实身份是工藤新一");
+        shiJi = caseInstance.createPerson("工藤新一", false, "变小的名侦探真实身份是工藤新一");
         shiJi.setAge(17);
         shiJi.setGender(Person.MALE);
-        gin = mainCase.createPerson("琴酒", true, "黑衣组织高官，喂工藤新一喝药的人");
+        gin = caseInstance.createPerson("琴酒", true, "黑衣组织高官，喂工藤新一喝药的人");
         gin.setGender(Person.MALE);
 
         //事件发生
-        Event mainEvent = mainCase.createEvent("新一服用APTX4869", "新一被琴酒灌下APTX4869");
+        Event mainEvent = caseInstance.createEvent("新一服用APTX4869", "新一被琴酒灌下APTX4869");
         //Time time2 = new Time(new Date("2000-01-01 18:00:00"),new Date("2000-01-01 18:30:00"));
         //mainEvent.setTime(time2);
         //人与事件建立关系
@@ -43,9 +43,9 @@ public class PojoInstanceCreater {
 
 
         Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
-        mainEvent.getEvidences().put(APTX4869.getName(), APTX4869);
+        mainEvent.getEvidences().add(APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
-        new ManThingRelationship(gin, APTX4869, "凶器使用者");*/
+        new ManThingRelationship(gin, APTX4869, "凶器使用者");
     }
 
     public static Case getConanCase() {

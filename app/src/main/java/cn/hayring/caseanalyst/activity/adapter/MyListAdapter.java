@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
@@ -42,6 +43,10 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      * 案件集合
      */
     private List<T> items;
+
+    public List<T> getItems() {
+        return items;
+    }
 
     private MyListActivity mActivity;
 
@@ -143,5 +148,10 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
     public void deleteItem(int position) {
         items.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void addAllItem(ArrayList<T> items) {
+        this.items.addAll(items);
+        notifyDataSetChanged();
     }
 }
