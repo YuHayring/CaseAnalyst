@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.activity;
+package cn.hayring.caseanalyst.activity.ValueSetter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
+import cn.hayring.caseanalyst.pojo.Case;
 
 public abstract class ValueSetter extends AppCompatActivity {
+    public static final String CHANGED = "changed";
     public static final int ACTIVE_UNIT_LIST = 3;
+    public static final int EVENT_LIST = 4;
     public static final String TYPE = "type";
     public static final String DATA = "data";
     public static final String CREATE_OR_NOT = "create_or_not";
@@ -24,11 +26,25 @@ public abstract class ValueSetter extends AppCompatActivity {
     protected Intent requestInfo;
     protected LinearLayout rootLayout;
     protected ScrollView sonView;
+    protected EditText nameInputer;
+    protected EditText infoInputer;
 
+    public static final String MALE = "男";
+    public static final String FEMALE = "女";
+    public static final String TRUE = "是";
+    public static final String FALSE = "否";
+    //废弃
+    //protected ArrayList<EditText> editTexts;
 
-    protected ArrayList<EditText> editTexts;
+    /***
+     * 保存按钮
+     */
+    protected Button saveButton;
 
-    protected Button save;
+    /***
+     * 案件实例
+     */
+    public static Case caseInstance;
 
 
     @Override
@@ -36,36 +52,14 @@ public abstract class ValueSetter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_value_setter);
         rootLayout = findViewById(R.id.value_setter_root_layout);
-        editTexts = new ArrayList<EditText>();
+        //editTexts = new ArrayList<EditText>();
         requestInfo = getIntent();
 
         //加载页面
         loadView();
 
 
-/*        switch (requestInfo.getIntExtra(TYPE, -1)) {
-            case CASE: {
-                //加载页面
-                LayoutInflater inflater = getLayoutInflater();
-                sonView = (ScrollView) inflater.inflate(R.layout.case_value_setter, null);
-                rootLayout.addView(sonView);
-                editText1 = findViewById(R.id.case_name_inputer);
-                editText2 = findViewById(R.id.case_info_inputer);
-                save = findViewById(R.id.case_save_button);
-                save.setOnClickListener(new FinishEditListener());
-                if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-                    Case caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
-                    editText1.setText(caseInstance.getName());
-                    editText2.setText(caseInstance.getInfo());
-                }
 
-
-
-            }
-            break;
-            default:
-                throw new IllegalArgumentException("There is no macthing type");
-        }*/
 
 
     }
@@ -75,32 +69,32 @@ public abstract class ValueSetter extends AppCompatActivity {
      */
     abstract void loadView();
 
+    /***
+     * 保存按钮监听器
+     */
     abstract class FinishEditListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                createReaction();
-            } else if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-                editReaction();
-            }
+            editReaction();
+            //设置结果
             setResult(2, requestInfo);
-            finish();
+            //要注意
+            ValueSetter.super.finish();
         }
 
-        /***
-         * 创建元素行为
-         */
-        abstract void createReaction();
 
         /***
-         * 编辑元素行为
+         * 编辑元素完成行为
          */
         abstract void editReaction();
 
 
     }
 
+    /***
+     * ListView入口监听器
+     */
     abstract class ListEnterListener implements View.OnClickListener {
 
         private Context packageContext;

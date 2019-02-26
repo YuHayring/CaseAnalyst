@@ -11,17 +11,28 @@
     <string name="case_name">案件名称</string>
     <string name="case_info">案件信息</string>
 
+
     <!--人属性 person value setter-->
     <string name="person_name">人名</string>
     <string name="person_info">人物信息</string>
+    <string name="person_nick_name">昵称</string>
+    <string name="person_age">年龄</string>
+    <string name="person_gender">性别</string>
+    <string name="person_blood_type">血型</string>
+    <string name="person_is_suspect">是否是嫌犯</string>
 
     <!--组织属性 org value setter-->
     <string name="org_name">组织名称</string>
     <string name="org_info">组织信息</string>
 
+    <!--事件属性 -->
+    <string name="event_name">事件名称</string>
+    <string name="event_info">事件信息</string>
+
     <string name="name">名称</string>
     <string name="info">信息</string>
 
     <string name="active_unit_list_enter">查看能动单位</string>
+    <string name="event_list_enter">查看事件</string>
 
 </resources>

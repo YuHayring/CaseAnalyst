@@ -13,24 +13,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.activity.MyListActivity;
-import cn.hayring.caseanalyst.activity.ValueSetter;
+import cn.hayring.caseanalyst.activity.ListActivity.ActiveUnitListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
+import cn.hayring.caseanalyst.activity.ValueSetter.OrganizationValueSetter;
+import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
+import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Listable;
+import cn.hayring.caseanalyst.pojo.Organization;
+import cn.hayring.caseanalyst.pojo.Person;
 
 /***
  * 案件列表设置器
  * @author Hayring
  */
 public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyListAdapter.VH> {
+
+    /***
+     * 名字显示长度限制
+     */
+    public static final int NAME_CHAR_LENGTH = 7;
+
+    /***
+     * 信息显示长度限制
+     */
+    public static final int INFO_CHAR_LENGTH = 16;
+
     /***
      * holder对应两个TextView
      * holder include two TextView
      * @author Hayring
      */
     public static class VH extends RecyclerView.ViewHolder {
+        //名称显示View
         public final TextView name;
+        //信息显示View
         public final TextView info;
 
+        //注册
         public VH(View v) {
             super(v);
             name = v.findViewById(R.id.item_list_name_item);
@@ -40,14 +59,20 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
 
 
     /***
-     * 案件集合
+     * 案件集合，显示数据源
      */
     private List<T> items;
 
+    /***
+     * 数据源getter
+     */
     public List<T> getItems() {
         return items;
     }
 
+    /***
+     * Activity引用
+     */
     private MyListActivity mActivity;
 
     /***
@@ -68,13 +93,21 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      */
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        holder.name.setText(items.get(position).getName());
+        //缩减并绑定名称
+        String name = items.get(position).getName();
+        if (name.length() > NAME_CHAR_LENGTH) {
+            name = name.substring(0, NAME_CHAR_LENGTH - 2) + "...";
+        }
+        holder.name.setText(name);
+
+        //缩减并绑定信息绑定
         String info = items.get(position).getInfo();
-        if (info.length() > 16) {
-            info = info.substring(0, 14) + "...";
+        if (info.length() > INFO_CHAR_LENGTH) {
+            info = info.substring(0, INFO_CHAR_LENGTH - 2) + "...";
         }
         holder.info.setText(info);
 
+        //注册点击监听器
         holder.itemView.setOnClickListener(new EditItemListener());
     }
 
@@ -92,20 +125,30 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
          */
         @Override
         public void onClick(View view) {
-
-
-            Intent itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
-
+            //取出元素
             int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
-
             T item = items.get(position);
 
-            //行为:修改数据行为
+
+            //注册Activity，ValueSetter
+            Intent itemTransporter;
+            if (mActivity.getClass() == ActiveUnitListActivity.class) {
+                if (item.getClass() == Person.class) {
+                    itemTransporter = new Intent(mActivity, PersonValueSetter.class);
+                } else {
+                    itemTransporter = new Intent(mActivity, OrganizationValueSetter.class);
+                }
+            } else {
+                itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
+            }
+
+
+            //绑定参数
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
-            //绑定Item
             itemTransporter.putExtra(ValueSetter.DATA, item);
-            //点击位置
             itemTransporter.putExtra(ValueSetter.POSITION, position);
+
+            //启动ValueSetter
             mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUESTCODE);
 
         }
@@ -129,10 +172,14 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      */
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        //LayoutInflater.from指定写法
+        //注册单个元素的layout
         View v = LayoutInflater.from(mActivity).inflate(R.layout.single_item_list_frame, parent, false);
         return new VH(v);
     }
+
+
+    //改变数据源的四个方法
+
 
     public void addItem(T item) {
         items.add(item);

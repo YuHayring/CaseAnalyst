@@ -27,7 +27,6 @@ public class Person implements ActiveUnit, Serializable {
      * 是否为嫌犯
      */
     protected Boolean suspect;
-
     /***
      * 性别
      */
@@ -38,12 +37,12 @@ public class Person implements ActiveUnit, Serializable {
     /***
      * 血型
      */
-    protected int bloodType;
-    public static final int A = 0;
-    public static final int AB = 1;
-    public static final int B = 2;
-    public static final int O = 3;
-    public static final int RHAB = 4;
+    protected String bloodType;
+    public static final String A = "A";
+    public static final String AB = "AB";
+    public static final String B = "B";
+    public static final String O = "O";
+    public static final String RHAB = "RHAB";
 
     @Override
     public String getName() {
@@ -80,6 +79,19 @@ public class Person implements ActiveUnit, Serializable {
      */
     protected ArrayList<ManManRelationship> manManRelationships;
 
+
+    /***
+     * 所属案件
+     */
+    protected Case parentCase;
+
+    public void setParentCase(Case parentCase) {
+        this.parentCase = parentCase;
+    }
+
+    public Case getParentCase() {
+        return parentCase;
+    }
 
     /***
      * 保护构造器，初始化各种集合
@@ -168,11 +180,11 @@ public class Person implements ActiveUnit, Serializable {
         this.suspect = suspect;
     }
 
-    public int getBloodType() {
+    public String getBloodType() {
         return bloodType;
     }
 
-    public void setBloodType(int bloodType) {
+    public void setBloodType(String bloodType) {
         this.bloodType = bloodType;
     }
 

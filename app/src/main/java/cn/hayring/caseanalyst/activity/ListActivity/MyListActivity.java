@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.activity;
+package cn.hayring.caseanalyst.activity.ListActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,25 +18,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
+import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
 import cn.hayring.caseanalyst.pojo.Listable;
 
 public abstract class MyListActivity<T extends Listable> extends AppCompatActivity {
+    /***
+     * 获得本Activity所对应的元素类型
+     * @return
+     */
     public abstract Class<T> getTClass();
 
+    /***
+     * 获得本Activity所对应的元素类型
+     * @return
+     */
     public abstract Class getValueSetterClass();
 
-
+    /***
+     * 请求传输者
+     */
     protected Intent requestInfo;
 
 
     public static final int REQUESTCODE = 1;
+
+
     Toolbar toolbar;
-    //添加元素按钮
+
+    /***
+     * 添加元素按钮
+     */
     FloatingActionButton createItemButton;
-    //列表View
+    /***
+     * 列表View
+     */
     RecyclerView itemListRecycler;
-    //列表适配器
+    /***
+     * 列表适配器
+     */
     MyListAdapter<T> mainItemListAdapter;
 
     public RecyclerView getItemListRecycler() {
@@ -70,6 +90,8 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         itemListRecycler.setLayoutManager(new LinearLayoutManager(this));
         itemListRecycler.setItemAnimator(new DefaultItemAnimator());
         mainItemListAdapter = new MyListAdapter(this, items);
+
+
         itemListRecycler.setAdapter(mainItemListAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
@@ -116,6 +138,11 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
+
+        //未改变就结束
+        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true)) {
+            return;
+        }
 
         if (itemTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, false)) {
             //新元素

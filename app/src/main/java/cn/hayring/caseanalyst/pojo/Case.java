@@ -72,6 +72,13 @@ public class Case implements Serializable, Listable {
         return event;
     }
 
+    public Event createEvent() {
+        Event event = new Event();
+        events.add(event);
+        event.setParentCase(this);
+        return event;
+    }
+
     /***
      * 人生成并注册
      * Create Person and reg it
@@ -83,6 +90,14 @@ public class Case implements Serializable, Listable {
     public Person createPerson(String name, Boolean suspect, String info) {
         Person person = new Person(name, suspect, info);
         activeUnits.add(person);
+        person.setParentCase(this);
+        return person;
+    }
+
+    public Person createPerson() {
+        Person person = new Person();
+        activeUnits.add(person);
+        person.setParentCase(this);
         return person;
     }
 
@@ -96,6 +111,14 @@ public class Case implements Serializable, Listable {
     public Organization createOrganization(String name, String info) {
         Organization org = new Organization(name, info);
         activeUnits.add(org);
+        org.setParentCase(this);
+        return org;
+    }
+
+    public Organization createOrganization() {
+        Organization org = new Organization();
+        activeUnits.add(org);
+        org.setParentCase(this);
         return org;
     }
 

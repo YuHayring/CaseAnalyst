@@ -27,7 +27,10 @@ public class PojoInstanceCreater {
         shiJi.setAge(17);
         shiJi.setGender(Person.MALE);
         gin = caseInstance.createPerson("琴酒", true, "黑衣组织高官，喂工藤新一喝药的人");
+        gin.setAge(45);
         gin.setGender(Person.MALE);
+
+        Organization blackOrg = caseInstance.createOrganization("黑衣组织", "乌丸集团");
 
         //事件发生
         Event mainEvent = caseInstance.createEvent("新一服用APTX4869", "新一被琴酒灌下APTX4869");
@@ -36,6 +39,7 @@ public class PojoInstanceCreater {
         //人与事件建立关系
         new ManEventRelationship(shiJi, mainEvent, "服药的人");
         new ManEventRelationship(gin, mainEvent, "灌药的人");
+        new ManEventRelationship(blackOrg, mainEvent, "幕后组织");
 
 
         //人与人建立关系
@@ -46,6 +50,7 @@ public class PojoInstanceCreater {
         mainEvent.getEvidences().add(APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
         new ManThingRelationship(gin, APTX4869, "凶器使用者");
+        new ManThingRelationship(blackOrg, APTX4869, "开发组织");
     }
 
     public static Case getConanCase() {

@@ -23,21 +23,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.CaseListActivity"
+            android:name=".activity.ListActivity.CaseListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.CaseValueSetter"
+            android:name=".activity.ValueSetter.CaseValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.ActiveUnitListActivity"
+            android:name=".activity.ListActivity.ActiveUnitListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.PersonValueSetter"
+            android:name=".activity.ValueSetter.PersonValueSetter"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ListActivity.EventListActivity"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ValueSetter.EventValueSetter"
+            android:label="@string/title_activity_case_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ValueSetter.OrganizationValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

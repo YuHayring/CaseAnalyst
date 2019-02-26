@@ -16,6 +16,7 @@ public class Organization implements ActiveUnit, Serializable {
      */
     protected String name;
 
+
     /***
      *
      * @return name
@@ -59,6 +60,16 @@ public class Organization implements ActiveUnit, Serializable {
      * 组织与个人的关系,待实现
      */
 
+    //所属案件
+    protected Case parentCase;
+
+    public Case getParentCase() {
+        return parentCase;
+    }
+
+    public void setParentCase(Case parentCase) {
+        this.parentCase = parentCase;
+    }
 
     /***
      * 私有构造器，初始化各种集合

@@ -38,6 +38,50 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/person_nick_name_inputer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/person_nick_name"
+                android:inputType="text" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/person_age_inputer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/person_age"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Spinner
+            android:id="@+id/gender_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/gender" />
+
+        <Spinner
+            android:id="@+id/blood_type_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/blood_type" />
+
+        <Spinner
+            android:id="@+id/suspect_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/Boolean" />
 
         <Button
             android:id="@+id/person_save_button"
