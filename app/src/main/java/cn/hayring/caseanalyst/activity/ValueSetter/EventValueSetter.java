@@ -28,8 +28,6 @@ public class EventValueSetter extends ValueSetter {
             eventInstance = (Event) requestInfo.getSerializableExtra(DATA);
             nameInputer.setText(eventInstance.getName());
             infoInputer.setText(eventInstance.getInfo());
-        } else {
-            eventInstance = caseInstance.createEvent();
         }
 
         //设置监听器
@@ -44,6 +42,9 @@ public class EventValueSetter extends ValueSetter {
     class EventFinishEditListener extends FinishEditListener {
         @Override
         void editReaction() {
+            if (eventInstance == null) {
+                eventInstance = caseInstance.createEvent();
+            }
             eventInstance.setName(nameInputer.getText().toString());
             eventInstance.setInfo(infoInputer.getText().toString());
             requestInfo.putExtra(DATA, eventInstance);

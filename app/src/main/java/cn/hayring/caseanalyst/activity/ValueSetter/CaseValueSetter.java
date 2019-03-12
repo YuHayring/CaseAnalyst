@@ -10,23 +10,37 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.activity.ListActivity.ActiveUnitListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.OrganizationListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.EventListActivity;
-import cn.hayring.caseanalyst.pojo.ActiveUnit;
+import cn.hayring.caseanalyst.activity.ListActivity.EvidenceListActivity;
 import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.pojo.Event;
+import cn.hayring.caseanalyst.pojo.Evidence;
+import cn.hayring.caseanalyst.pojo.Organization;
+import cn.hayring.caseanalyst.pojo.Person;
 
 public class CaseValueSetter extends ValueSetter {
 
     /***
-     * 能动单元列表入口
+     * 相关人士列表入口
      */
-    TextView activeUnitsEnter;
+    TextView personsEnter;
+
+    /***
+     * 相关组织列表入口
+     */
+    TextView orgsEnter;
 
     /***
      * 事件列表入口
      */
     TextView eventsEnter;
+
+    /***
+     * 证物列表入口
+     */
+    TextView evidenceEnter;
 
     /***
      * 加载页面
@@ -46,16 +60,18 @@ public class CaseValueSetter extends ValueSetter {
             caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
             nameInputer.setText(caseInstance.getName());
             infoInputer.setText(caseInstance.getInfo());
-        } else {
-            caseInstance = new Case();
         }
-        activeUnitsEnter = findViewById(R.id.active_unit_list_enter);
+        personsEnter = findViewById(R.id.person_list_enter);
+        orgsEnter = findViewById(R.id.org_list_enter);
         eventsEnter = findViewById(R.id.event_list_enter);
+        evidenceEnter = findViewById(R.id.evidence_list_enter);
 
         //设置监听器
         saveButton.setOnClickListener(new CaseFinishEditListener());
-        activeUnitsEnter.setOnClickListener(new ActiveUnitsEnterListener(this));
+        personsEnter.setOnClickListener(new PersonsEnterListener(this));
+        orgsEnter.setOnClickListener(new OrgsEnterListener(this));
         eventsEnter.setOnClickListener(new EventEnterListener(this));
+        evidenceEnter.setOnClickListener(new EvidenceEnterListener(this));
 
 
 
@@ -67,6 +83,9 @@ public class CaseValueSetter extends ValueSetter {
     class CaseFinishEditListener extends FinishEditListener {
         @Override
         void editReaction() {
+            if (caseInstance == null) {
+                caseInstance = new Case();
+            }
             caseInstance.setName(nameInputer.getText().toString());
             caseInstance.setInfo(infoInputer.getText().toString());
             requestInfo.putExtra(DATA, caseInstance);
@@ -75,29 +94,51 @@ public class CaseValueSetter extends ValueSetter {
     }
 
     /***
-     * 能动单元编辑按钮监听器
+     * 相关人士列表入口按钮监听器
      *
      */
-    class ActiveUnitsEnterListener extends ListEnterListener {
+    class PersonsEnterListener extends ListEnterListener {
 
-        public ActiveUnitsEnterListener(Context packageContext) {
+        public PersonsEnterListener(Context packageContext) {
             super(packageContext);
         }
 
         @Override
         Class getListViewClass() {
-            return ActiveUnitListActivity.class;
+            return PersonListActivity.class;
         }
 
 
         @Override
         Serializable setData() {
-            return caseInstance.getActiveUnits();
+            return caseInstance.getPersons();
         }
     }
 
     /***
-     * 事件编辑监听器
+     * 相关组织列表入口按钮监听器
+     *
+     */
+    class OrgsEnterListener extends ListEnterListener {
+
+        public OrgsEnterListener(Context packageContext) {
+            super(packageContext);
+        }
+
+        @Override
+        Class getListViewClass() {
+            return OrganizationListActivity.class;
+        }
+
+
+        @Override
+        Serializable setData() {
+            return caseInstance.getOrganizations();
+        }
+    }
+
+    /***
+     * 事件列表入口按钮监听器
      */
     class EventEnterListener extends ListEnterListener {
 
@@ -118,6 +159,27 @@ public class CaseValueSetter extends ValueSetter {
     }
 
     /***
+     * 证物列表入口按钮监听器
+     */
+    class EvidenceEnterListener extends ListEnterListener {
+
+        public EvidenceEnterListener(Context packageContext) {
+            super(packageContext);
+        }
+
+        @Override
+        Class getListViewClass() {
+            return EvidenceListActivity.class;
+        }
+
+
+        @Override
+        Serializable setData() {
+            return caseInstance.getEvidences();
+        }
+    }
+
+    /***
      * 编辑完成调用
      * @author Hayring
      */
@@ -128,14 +190,23 @@ public class CaseValueSetter extends ValueSetter {
 
         //设置返回的已修改数据
         switch (type) {
-            case ACTIVE_UNIT_LIST: {
-                ArrayList<ActiveUnit> activeUnits = (ArrayList<ActiveUnit>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setActiveUnits(activeUnits);
+            case PERSON_LIST: {
+                ArrayList<Person> persons = (ArrayList<Person>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setPersons(persons);
+            }
+            break;
+            case ORG_LIST: {
+                ArrayList<Organization> orgs = (ArrayList<Organization>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setOrganizations(orgs);
             }
             break;
             case EVENT_LIST: {
                 ArrayList<Event> events = (ArrayList<Event>) itemTransporter.getSerializableExtra(DATA);
                 caseInstance.setEvents(events);
+            }
+            break;
+            case EVIDENCE_LIST: {
+                ArrayList<Evidence> evidences = (ArrayList<Evidence>) itemTransporter.getSerializableExtra(DATA);
             }
             break;
             default:

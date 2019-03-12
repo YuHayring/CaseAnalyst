@@ -1,12 +1,20 @@
 package cn.hayring.caseanalyst.activity.ValueSetter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.hayring.caseanalyst.R;
+import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.pojo.Relationship;
 
 public class PersonValueSetter extends ValueSetter {
     /***
@@ -40,6 +48,26 @@ public class PersonValueSetter extends ValueSetter {
     EditText ageInputer;
 
     /***
+     * 人际关系入口
+     */
+    TextView manManRelationshipEnter;
+
+    /***
+     * 人-组织关系入口
+     */
+    TextView manOrgRelationshipEnter;
+
+    /***
+     * 人-事关系入口
+     */
+    TextView manEventRelationshipEnter;
+
+    /***
+     * 人-物关系入口
+     */
+    TextView manThingRelationshipEnter;
+
+    /***
      * View加载
      */
     void loadView() {
@@ -58,8 +86,22 @@ public class PersonValueSetter extends ValueSetter {
         suspectSwitcher = findViewById(R.id.suspect_switcher);
         saveButton = findViewById(R.id.person_save_button);
 
+        manEventRelationshipEnter = findViewById(R.id.man_event_relationship_text_view);
+        manManRelationshipEnter = findViewById(R.id.man_man_relationship_text_view);
+        manOrgRelationshipEnter = findViewById(R.id.man_org_relationship_text_view);
+        manThingRelationshipEnter = findViewById(R.id.man_thing_relationship_text_view);
+
+        View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
+
+        manEventRelationshipEnter.setOnClickListener(relationshipEnterListener);
+        manThingRelationshipEnter.setOnClickListener(relationshipEnterListener);
+        manManRelationshipEnter.setOnClickListener(relationshipEnterListener);
+        manOrgRelationshipEnter.setOnClickListener(relationshipEnterListener);
+
+
+
         //设置监听器
-        saveButton.setOnClickListener(new PersonValueSetter.PersonFinishEditListener());
+        saveButton.setOnClickListener(new PersonFinishEditListener());
 
         //设置属性显示
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
@@ -68,7 +110,11 @@ public class PersonValueSetter extends ValueSetter {
             nameInputer.setText(personInstance.getName());
             infoInputer.setText(personInstance.getInfo());
             nickNameInputer.setText(personInstance.getNickName());
-            ageInputer.setText(personInstance.getAge().toString());
+            Integer age = personInstance.getAge();
+            if (age != null) {
+                ageInputer.setText(age.toString());
+            }
+
 
             //设置性别
             if (null == personInstance.getGender()) {
@@ -118,8 +164,6 @@ public class PersonValueSetter extends ValueSetter {
             }
 
 
-        } else {
-            personInstance = caseInstance.createPerson();
         }
     }
 
@@ -128,11 +172,13 @@ public class PersonValueSetter extends ValueSetter {
 
         @Override
         void editReaction() {
+            if (personInstance == null) {
+                personInstance = caseInstance.createPerson();
+            }
             //获取输入框数据
             String name = nameInputer.getText().toString();
             String info = infoInputer.getText().toString();
             String nickName = nickNameInputer.getText().toString();
-            Integer age = Integer.valueOf(ageInputer.getText().toString());
             String genderStr = genderSwitcher.getSelectedItem().toString();
             Boolean gender;
             if (genderStr.equals(MALE)) {
@@ -161,7 +207,16 @@ public class PersonValueSetter extends ValueSetter {
             personInstance.setSuspect(suspect);
             personInstance.setGender(gender);
             personInstance.setNickName(nickName);
-            personInstance.setAge(age);
+
+
+            String ageStr = ageInputer.getText().toString();
+            if (!"".equals(ageStr) && isInteger(ageStr)) {
+                personInstance.setAge(Integer.valueOf(ageStr));
+            }
+
+
+
+
             switch (bloodTypeSwitcher.getSelectedItem().toString()) {
                 case Person.A:
                 case Person.B:
@@ -174,6 +229,78 @@ public class PersonValueSetter extends ValueSetter {
             //装载数据
             requestInfo.putExtra(DATA, personInstance);
             requestInfo.putExtra(CHANGED, true);
+        }
+
+
+    }
+
+
+    class EditRelationshipListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent request = new Intent(PersonValueSetter.this, RelationshipListActivity.class);
+            switch (view.getId()) {
+                case R.id.man_event_relationship_text_view: {
+                    request.putExtra(ValueSetter.DATA, personInstance.getManEventRelationships());
+                    request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVENT);
+                }
+                break;
+                case R.id.man_man_relationship_text_view: {
+                    request.putExtra(ValueSetter.DATA, personInstance.getManManRelationships());
+                    request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_MAN);
+                }
+                break;
+                case R.id.man_org_relationship_text_view: {
+                    request.putExtra(ValueSetter.DATA, personInstance.getManOrgRelationships());
+                    request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_ORG);
+                }
+                break;
+                case R.id.man_thing_relationship_text_view: {
+                    request.putExtra(ValueSetter.DATA, personInstance.getManThingRelationships());
+                    request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVIDENCE);
+                }
+                break;
+                default:
+                    throw new IllegalArgumentException("Error View Id");
+            }
+            request.putExtra(ValueSetter.CONNECTOR, personInstance);
+            startActivityForResult(request, 1);
+        }
+    }
+
+
+    /***
+     * 编辑完成调用
+     * @author Hayring
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
+        super.onActivityResult(requestCode, resultCode, itemTransporter);
+
+        //未改变就结束
+        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true)) {
+            return;
+        }
+        ArrayList data = (ArrayList) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+        switch (itemTransporter.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1)) {
+            case Relationship.MAN_EVENT: {
+                personInstance.setManEventRelationships(data);
+            }
+            break;
+            case Relationship.MAN_MAN: {
+                personInstance.setManManRelationships(data);
+            }
+            break;
+            case Relationship.MAN_ORG: {
+                personInstance.setManOrgRelationships(data);
+            }
+            break;
+            case Relationship.MAN_EVIDENCE: {
+                personInstance.setManThingRelationships(data);
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("Error relationship type!");
         }
 
 

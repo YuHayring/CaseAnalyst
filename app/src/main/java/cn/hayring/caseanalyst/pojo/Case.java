@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 案件
  * @author Hayring
  */
-public class Case implements Serializable, Listable {
+public class Case implements Listable {
     /***
      * 名字
      */
@@ -26,11 +26,6 @@ public class Case implements Serializable, Listable {
     protected Time time;
 
     /***
-     * 能动单元集合
-     */
-    protected ArrayList<ActiveUnit> activeUnits;
-
-    /***
      * 证物集合
      */
     protected ArrayList<Evidence> evidences;
@@ -41,12 +36,23 @@ public class Case implements Serializable, Listable {
     protected ArrayList<Event> events;
 
     /***
+     * 人物集合
+     */
+    protected ArrayList<Person> persons;
+
+    /***
+     * 组织集合
+     */
+    protected ArrayList<Organization> organizations;
+
+    /***
      * 主要能动单位
      */
     //protected ActiveUnit mainActiveUnit;
 
     public Case() {
-        activeUnits = new ArrayList<ActiveUnit>();
+        organizations = new ArrayList<Organization>();
+        persons = new ArrayList<Person>();
         evidences = new ArrayList<Evidence>();
         events = new ArrayList<Event>();
     }
@@ -89,14 +95,14 @@ public class Case implements Serializable, Listable {
      */
     public Person createPerson(String name, Boolean suspect, String info) {
         Person person = new Person(name, suspect, info);
-        activeUnits.add(person);
+        persons.add(person);
         person.setParentCase(this);
         return person;
     }
 
     public Person createPerson() {
         Person person = new Person();
-        activeUnits.add(person);
+        persons.add(person);
         person.setParentCase(this);
         return person;
     }
@@ -110,16 +116,28 @@ public class Case implements Serializable, Listable {
      */
     public Organization createOrganization(String name, String info) {
         Organization org = new Organization(name, info);
-        activeUnits.add(org);
+        organizations.add(org);
         org.setParentCase(this);
         return org;
     }
 
     public Organization createOrganization() {
         Organization org = new Organization();
-        activeUnits.add(org);
+        organizations.add(org);
         org.setParentCase(this);
         return org;
+    }
+
+
+    /***
+     * 证物生成并注册
+     * Create Evidenct and reg it
+     */
+    public Evidence createEvidence() {
+        Evidence evidence = new Evidence();
+        evidences.add(evidence);
+        evidence.setParentCase(this);
+        return evidence;
     }
 
     /***
@@ -129,6 +147,31 @@ public class Case implements Serializable, Listable {
     @Override
     public String toString() {
         return name;
+    }
+
+
+    /***
+     * 按所需类型获取List
+     * @return ListbaleList
+     */
+    public ArrayList getListableList(Class clazz) {
+        if (clazz.equals(Person.class)) {
+            return persons;
+        }
+
+        if (clazz.equals(Organization.class)) {
+            return organizations;
+        }
+
+        if (clazz.equals(Event.class)) {
+            return events;
+        }
+
+        if (clazz.equals(Evidence.class)) {
+            return evidences;
+        }
+
+        throw new IllegalArgumentException("Error class! Not listable");
     }
 
 
@@ -170,13 +213,7 @@ public class Case implements Serializable, Listable {
         this.info = info;
     }
 
-    public ArrayList<ActiveUnit> getActiveUnits() {
-        return activeUnits;
-    }
 
-    public void setActiveUnits(ArrayList<ActiveUnit> activeUnits) {
-        this.activeUnits = activeUnits;
-    }
 
     public ArrayList<Evidence> getEvidences() {
         return evidences;
@@ -194,5 +231,19 @@ public class Case implements Serializable, Listable {
         this.events = events;
     }
 
+    public ArrayList<Person> getPersons() {
+        return persons;
+    }
 
+    public void setPersons(ArrayList<Person> persons) {
+        this.persons = persons;
+    }
+
+    public ArrayList<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(ArrayList<Organization> organizations) {
+        this.organizations = organizations;
+    }
 }

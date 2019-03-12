@@ -2,10 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/case_value_setter_view">
+    android:id="@+id/evidence_value_setter_view">
 
     <LinearLayout
-        android:id="@+id/case_value_setter_form"
+        android:id="@+id/evidence_value_setter_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -15,10 +15,10 @@
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/case_name_inputer"
+                android:id="@+id/evidence_name_inputer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/case_name"
+                android:hint="@string/evidence_name"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -30,48 +30,33 @@
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/case_info_inputer"
+                android:id="@+id/evidence_info_inputer"
                 android:layout_width="match_parent"
                 android:layout_height="116dp"
-                android:hint="@string/case_info"
+                android:hint="@string/evidence_info"
                 android:inputType="text" />
+
 
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/person_list_enter"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/person_list_enter" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/org_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/org_list_enter" />
 
-        <TextView
-            android:id="@+id/event_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/event_list_enter" />
+            <AutoCompleteTextView
+                android:id="@+id/evidence_count_inputer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/evidence_count"
+                android:inputType="number" />
 
-        <TextView
-            android:id="@+id/evidence_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/evidence_list_enter" />
+
+        </android.support.design.widget.TextInputLayout>
+
 
         <Button
-            android:id="@+id/case_save_button"
+            android:id="@+id/evidence_save_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

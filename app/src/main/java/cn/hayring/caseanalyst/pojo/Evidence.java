@@ -7,7 +7,9 @@ import java.util.ArrayList;
  * 物件，痕迹，证物
  * @author Hayring
  */
-public class Evidence implements Serializable, Listable {
+public class Evidence implements Relationable {
+
+    //////////////////证物合成
     /***
      * 证物名称
      */
@@ -29,10 +31,16 @@ public class Evidence implements Serializable, Listable {
     protected Place createdPlace;
 
     /***
-     * 证物与能动单元关系集合,字符串为能动单位的名字
+     * 证物与人关系集合,字符串为能动单位的名字
      * String-ActiveUnit's name;
      */
-    protected ArrayList<ManThingRelationship> relationships;
+    protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
+
+    /***
+     * 证物与组织关系集合,字符串为能动单位的名字
+     * String-ActiveUnit's name;
+     */
+    protected ArrayList<Relationship<Organization, Evidence>> orgThingRelationships;
 
     /***
      * 证物信息
@@ -43,7 +51,8 @@ public class Evidence implements Serializable, Listable {
      * 保护构造器，初始化各种集合
      */
     protected Evidence() {
-        relationships = new ArrayList<ManThingRelationship>();
+        manThingRelationships = new ArrayList<Relationship<Person, Evidence>>();
+        orgThingRelationships = new ArrayList<Relationship<Organization, Evidence>>();
         events = new ArrayList<Event>();
     }
 
@@ -55,8 +64,14 @@ public class Evidence implements Serializable, Listable {
 
     protected ArrayList<Event> events;
 
+    /***
+     * 所属案件
+     */
+    protected Case parentCase;
 
-
+    public void setParentCase(Case parentCase) {
+        this.parentCase = parentCase;
+    }
 
     @Override
     public String toString() {
@@ -96,14 +111,6 @@ public class Evidence implements Serializable, Listable {
         this.createdPlace = createdPlace;
     }
 
-    public ArrayList<ManThingRelationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(ArrayList<ManThingRelationship> relationships) {
-        this.relationships = relationships;
-    }
-
     public String getInfo() {
         return info;
     }
@@ -118,5 +125,46 @@ public class Evidence implements Serializable, Listable {
 
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
+    }
+
+    public ArrayList<Relationship<Person, Evidence>> getManThingRelationships() {
+        return manThingRelationships;
+    }
+
+    public void setManThingRelationships(ArrayList<Relationship<Person, Evidence>> manThingRelationships) {
+        this.manThingRelationships = manThingRelationships;
+    }
+
+    public ArrayList<Relationship<Organization, Evidence>> getOrgThingRelationships() {
+        return orgThingRelationships;
+    }
+
+    public void setOrgThingRelationships(ArrayList<Relationship<Organization, Evidence>> orgThingRelationships) {
+        this.orgThingRelationships = orgThingRelationships;
+    }
+
+    public Case getParentCase() {
+        return parentCase;
+    }
+
+    /***
+     * 关系注册
+     * @param instance
+     */
+    @Override
+    public void regRelationship(Relationship instance) {
+        if (instance.getItemE().equals(this)) {
+            if (instance.getItemT().getClass().equals(Person.class)) {
+                manThingRelationships.add(instance);
+            } else {
+                orgThingRelationships.add(instance);
+            }
+        } else {
+            if (instance.getItemE().getClass().equals(Person.class)) {
+                manThingRelationships.add(instance);
+            } else {
+                orgThingRelationships.add(instance);
+            }
+        }
     }
 }

@@ -2,23 +2,40 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/case_value_setter_view">
+    android:id="@+id/relationship_value_setter_view">
 
     <LinearLayout
-        android:id="@+id/case_value_setter_form"
+        android:id="@+id/relationship_value_setter_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/item_t_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/item" />
+
+        <TextView
+            android:id="@+id/item_e_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/item" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/case_name_inputer"
+                android:id="@+id/relationship_key_inputer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/case_name"
+                android:hint="@string/key"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -30,48 +47,17 @@
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/case_info_inputer"
+                android:id="@+id/relationship_info_inputer"
                 android:layout_width="match_parent"
                 android:layout_height="116dp"
-                android:hint="@string/case_info"
+                android:hint="@string/relationship_info"
                 android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/person_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/person_list_enter" />
-
-        <TextView
-            android:id="@+id/org_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/org_list_enter" />
-
-        <TextView
-            android:id="@+id/event_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/event_list_enter" />
-
-        <TextView
-            android:id="@+id/evidence_list_enter"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/evidence_list_enter" />
 
         <Button
-            android:id="@+id/case_save_button"
+            android:id="@+id/relationship_save_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

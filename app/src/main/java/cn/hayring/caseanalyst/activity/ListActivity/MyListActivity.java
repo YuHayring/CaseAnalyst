@@ -50,6 +50,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
      * 添加元素按钮
      */
     FloatingActionButton createItemButton;
+
     /***
      * 列表View
      */
@@ -76,13 +77,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         createItemButton = findViewById(R.id.add_item_button);
-        createItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        createItemButton.setOnClickListener(new CreateNewItemListener());
         //初始化数据源
         List<T> items = new ArrayList<T>();
         //绑定数据源
@@ -97,12 +92,11 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
         itemListRecycler.addItemDecoration(dividerItemDecoration);
 
-        createItemButton.setOnClickListener(new MyListActivity.CreateNewItemListener());
 
         /*
         //原始数据添加
         T item = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
-        mainItemListAdapter.addItem(item);
+        mainRelationshipListAdapter.addItem(item);
         */
 
 

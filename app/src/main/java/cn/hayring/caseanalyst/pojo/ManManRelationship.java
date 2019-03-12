@@ -6,63 +6,46 @@ import java.io.Serializable;
  * 人与人之间的关系
  * @author Hayring
  */
-public class ManManRelationship implements Serializable, Listable {
-    /***
-     * 建立关系的两个人
-     */
-    private Person a;
-    private Person b;
-
-    /***
-     * 关系信息
-     */
-    private String key;
+public class ManManRelationship extends Relationship<Person, Person> {
 
     /***
      * 方向性，当两者关系关于key有向，则为true
-     * directional it is true when a key b;
+     * directional it is true when "itemT key itemE";
      */
     private boolean directional;
 
-    public ManManRelationship(Person a, String key, Person b, boolean directional) {
-        this.a = a;
-        this.b = b;
+    public ManManRelationship(Person itemT, String key, Person b, boolean directional) {
+        this.itemT = itemT;
+        this.itemE = b;
         this.key = key;
         this.directional = directional;
-        a.getManManRelationships().add(this);//这样写不知道符不符合思想
+        itemT.getManManRelationships().add(this);//这样写不知道符不符合思想
         b.getManManRelationships().add(this);
     }
 
 
     @Override
     public String toString() {
-        return a.getName() + " and " + b.getName() + " key: " + key;
+        return itemT.getName() + " and " + itemE.getName() + " key: " + key;
     }
 
 
     public Person getA() {
-        return a;
+        return itemT;
     }
 
     public void setA(Person a) {
-        this.a = a;
+        this.itemT = a;
     }
 
     public Person getB() {
-        return b;
+        return itemE;
     }
 
     public void setB(Person b) {
-        this.b = b;
+        this.itemE = b;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public boolean isDirectional() {
         return directional;
@@ -70,11 +53,6 @@ public class ManManRelationship implements Serializable, Listable {
 
     public void setDirectional(boolean directional) {
         this.directional = directional;
-    }
-
-    @Override
-    public String getName() {
-        return key;
     }
 
     @Override

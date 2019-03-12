@@ -6,20 +6,20 @@ import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
-import cn.hayring.caseanalyst.pojo.ActiveUnit;
+import cn.hayring.caseanalyst.pojo.Person;
 
 /***
  * 能动单元列表
  */
-public class ActiveUnitListActivity extends MyListActivity<ActiveUnit> {
+public class PersonListActivity extends MyListActivity<Person> {
 
     /***
      * 获得本Activity所对应的元素类型
      * @return
      */
     @Override
-    public Class<ActiveUnit> getTClass() {
-        return ActiveUnit.class;
+    public Class<Person> getTClass() {
+        return Person.class;
     }
 
     /***
@@ -28,7 +28,7 @@ public class ActiveUnitListActivity extends MyListActivity<ActiveUnit> {
      */
     @Override
     public Class getValueSetterClass() {
-        return null;
+        return PersonValueSetter.class;
     }
 
     /***
@@ -39,19 +39,19 @@ public class ActiveUnitListActivity extends MyListActivity<ActiveUnit> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestInfo = getIntent();
-        ArrayList<ActiveUnit> activeUnits =
-                (ArrayList<ActiveUnit>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(activeUnits);
+        ArrayList<Person> persons =
+                (ArrayList<Person>) requestInfo.getSerializableExtra(ValueSetter.DATA);
+        mainItemListAdapter.addAllItem(persons);
     }
 
     /***
-     * 按返回键之后的操作---------不保存
+     * 按返回键之后的操作---------保存
      */
     @Override
     public void finish() {
         //传输参数和数据
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<ActiveUnit>) mainItemListAdapter.getItems());
-        requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.ACTIVE_UNIT_LIST);
+        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Person>) mainItemListAdapter.getItems());
+        requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.PERSON_LIST);
         setResult(2, requestInfo);
         super.finish();
     }

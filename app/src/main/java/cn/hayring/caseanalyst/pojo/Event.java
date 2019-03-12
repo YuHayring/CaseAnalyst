@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 事件
  * @author Hayring
  */
-public class Event implements Serializable, Listable {
+public class Event implements Relationable {
     /***
      * 事件名称
      */
@@ -20,9 +20,14 @@ public class Event implements Serializable, Listable {
     protected Time time;
 
     /***
-     * 事件与能动单元关系集合
+     * 事件与人关系集合
      */
-    protected ArrayList<ManEventRelationship> manEventRelationships;
+    protected ArrayList<Relationship<Person, Event>> manEventRelationships;
+
+    /***
+     * 事件与组织关系集合
+     */
+    protected ArrayList<Relationship<Organization, Event>> orgEventRelationships;
 
     /***
      * 证物与能动关系集合
@@ -69,7 +74,8 @@ public class Event implements Serializable, Listable {
      * 保护构造器，初始化各种集合
      */
     protected Event() {
-        manEventRelationships = new ArrayList<ManEventRelationship>();
+        manEventRelationships = new ArrayList<Relationship<Person, Event>>();
+        orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
         manThingRelationships = new ArrayList<ManThingRelationship>();
         activeUnits = new ArrayList<ActiveUnit>();
         evidences = new ArrayList<Evidence>();
@@ -136,14 +142,6 @@ public class Event implements Serializable, Listable {
         this.time = time;
     }
 
-    public ArrayList<ManEventRelationship> getManEventRelationships() {
-        return manEventRelationships;
-    }
-
-    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
-        this.manEventRelationships = manEventRelationships;
-    }
-
     public ArrayList<ManThingRelationship> getManThingRelationships() {
         return manThingRelationships;
     }
@@ -206,5 +204,42 @@ public class Event implements Serializable, Listable {
 
     public void setParentCase(Case parentCase) {
         this.parentCase = parentCase;
+    }
+
+    public ArrayList<Relationship<Person, Event>> getManEventRelationships() {
+        return manEventRelationships;
+    }
+
+    public void setManEventRelationships(ArrayList<Relationship<Person, Event>> manEventRelationships) {
+        this.manEventRelationships = manEventRelationships;
+    }
+
+    public ArrayList<Relationship<Organization, Event>> getOrgEventRelationships() {
+        return orgEventRelationships;
+    }
+
+    public void setOrgEventRelationships(ArrayList<Relationship<Organization, Event>> orgEventRelationships) {
+        this.orgEventRelationships = orgEventRelationships;
+    }
+
+    /***
+     * 关系注册
+     * @param instance
+     */
+    @Override
+    public void regRelationship(Relationship instance) {
+        if (instance.getItemE().equals(this)) {
+            if (instance.getItemT().getClass().equals(Person.class)) {
+                manEventRelationships.add(instance);
+            } else {
+                orgEventRelationships.add(instance);
+            }
+        } else {
+            if (instance.getItemE().getClass().equals(Person.class)) {
+                manEventRelationships.add(instance);
+            } else {
+                orgEventRelationships.add(instance);
+            }
+        }
     }
 }

@@ -6,27 +6,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.activity.ListActivity.ActiveUnitListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.OrganizationValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Listable;
-import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Person;
 
 /***
  * 案件列表设置器
  * @author Hayring
  */
-public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyListAdapter.VH> {
+public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<ListableViewHolder> {
 
     /***
      * 名字显示长度限制
@@ -38,24 +36,8 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      */
     public static final int INFO_CHAR_LENGTH = 16;
 
-    /***
-     * holder对应两个TextView
-     * holder include two TextView
-     * @author Hayring
-     */
-    public static class VH extends RecyclerView.ViewHolder {
-        //名称显示View
-        public final TextView name;
-        //信息显示View
-        public final TextView info;
 
-        //注册
-        public VH(View v) {
-            super(v);
-            name = v.findViewById(R.id.item_list_name_item);
-            info = v.findViewById(R.id.item_list_info_item);
-        }
-    }
+
 
 
     /***
@@ -76,7 +58,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
     private MyListActivity mActivity;
 
     /***
-     * 输入案件
+     * 输入数据源构造器
      * @param items
      */
     public MyListAdapter(MyListActivity mActivity, List<T> items) {
@@ -92,7 +74,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      * @param position
      */
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(ListableViewHolder holder, int position) {
         //缩减并绑定名称
         String name = items.get(position).getName();
         if (name.length() > NAME_CHAR_LENGTH) {
@@ -119,7 +101,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
 
 
         /***
-         * 编辑案件
+         * 编辑元素
          * Edit Item
          * @param view
          */
@@ -132,7 +114,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
 
             //注册Activity，ValueSetter
             Intent itemTransporter;
-            if (mActivity.getClass() == ActiveUnitListActivity.class) {
+            if (mActivity.getClass() == PersonListActivity.class) {
                 if (item.getClass() == Person.class) {
                     itemTransporter = new Intent(mActivity, PersonValueSetter.class);
                 } else {
@@ -171,10 +153,10 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<MyLi
      * @return
      */
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ListableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //注册单个元素的layout
         View v = LayoutInflater.from(mActivity).inflate(R.layout.single_item_list_frame, parent, false);
-        return new VH(v);
+        return new ListableViewHolder(v);
     }
 
 

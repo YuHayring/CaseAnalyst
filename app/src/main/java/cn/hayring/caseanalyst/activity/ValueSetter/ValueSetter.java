@@ -11,18 +11,32 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.pojo.Event;
+import cn.hayring.caseanalyst.pojo.Evidence;
+import cn.hayring.caseanalyst.pojo.Organization;
+import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.pojo.Relationship;
 
 public abstract class ValueSetter extends AppCompatActivity {
+    public static final String CONNECTOR = "connector";
     public static final String CHANGED = "changed";
-    public static final int ACTIVE_UNIT_LIST = 3;
+    public static final int PERSON_LIST = 2;
+    public static final int ORG_LIST = 3;
     public static final int EVENT_LIST = 4;
+    public static final int EVIDENCE_LIST = 5;
+    public static final int RELATIONSHIP_LIST = 6;
+    public static final int MAN_MAN_RELATIONSHIP_LIST = 7;
+    public static final String RELATIONSHIP_TYPE = "relationship_type";
     public static final String TYPE = "type";
     public static final String DATA = "data";
     public static final String CREATE_OR_NOT = "create_or_not";
     public static final String POSITION = "position";
+    public static final String IS_E = "is_e";
     protected Intent requestInfo;
     protected LinearLayout rootLayout;
     protected ScrollView sonView;
@@ -118,7 +132,27 @@ public abstract class ValueSetter extends AppCompatActivity {
         abstract Serializable setData();
     }
 
+    public static boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
+    }
 
+    /***
+     * 关系列表编辑完成调用
+     * @author Hayring
+     *//*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
+        super.onActivityResult(requestCode, resultCode, itemTransporter);
+        int type = itemTransporter.getIntExtra(TYPE, -1);
+        if(type == RELATIONSHIP_LIST) {
+            ArrayList<Relationship> relationships = (ArrayList<Relationship>) itemTransporter.getSerializableExtra(DATA);
+
+        }
+        throw new IllegalArgumentException("Error type!");
+
+
+    }*/
 
 
 }

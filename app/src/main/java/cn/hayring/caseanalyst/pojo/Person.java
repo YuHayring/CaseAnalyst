@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements ActiveUnit, Serializable {
+public class Person implements ActiveUnit {
     /***
      * 姓名
      */
@@ -62,12 +62,12 @@ public class Person implements ActiveUnit, Serializable {
     /***
      * 人与证物关系集合
      */
-    protected ArrayList<ManThingRelationship> manThingRelationships;
+    protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
 
     /***
      * 事件与人关系集合
      */
-    protected ArrayList<ManEventRelationship> manEventRelationships;
+    protected ArrayList<Relationship<Person, Event>> manEventRelationships;
 
     /***
      * 其他身份
@@ -77,7 +77,12 @@ public class Person implements ActiveUnit, Serializable {
     /***
      * 人与人关系集合
      */
-    protected ArrayList<ManManRelationship> manManRelationships;
+    protected ArrayList<Relationship<Person, Person>> manManRelationships;
+
+    /***
+     * 人与组织关系集合
+     */
+    protected ArrayList<Relationship<Person, Organization>> manOrgRelationships;
 
 
     /***
@@ -97,10 +102,11 @@ public class Person implements ActiveUnit, Serializable {
      * 保护构造器，初始化各种集合
      */
     protected Person() {
-        manEventRelationships = new ArrayList<ManEventRelationship>();
-        manThingRelationships = new ArrayList<ManThingRelationship>();
+        manEventRelationships = new ArrayList<Relationship<Person, Event>>();
+        manThingRelationships = new ArrayList<Relationship<Person, Evidence>>();
         multipleIdentities = new ArrayList<Person>();
-        manManRelationships = new ArrayList<ManManRelationship>();
+        manManRelationships = new ArrayList<Relationship<Person, Person>>();
+        manOrgRelationships = new ArrayList<Relationship<Person, Organization>>();
     }
 
     public Person(String name, Boolean suspect, String info) {
@@ -156,19 +162,19 @@ public class Person implements ActiveUnit, Serializable {
         this.info = info;
     }
 
-    public ArrayList<ManThingRelationship> getManThingRelationships() {
+    public ArrayList<Relationship<Person, Evidence>> getManThingRelationships() {
         return manThingRelationships;
     }
 
-    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
+    public void setManThingRelationships(ArrayList<Relationship<Person, Evidence>> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
     }
 
-    public ArrayList<ManEventRelationship> getManEventRelationships() {
+    public ArrayList<Relationship<Person, Event>> getManEventRelationships() {
         return manEventRelationships;
     }
 
-    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
+    public void setManEventRelationships(ArrayList<Relationship<Person, Event>> manEventRelationships) {
         this.manEventRelationships = manEventRelationships;
     }
 
@@ -196,12 +202,48 @@ public class Person implements ActiveUnit, Serializable {
         this.multipleIdentities = multipleIdentities;
     }
 
-
-    public ArrayList<ManManRelationship> getManManRelationships() {
+    public ArrayList<Relationship<Person, Person>> getManManRelationships() {
         return manManRelationships;
     }
 
-    public void setManManRelationships(ArrayList<ManManRelationship> manManRelationships) {
+    public void setManManRelationships(ArrayList<Relationship<Person, Person>> manManRelationships) {
         this.manManRelationships = manManRelationships;
+    }
+
+    public ArrayList<Relationship<Person, Organization>> getManOrgRelationships() {
+        return manOrgRelationships;
+    }
+
+    public void setManOrgRelationships(ArrayList<Relationship<Person, Organization>> manOrgRelationships) {
+        this.manOrgRelationships = manOrgRelationships;
+    }
+
+
+    /***
+     * 关系注册
+     * @param instance
+     */
+    @Override
+    public void regRelationship(Relationship instance) {
+        switch (instance.getType()) {
+            case Relationship.MAN_EVENT: {
+                manEventRelationships.add(instance);
+            }
+            break;
+            case Relationship.MAN_EVIDENCE: {
+                manThingRelationships.add(instance);
+            }
+            break;
+            case Relationship.MAN_ORG: {
+                manOrgRelationships.add(instance);
+            }
+            break;
+            case Relationship.MAN_MAN: {
+                manManRelationships.add(instance);
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("ERROR Relationship type");
+        }
     }
 }

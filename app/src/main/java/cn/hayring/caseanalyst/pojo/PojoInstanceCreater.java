@@ -39,7 +39,13 @@ public class PojoInstanceCreater {
         //人与事件建立关系
         new ManEventRelationship(shiJi, mainEvent, "服药的人");
         new ManEventRelationship(gin, mainEvent, "灌药的人");
-        new ManEventRelationship(blackOrg, mainEvent, "幕后组织");
+        //new orgEventRelationship(blackOrg, mainEvent, "幕后组织");
+        Relationship oE = new Relationship(Relationship.ORG_EVENT);
+        oE.setItemT(blackOrg);
+        oE.setItemE(mainEvent);
+        oE.setKey("幕后组织");
+        blackOrg.regRelationship(oE);
+        mainEvent.regRelationship(oE);
 
 
         //人与人建立关系
@@ -50,7 +56,14 @@ public class PojoInstanceCreater {
         mainEvent.getEvidences().add(APTX4869);
         new ManThingRelationship(shiJi, APTX4869, "被服用");
         new ManThingRelationship(gin, APTX4869, "凶器使用者");
-        new ManThingRelationship(blackOrg, APTX4869, "开发组织");
+        //new ManThingRelationship(blackOrg, APTX4869, "开发组织");
+
+        Relationship oT = new Relationship(Relationship.ORG_EVIDENCE);
+        oT.setItemT(blackOrg);
+        oT.setItemE(APTX4869);
+        oT.setKey("开发组织");
+        blackOrg.regRelationship(oT);
+        mainEvent.regRelationship(oT);
     }
 
     public static Case getConanCase() {

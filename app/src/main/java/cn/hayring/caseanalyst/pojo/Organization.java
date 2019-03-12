@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements ActiveUnit, Serializable {
+public class Organization implements ActiveUnit {
     /***
      * 名字
      */
@@ -43,22 +43,23 @@ public class Organization implements ActiveUnit, Serializable {
     /***
      * 组织与证物关系集合
      */
-    protected ArrayList<ManThingRelationship> manThingRelationships;
+    protected ArrayList<Relationship<Organization, Evidence>> orgThingRelationships;
 
 
     /***
      * 事件与组织关系集合
      */
-    protected ArrayList<ManEventRelationship> manEventRelationships;
+    protected ArrayList<Relationship<Organization, Event>> orgEventRelationships;
 
     /***
      *  组织与组织的关系
      */
-    protected ArrayList<OrgOrgRelationship> orgOrgRelationship;
+    protected ArrayList<Relationship<Organization, Organization>> orgOrgRelationships;
 
     /***
-     * 组织与个人的关系,待实现
+     * 组织与个人的关系
      */
+    protected ArrayList<Relationship<Person, Organization>> manOrgRelationships;
 
     //所属案件
     protected Case parentCase;
@@ -75,9 +76,11 @@ public class Organization implements ActiveUnit, Serializable {
      * 私有构造器，初始化各种集合
      */
     protected Organization() {
-        manThingRelationships = new ArrayList<ManThingRelationship>();
-        manEventRelationships = new ArrayList<ManEventRelationship>();
-        orgOrgRelationship = new ArrayList<OrgOrgRelationship>();
+        orgThingRelationships = new ArrayList<Relationship<Organization, Evidence>>();
+        orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
+        orgOrgRelationships = new ArrayList<Relationship<Organization, Organization>>();
+        manOrgRelationships = new ArrayList<Relationship<Person, Organization>>();
+
     }
 
     public Organization(String name, String info) {
@@ -105,27 +108,63 @@ public class Organization implements ActiveUnit, Serializable {
         this.info = info;
     }
 
-    public ArrayList<ManThingRelationship> getManThingRelationships() {
-        return manThingRelationships;
+    /***
+     * 关系注册
+     * @param instance
+     */
+    @Override
+    public void regRelationship(Relationship instance) {
+        switch (instance.getType()) {
+            case Relationship.ORG_EVENT: {
+                orgEventRelationships.add(instance);
+            }
+            break;
+            case Relationship.ORG_EVIDENCE: {
+                orgThingRelationships.add(instance);
+            }
+            break;
+            case Relationship.ORG_ORG: {
+                orgOrgRelationships.add(instance);
+            }
+            break;
+            case Relationship.MAN_ORG: {
+                manOrgRelationships.add(instance);
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("ERROR Relationship type");
+        }
     }
 
-    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
-        this.manThingRelationships = manThingRelationships;
+    public ArrayList<Relationship<Organization, Evidence>> getOrgThingRelationships() {
+        return orgThingRelationships;
     }
 
-    public ArrayList<ManEventRelationship> getManEventRelationships() {
-        return manEventRelationships;
+    public void setOrgThingRelationships(ArrayList<Relationship<Organization, Evidence>> orgThingRelationships) {
+        this.orgThingRelationships = orgThingRelationships;
     }
 
-    public void setManEventRelationships(ArrayList<ManEventRelationship> manEventRelationships) {
-        this.manEventRelationships = manEventRelationships;
+    public ArrayList<Relationship<Organization, Event>> getOrgEventRelationships() {
+        return orgEventRelationships;
     }
 
-    public ArrayList<OrgOrgRelationship> getOrgOrgRelationship() {
-        return orgOrgRelationship;
+    public void setOrgEventRelationships(ArrayList<Relationship<Organization, Event>> orgEventRelationships) {
+        this.orgEventRelationships = orgEventRelationships;
     }
 
-    public void setOrgOrgRelationship(ArrayList<OrgOrgRelationship> orgOrgRelationship) {
-        this.orgOrgRelationship = orgOrgRelationship;
+    public ArrayList<Relationship<Organization, Organization>> getOrgOrgRelationships() {
+        return orgOrgRelationships;
+    }
+
+    public void setOrgOrgRelationships(ArrayList<Relationship<Organization, Organization>> orgOrgRelationships) {
+        this.orgOrgRelationships = orgOrgRelationships;
+    }
+
+    public ArrayList<Relationship<Person, Organization>> getManOrgRelationships() {
+        return manOrgRelationships;
+    }
+
+    public void setManOrgRelationships(ArrayList<Relationship<Person, Organization>> manOrgRelationships) {
+        this.manOrgRelationships = manOrgRelationships;
     }
 }

@@ -29,10 +29,33 @@
     <string name="event_name">事件名称</string>
     <string name="event_info">事件信息</string>
 
+    <!--证物属性 -->
+    <string name="evidence_name">证物名称</string>
+    <string name="evidence_info">证物信息</string>
+    <string name="evidence_count">证物数量</string>
+
     <string name="name">名称</string>
     <string name="info">信息</string>
 
-    <string name="active_unit_list_enter">查看能动单位</string>
+    <string name="person_list_enter">查看相关人士</string>
+    <string name="org_list_enter">查看相关组织</string>
     <string name="event_list_enter">查看事件</string>
+    <string name="evidence_list_enter">查看证物</string>
+
+    <string name="set_new_item">设置关联对象</string>
+
+    <string name="key">关键字</string>
+
+    <string name="relationship_info">关系信息</string>
+    <string name="item">元素</string>
+
+    <string name="man_man_relationship">人际关系</string>
+    <string name="man_org_relationship">人-组织 关系</string>
+    <string name="org_org_relationship">组织间关系</string>
+
+    <string name="man_thing_relationship">人-物 关系</string>
+    <string name="man_event_relationship">人-事 关系</string>
+    <string name="org_thing_relationship">组织-物 关系</string>
+    <string name="org_event_relationship">组织-事 关系</string>
 
 </resources>

@@ -6,62 +6,45 @@ import java.io.Serializable;
  * 组织与组织的关系
  * @author Hayring
  */
-public class OrgOrgRelationship implements Serializable, Listable {
-    /***
-     * 建立关系的两个组织
-     */
-    private Organization a;
-    private Organization b;
-
-    /***
-     * 关系信息
-     */
-    private String key;
+public class OrgOrgRelationship extends Relationship<Organization, Organization> {
 
     /***
      * 方向性，当两者关系关于key有向，则为true
-     * directional it is true when a key b;
+     * directional it is true when itemT key itemE;
      */
     private boolean directional;
 
     public OrgOrgRelationship(Organization a, Organization b, String key, boolean directional) {
-        this.a = a;
-        this.b = b;
+        this.itemT = a;
+        this.itemE = b;
         this.key = key;
         this.directional = directional;
-        a.getOrgOrgRelationship().add(this);
-        b.getOrgOrgRelationship().add(this);
+        a.getOrgOrgRelationships().add(this);
+        b.getOrgOrgRelationships().add(this);
     }
 
     @Override
     public String toString() {
-        return a.getName() + " and " + b.getName() + " key: " + key;
+        return itemT.getName() + " and " + itemE.getName() + " key: " + key;
     }
 
 
     public Organization getA() {
-        return a;
+        return itemT;
     }
 
     public void setA(Organization a) {
-        this.a = a;
+        this.itemT = a;
     }
 
     public Organization getB() {
-        return b;
+        return itemE;
     }
 
     public void setB(Organization b) {
-        this.b = b;
+        this.itemE = b;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public boolean isDirectional() {
         return directional;
@@ -71,10 +54,6 @@ public class OrgOrgRelationship implements Serializable, Listable {
         this.directional = directional;
     }
 
-    @Override
-    public String getName() {
-        return key;
-    }
 
     @Override
     public String getInfo() {

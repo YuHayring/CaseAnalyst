@@ -28,8 +28,6 @@ public class OrganizationValueSetter extends ValueSetter {
             orgInstance = (Organization) requestInfo.getSerializableExtra(DATA);
             nameInputer.setText(orgInstance.getName());
             infoInputer.setText(orgInstance.getInfo());
-        } else {
-            orgInstance = caseInstance.createOrganization();
         }
 
         //设置监听器
@@ -44,6 +42,9 @@ public class OrganizationValueSetter extends ValueSetter {
     class OrganizationFinishEditListener extends FinishEditListener {
         @Override
         void editReaction() {
+            if (orgInstance == null) {
+                orgInstance = caseInstance.createOrganization();
+            }
             orgInstance.setName(nameInputer.getText().toString());
             orgInstance.setInfo(infoInputer.getText().toString());
             requestInfo.putExtra(DATA, orgInstance);

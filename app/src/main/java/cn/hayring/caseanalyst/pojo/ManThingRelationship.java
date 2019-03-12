@@ -6,68 +6,38 @@ import java.io.Serializable;
  * 能动单位与证物的关系
  * @author Hayring
  */
-public class ManThingRelationship implements Serializable, Listable {
-    /***
-     * 能动单位
-     */
-    private ActiveUnit activeUnit;
+public class ManThingRelationship extends Relationship<Person, Evidence> {
 
-    /***
-     * 证物
-     */
-    private Evidence evidence;
-
-    /***
-     * 关键词
-     */
-    private String key;
-
-    public ManThingRelationship(ActiveUnit activeUnit, Evidence evidence, String key) {
-        this.activeUnit = activeUnit;
-        this.evidence = evidence;
+    public ManThingRelationship(Person itemT, Evidence itemE, String key) {
+        this.itemT = itemT;
+        this.itemE = itemE;
         this.key = key;
-        activeUnit.getManThingRelationships().add(this);
-        evidence.getRelationships().add(this);
+        itemT.getManThingRelationships().add(this);
+        itemE.getManThingRelationships().add(this);
     }
 
 
     @Override
     public String toString() {
-        return activeUnit.getName() + " and " + evidence.getName() + " key: " + key;
+        return itemT.getName() + " and " + itemE.getName() + " key: " + key;
     }
 
 
     public ActiveUnit getActiveUnit() {
-        return activeUnit;
+        return itemT;
     }
 
-    public void setActiveUnit(ActiveUnit activeUnit) {
-        this.activeUnit = activeUnit;
+    public void setActiveUnit(Person person) {
+        this.itemT = person;
     }
 
     public Evidence getEvidence() {
-        return evidence;
+        return itemE;
     }
 
     public void setEvidence(Evidence evidence) {
-        this.evidence = evidence;
+        this.itemE = evidence;
     }
 
-    public String getKey() {
-        return key;
-    }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Override
-    public String getName() {
-        return key;
-    }
-
-    @Override
-    public String getInfo() {
-        return toString();
-    }
 }

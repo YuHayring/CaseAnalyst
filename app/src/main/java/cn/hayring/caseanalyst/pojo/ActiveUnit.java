@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * A dynamic unit may be a person, a group or an organization.
  * @author Hayring
  */
-public interface ActiveUnit extends Listable {
+public interface ActiveUnit extends Relationable {
     /***
      *
      * @return name
@@ -19,10 +19,6 @@ public interface ActiveUnit extends Listable {
      * @return false-person or true-org
      */
     public Boolean isOrganization();
-
-    public ArrayList<ManThingRelationship> getManThingRelationships();
-
-    public ArrayList<ManEventRelationship> getManEventRelationships();
 
 
 
