@@ -31,14 +31,12 @@ public class Evidence implements Relationable {
     protected Place createdPlace;
 
     /***
-     * 证物与人关系集合,字符串为能动单位的名字
-     * String-ActiveUnit's name;
+     * 证物与人关系集合,
      */
     protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
 
     /***
-     * 证物与组织关系集合,字符串为能动单位的名字
-     * String-ActiveUnit's name;
+     * 证物与组织关系集合
      */
     protected ArrayList<Relationship<Organization, Evidence>> orgThingRelationships;
 

@@ -21,10 +21,6 @@ public class ManEventRelationship extends Relationship<Person, Event> {
     }
 
 
-    public ActiveUnit getActiveUnit() {
-        return itemT;
-    }
-
     public void setActiveUnit(Person activeUnit) {
         this.itemT = activeUnit;
     }

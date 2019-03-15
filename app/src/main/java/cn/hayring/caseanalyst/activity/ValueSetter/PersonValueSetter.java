@@ -86,10 +86,10 @@ public class PersonValueSetter extends ValueSetter {
         suspectSwitcher = findViewById(R.id.suspect_switcher);
         saveButton = findViewById(R.id.person_save_button);
 
-        manEventRelationshipEnter = findViewById(R.id.man_event_relationship_text_view);
-        manManRelationshipEnter = findViewById(R.id.man_man_relationship_text_view);
-        manOrgRelationshipEnter = findViewById(R.id.man_org_relationship_text_view);
-        manThingRelationshipEnter = findViewById(R.id.man_thing_relationship_text_view);
+        manEventRelationshipEnter = sonView.findViewById(R.id.man_event_relationship_text_view);
+        manManRelationshipEnter = sonView.findViewById(R.id.man_man_relationship_text_view);
+        manOrgRelationshipEnter = sonView.findViewById(R.id.man_org_relationship_text_view);
+        manThingRelationshipEnter = sonView.findViewById(R.id.man_thing_relationship_text_view);
 
         View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
 
@@ -164,6 +164,8 @@ public class PersonValueSetter extends ValueSetter {
             }
 
 
+        } else {
+            personInstance = caseInstance.createPerson();
         }
     }
 
@@ -172,9 +174,9 @@ public class PersonValueSetter extends ValueSetter {
 
         @Override
         void editReaction() {
-            if (personInstance == null) {
+            /*if (personInstance == null) {
                 personInstance = caseInstance.createPerson();
-            }
+            }*/
             //获取输入框数据
             String name = nameInputer.getText().toString();
             String info = infoInputer.getText().toString();
@@ -235,6 +237,9 @@ public class PersonValueSetter extends ValueSetter {
     }
 
 
+    /***
+     * 关系编辑入口监听器
+     */
     class EditRelationshipListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -312,6 +317,7 @@ public class PersonValueSetter extends ValueSetter {
      */
     @Override
     public void finish() {
+        personInstance = null;
         requestInfo.putExtra(CHANGED, false);
         setResult(2, requestInfo);
         super.finish();

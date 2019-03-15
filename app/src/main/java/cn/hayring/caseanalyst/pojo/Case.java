@@ -1,7 +1,6 @@
 package cn.hayring.caseanalyst.pojo;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /***
@@ -44,11 +43,6 @@ public class Case implements Listable {
      * 组织集合
      */
     protected ArrayList<Organization> organizations;
-
-    /***
-     * 主要能动单位
-     */
-    //protected ActiveUnit mainActiveUnit;
 
     public Case() {
         organizations = new ArrayList<Organization>();
@@ -178,16 +172,6 @@ public class Case implements Listable {
 
 
 
-
-    /*
-    public ActiveUnit getMainActiveUnit() {
-        return mainActiveUnit;
-    }
-
-    public void setMainActiveUnit(ActiveUnit mainActiveUnit) {
-        this.mainActiveUnit = mainActiveUnit;
-    }
-    */
 
     public String getName() {
         return name;

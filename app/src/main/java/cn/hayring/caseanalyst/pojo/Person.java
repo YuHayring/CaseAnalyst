@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements ActiveUnit {
+public class Person implements Relationable {
     /***
      * 姓名
      */
@@ -47,11 +47,6 @@ public class Person implements ActiveUnit {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Boolean isOrganization() {
-        return false;
     }
 
     /***

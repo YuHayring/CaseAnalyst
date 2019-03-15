@@ -55,6 +55,24 @@
         </android.support.design.widget.TextInputLayout>
 
 
+        <TextView
+            android:id="@+id/man_thing_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/man_thing_relationship" />
+
+
+        <TextView
+            android:id="@+id/org_thing_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/org_thing_relationship" />
+
+
         <Button
             android:id="@+id/evidence_save_button"
             style="?android:textAppearanceSmall"

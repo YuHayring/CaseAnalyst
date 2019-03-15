@@ -104,8 +104,11 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
          * @param view
          */
         public void onClick(View view) {
+            //判断点击位置
             int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
+            //从表中取出对应的元素
             Listable item = (Listable) items.get(position);
+            //返回元素
             mActivity.getRequestInfo().putExtra(ValueSetter.DATA, item);
             mActivity.returnIntent();
         }

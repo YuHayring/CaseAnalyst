@@ -1,12 +1,5 @@
 package cn.hayring.caseanalyst.pojo;
 
-import cn.hayring.caseanalyst.pojo.Case;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.ManEventRelationship;
-import cn.hayring.caseanalyst.pojo.ManManRelationship;
-import cn.hayring.caseanalyst.pojo.ManThingRelationship;
-import cn.hayring.caseanalyst.pojo.Person;
 
 public class PojoInstanceCreater {
 

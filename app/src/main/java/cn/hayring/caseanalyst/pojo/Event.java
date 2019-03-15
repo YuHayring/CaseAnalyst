@@ -35,11 +35,6 @@ public class Event implements Relationable {
     protected ArrayList<ManThingRelationship> manThingRelationships;
 
     /***
-     * 事件所参与的能动单位的集合-----是否存在有待考量
-     */
-    protected ArrayList<ActiveUnit> activeUnits;
-
-    /***
      * 事件所参与的证物的集合-----是否存在有待考量
      */
     protected ArrayList<Evidence> evidences;
@@ -77,7 +72,6 @@ public class Event implements Relationable {
         manEventRelationships = new ArrayList<Relationship<Person, Event>>();
         orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
         manThingRelationships = new ArrayList<ManThingRelationship>();
-        activeUnits = new ArrayList<ActiveUnit>();
         evidences = new ArrayList<Evidence>();
         factors = new ArrayList<Event>();
         results = new ArrayList<Event>();
@@ -150,13 +144,6 @@ public class Event implements Relationable {
         this.manThingRelationships = manThingRelationships;
     }
 
-    public ArrayList<ActiveUnit> getActiveUnits() {
-        return activeUnits;
-    }
-
-    public void setActiveUnits(ArrayList<ActiveUnit> activeUnits) {
-        this.activeUnits = activeUnits;
-    }
 
     public ArrayList<Evidence> getEvidences() {
         return evidences;

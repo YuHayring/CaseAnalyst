@@ -95,7 +95,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
 
     /***
-     * 案件编辑点击监听器
+     * 元素编辑点击监听器
      */
     public class EditItemListener implements View.OnClickListener {
 
@@ -113,16 +113,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
 
             //注册Activity，ValueSetter
-            Intent itemTransporter;
-            if (mActivity.getClass() == PersonListActivity.class) {
-                if (item.getClass() == Person.class) {
-                    itemTransporter = new Intent(mActivity, PersonValueSetter.class);
-                } else {
-                    itemTransporter = new Intent(mActivity, OrganizationValueSetter.class);
-                }
-            } else {
-                itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
-            }
+            Intent itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
 
 
             //绑定参数

@@ -61,6 +61,10 @@ public abstract class ValueSetter extends AppCompatActivity {
     public static Case caseInstance;
 
 
+    ////-----------------------------debug code
+    public static ArrayList<Case> list;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

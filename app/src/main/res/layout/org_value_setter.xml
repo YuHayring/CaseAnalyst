@@ -39,6 +39,39 @@
         </android.support.design.widget.TextInputLayout>
 
 
+        <TextView
+            android:id="@+id/org_org_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/org_org_relationship" />
+
+        <TextView
+            android:id="@+id/man_org_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/man_org_relationship" />
+
+        <TextView
+            android:id="@+id/org_thing_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/org_thing_relationship" />
+
+        <TextView
+            android:id="@+id/org_event_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/org_event_relationship" />
+
+
         <Button
             android:id="@+id/org_save_button"
             style="?android:textAppearanceSmall"

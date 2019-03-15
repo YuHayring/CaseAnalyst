@@ -23,10 +23,6 @@ public class ManThingRelationship extends Relationship<Person, Evidence> {
     }
 
 
-    public ActiveUnit getActiveUnit() {
-        return itemT;
-    }
-
     public void setActiveUnit(Person person) {
         this.itemT = person;
     }

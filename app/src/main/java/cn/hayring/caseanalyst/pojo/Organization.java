@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements ActiveUnit {
+public class Organization implements Relationable {
     /***
      * 名字
      */
@@ -24,15 +24,6 @@ public class Organization implements ActiveUnit {
     @Override
     public String getName() {
         return name;
-    }
-
-    /***
-     *
-     * @return false-person or true-org
-     */
-    @Override
-    public Boolean isOrganization() {
-        return true;
     }
 
     /***

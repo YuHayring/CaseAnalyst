@@ -38,6 +38,23 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:id="@+id/man_event_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/man_event_relationship" />
+
+
+        <TextView
+            android:id="@+id/org_event_relationship_text_view"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="58sp"
+            android:textSize="36sp"
+            android:text="@string/org_event_relationship" />
+
         <Button
             android:id="@+id/event_save_button"
             style="?android:textAppearanceSmall"
