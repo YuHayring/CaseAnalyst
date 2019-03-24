@@ -67,14 +67,14 @@ public class Case implements Listable {
      */
     public Event createEvent(String name, String info) {
         Event event = new Event(name, info);
-        events.add(event);
+        //events.add(event);
         event.setParentCase(this);
         return event;
     }
 
     public Event createEvent() {
         Event event = new Event();
-        events.add(event);
+        //events.add(event);
         event.setParentCase(this);
         return event;
     }
@@ -89,14 +89,14 @@ public class Case implements Listable {
      */
     public Person createPerson(String name, Boolean suspect, String info) {
         Person person = new Person(name, suspect, info);
-        persons.add(person);
+        //persons.add(person);
         person.setParentCase(this);
         return person;
     }
 
     public Person createPerson() {
         Person person = new Person();
-        persons.add(person);
+        //persons.add(person);
         person.setParentCase(this);
         return person;
     }
@@ -110,14 +110,14 @@ public class Case implements Listable {
      */
     public Organization createOrganization(String name, String info) {
         Organization org = new Organization(name, info);
-        organizations.add(org);
+        //organizations.add(org);
         org.setParentCase(this);
         return org;
     }
 
     public Organization createOrganization() {
         Organization org = new Organization();
-        organizations.add(org);
+        //organizations.add(org);
         org.setParentCase(this);
         return org;
     }
@@ -129,7 +129,7 @@ public class Case implements Listable {
      */
     public Evidence createEvidence() {
         Evidence evidence = new Evidence();
-        evidences.add(evidence);
+        //evidences.add(evidence);
         evidence.setParentCase(this);
         return evidence;
     }

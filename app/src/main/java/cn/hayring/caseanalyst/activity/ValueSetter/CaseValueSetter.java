@@ -19,6 +19,7 @@ import cn.hayring.caseanalyst.pojo.Event;
 import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class CaseValueSetter extends ValueSetter {
 
@@ -57,9 +58,15 @@ public class CaseValueSetter extends ValueSetter {
         infoInputer = findViewById(R.id.case_info_inputer);
         saveButton = findViewById(R.id.case_save_button);
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
+
+            //caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
+            caseInstance = (Case) Pointer.getPoint();
+
+
             nameInputer.setText(caseInstance.getName());
             infoInputer.setText(caseInstance.getInfo());
+        } else {
+            caseInstance = new Case();
         }
         personsEnter = findViewById(R.id.person_list_enter);
         orgsEnter = findViewById(R.id.org_list_enter);
@@ -83,13 +90,13 @@ public class CaseValueSetter extends ValueSetter {
     class CaseFinishEditListener extends FinishEditListener {
         @Override
         void editReaction() {
-            if (caseInstance == null) {
-                caseInstance = new Case();
-            }
             caseInstance.setName(nameInputer.getText().toString());
             caseInstance.setInfo(infoInputer.getText().toString());
-            requestInfo.putExtra(DATA, caseInstance);
+            //requestInfo.putExtra(DATA, caseInstance);
             requestInfo.putExtra(CHANGED, true);
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(caseInstance);
+            }
         }
     }
 
@@ -110,7 +117,7 @@ public class CaseValueSetter extends ValueSetter {
 
 
         @Override
-        Serializable setData() {
+        Serializable getList() {
             return caseInstance.getPersons();
         }
     }
@@ -132,7 +139,7 @@ public class CaseValueSetter extends ValueSetter {
 
 
         @Override
-        Serializable setData() {
+        Serializable getList() {
             return caseInstance.getOrganizations();
         }
     }
@@ -153,7 +160,7 @@ public class CaseValueSetter extends ValueSetter {
 
 
         @Override
-        Serializable setData() {
+        Serializable getList() {
             return caseInstance.getEvents();
         }
     }
@@ -174,7 +181,7 @@ public class CaseValueSetter extends ValueSetter {
 
 
         @Override
-        Serializable setData() {
+        Serializable getList() {
             return caseInstance.getEvidences();
         }
     }
@@ -187,26 +194,27 @@ public class CaseValueSetter extends ValueSetter {
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
         int type = itemTransporter.getIntExtra(TYPE, -1);
-
+        ArrayList data = (ArrayList) Pointer.getPoint();
         //设置返回的已修改数据
         switch (type) {
             case PERSON_LIST: {
-                ArrayList<Person> persons = (ArrayList<Person>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setPersons(persons);
+                //ArrayList<Person> persons = (ArrayList<Person>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setPersons(data);
             }
             break;
             case ORG_LIST: {
-                ArrayList<Organization> orgs = (ArrayList<Organization>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setOrganizations(orgs);
+                //ArrayList<Organization> orgs = (ArrayList<Organization>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setOrganizations(data);
             }
             break;
             case EVENT_LIST: {
-                ArrayList<Event> events = (ArrayList<Event>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setEvents(events);
+                //ArrayList<Event> events = (ArrayList<Event>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setEvents(data);
             }
             break;
             case EVIDENCE_LIST: {
-                ArrayList<Evidence> evidences = (ArrayList<Evidence>) itemTransporter.getSerializableExtra(DATA);
+                //ArrayList<Evidence> evidences = (ArrayList<Evidence>) itemTransporter.getSerializableExtra(DATA);
+                caseInstance.setEvidences(data);
             }
             break;
             default:

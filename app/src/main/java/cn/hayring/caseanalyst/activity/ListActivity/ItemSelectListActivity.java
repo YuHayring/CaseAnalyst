@@ -17,6 +17,7 @@ import java.util.List;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.ItemSelectListAdapter;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class ItemSelectListActivity extends AppCompatActivity {
     /***
@@ -57,7 +58,7 @@ public class ItemSelectListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.select_list_toolbar);
         setSupportActionBar(toolbar);
         //初始化数据源
-        List items = new ArrayList();
+        ArrayList items = (ArrayList) Pointer.getPoint();
         //绑定数据源
         itemListRecycler = findViewById(R.id.recycler_list);
         itemListRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -70,8 +71,8 @@ public class ItemSelectListActivity extends AppCompatActivity {
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
         itemListRecycler.addItemDecoration(dividerItemDecoration);
 
-        List data = (List) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(data);
+        //List data = (List) requestInfo.getSerializableExtra(ValueSetter.DATA);
+        //mainItemListAdapter.addAllItem(data);
         /*
         //原始数据添加
         T item = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();

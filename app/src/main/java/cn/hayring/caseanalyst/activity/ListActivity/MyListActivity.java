@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.longsh.optionframelibrary.OptionBottomDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
 import cn.hayring.caseanalyst.pojo.Listable;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public abstract class MyListActivity<T extends Listable> extends AppCompatActivity {
     /***
@@ -64,14 +67,9 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         return itemListRecycler;
     }
 
-    /***
-     * 必须再次重写以补充初始化后的操作
-     * @param savedInstanceState
-     */
-    @Override
-    @CallSuper
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    protected void init() {
+
         setContentView(R.layout.activity_list);
         //注册
         toolbar = findViewById(R.id.toolbar);
@@ -79,7 +77,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         createItemButton = findViewById(R.id.add_item_button);
         createItemButton.setOnClickListener(new CreateNewItemListener());
         //初始化数据源
-        List<T> items = new ArrayList<T>();
+        ArrayList<T> items = (ArrayList) Pointer.getPoint();
         //绑定数据源
         itemListRecycler = findViewById(R.id.recycler_list);
         itemListRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -93,13 +91,13 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         itemListRecycler.addItemDecoration(dividerItemDecoration);
 
 
+        requestInfo = getIntent();
+
         /*
         //原始数据添加
         T item = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
         mainRelationshipListAdapter.addItem(item);
         */
-
-
     }
 
     /***
@@ -140,14 +138,18 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
 
         if (itemTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, false)) {
             //新元素
-            T newItem = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            //T newItem = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            T newItem = (T) Pointer.getPoint();
             //内部已实现Notificate UI 变化
             mainItemListAdapter.addItem(newItem);
         } else if (!itemTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true)) {
             //修改元素
-            int position = itemTransporter.getIntExtra(ValueSetter.POSITION, 0);
-            T newItem = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
-            mainItemListAdapter.setItem(position, newItem);
+            //int position = itemTransporter.getIntExtra(ValueSetter.POSITION, 0);
+            //T newItem = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            //mainItemListAdapter.setItem(position, newItem);
+
+
+            mainItemListAdapter.notifyDataSetChanged();
         }
 
 

@@ -39,10 +39,11 @@ public class OrganizationListActivity extends MyListActivity<Organization> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestInfo = getIntent();
+        init();
+/*        requestInfo = getIntent();
         ArrayList<Organization> organizations =
                 (ArrayList<Organization>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(organizations);
+        mainItemListAdapter.addAllItem(organizations);*/
     }
 
     /***
@@ -51,7 +52,7 @@ public class OrganizationListActivity extends MyListActivity<Organization> {
     @Override
     public void finish() {
         //传输参数和数据
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Organization>) mainItemListAdapter.getItems());
+        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Organization>) mainItemListAdapter.getItems());
         requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.ORG_LIST);
         setResult(2, requestInfo);
         super.finish();

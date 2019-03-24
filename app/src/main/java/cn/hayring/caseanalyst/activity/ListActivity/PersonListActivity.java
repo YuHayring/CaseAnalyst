@@ -38,10 +38,11 @@ public class PersonListActivity extends MyListActivity<Person> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestInfo = getIntent();
+        init();
+/*        requestInfo = getIntent();
         ArrayList<Person> persons =
                 (ArrayList<Person>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(persons);
+        mainItemListAdapter.addAllItem(persons);*/
     }
 
     /***
@@ -50,7 +51,7 @@ public class PersonListActivity extends MyListActivity<Person> {
     @Override
     public void finish() {
         //传输参数和数据
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Person>) mainItemListAdapter.getItems());
+        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Person>) mainItemListAdapter.getItems());
         requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.PERSON_LIST);
         setResult(2, requestInfo);
         super.finish();

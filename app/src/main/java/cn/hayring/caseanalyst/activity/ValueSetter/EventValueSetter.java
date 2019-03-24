@@ -12,6 +12,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Event;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EventValueSetter extends ValueSetter {
     Event eventInstance;
@@ -43,7 +44,10 @@ public class EventValueSetter extends ValueSetter {
         infoInputer = findViewById(R.id.event_info_inputer);
         saveButton = findViewById(R.id.event_save_button);
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            eventInstance = (Event) requestInfo.getSerializableExtra(DATA);
+
+            //eventInstance = (Event) requestInfo.getSerializableExtra(DATA);
+            eventInstance = (Event) Pointer.getPoint();
+
             nameInputer.setText(eventInstance.getName());
             infoInputer.setText(eventInstance.getInfo());
         } else {
@@ -74,8 +78,11 @@ public class EventValueSetter extends ValueSetter {
             }*/
             eventInstance.setName(nameInputer.getText().toString());
             eventInstance.setInfo(infoInputer.getText().toString());
-            requestInfo.putExtra(DATA, eventInstance);
+            //requestInfo.putExtra(DATA, eventInstance);
             requestInfo.putExtra(CHANGED, true);
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(eventInstance);
+            }
         }
     }
 
@@ -88,23 +95,26 @@ public class EventValueSetter extends ValueSetter {
         public void onClick(View view) {
             Intent request = new Intent(EventValueSetter.this, RelationshipListActivity.class);
             if (view.getId() == R.id.org_event_relationship_text_view) {
-                request.putExtra(ValueSetter.DATA, eventInstance.getOrgEventRelationships());
+                //request.putExtra(ValueSetter.DATA, eventInstance.getOrgEventRelationships());
+                Pointer.setPoint(eventInstance.getOrgEventRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVENT);
             } else if (view.getId() == R.id.man_event_relationship_text_view) {
-                request.putExtra(ValueSetter.DATA, eventInstance.getManEventRelationships());
+                //request.putExtra(ValueSetter.DATA, eventInstance.getManEventRelationships());
+                Pointer.setPoint(eventInstance.getManEventRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVENT);
             } else {
                 throw new IllegalArgumentException("Error View Id");
             }
-            request.putExtra(ValueSetter.CONNECTOR, eventInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, eventInstance);
+            Pointer.setConnector(eventInstance);
             startActivityForResult(request, 1);
         }
     }
 
-    /***
+    /*    *//***
      * 编辑完成调用
      * @author Hayring
-     */
+     *//*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
@@ -124,7 +134,7 @@ public class EventValueSetter extends ValueSetter {
         }
 
 
-    }
+    }*/
 
     /***
      * 返回键不保存，返回未改动

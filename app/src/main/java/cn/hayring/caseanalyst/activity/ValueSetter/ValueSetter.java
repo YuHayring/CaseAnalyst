@@ -16,11 +16,7 @@ import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.pojo.Case;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Organization;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public abstract class ValueSetter extends AppCompatActivity {
     public static final String CONNECTOR = "connector";
@@ -125,15 +121,15 @@ public abstract class ValueSetter extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent dataTransporter = new Intent(packageContext, getListViewClass());
-            dataTransporter.putExtra(ValueSetter.DATA, setData());
-
+            //dataTransporter.putExtra(ValueSetter.DATA, getList());
+            Pointer.setPoint(getList());
             //启动新Activity
-            startActivityForResult(dataTransporter, 1);
+            startActivity(dataTransporter);
         }
 
         abstract Class getListViewClass();
 
-        abstract Serializable setData();
+        abstract Serializable getList();
     }
 
     public static boolean isInteger(String str) {

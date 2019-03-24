@@ -17,6 +17,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.RelationshipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 /***
  * 案件列表设置器
@@ -118,9 +119,11 @@ public class RelationshipListAdapter<T extends Relationship> extends RecyclerVie
 
 
             //绑定参数
-            relationshipTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
+            relationshipTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);/*
             relationshipTransporter.putExtra(ValueSetter.DATA, relationship);
-            relationshipTransporter.putExtra(ValueSetter.POSITION, position);
+            relationshipTransporter.putExtra(ValueSetter.POSITION, position);*/
+            Pointer.setPoint(relationship);
+            Pointer.setConnector(mActivity.getConnector());
 
             //启动ValueSetter
             mActivity.startActivityForResult(relationshipTransporter, 1);

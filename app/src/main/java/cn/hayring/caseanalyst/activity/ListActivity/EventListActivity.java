@@ -31,10 +31,11 @@ public class EventListActivity extends MyListActivity<Event> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestInfo = getIntent();
+        init();
+        /*requestInfo = getIntent();
         ArrayList<Event> activeUnits =
                 (ArrayList<Event>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(activeUnits);
+        mainItemListAdapter.addAllItem(activeUnits);*/
     }
 
     /***
@@ -43,7 +44,7 @@ public class EventListActivity extends MyListActivity<Event> {
     @Override
     public void finish() {
 
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Event>) mainItemListAdapter.getItems());
+        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Event>) mainItemListAdapter.getItems());
         requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.EVENT_LIST);
         setResult(2, requestInfo);
         super.finish();

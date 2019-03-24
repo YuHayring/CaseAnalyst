@@ -12,6 +12,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class OrganizationValueSetter extends ValueSetter {
     Organization orgInstance;
@@ -52,7 +53,10 @@ public class OrganizationValueSetter extends ValueSetter {
         infoInputer = findViewById(R.id.org_info_inputer);
         saveButton = findViewById(R.id.org_save_button);
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            orgInstance = (Organization) requestInfo.getSerializableExtra(DATA);
+            //orgInstance = (Organization) requestInfo.getSerializableExtra(DATA);
+            orgInstance = (Organization) Pointer.getPoint();
+
+
             nameInputer.setText(orgInstance.getName());
             infoInputer.setText(orgInstance.getInfo());
         } else {
@@ -87,8 +91,12 @@ public class OrganizationValueSetter extends ValueSetter {
             }*/
             orgInstance.setName(nameInputer.getText().toString());
             orgInstance.setInfo(infoInputer.getText().toString());
-            requestInfo.putExtra(DATA, orgInstance);
+            //requestInfo.putExtra(DATA, orgInstance);
             requestInfo.putExtra(CHANGED, true);
+
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(orgInstance);
+            }
         }
     }
 
@@ -102,37 +110,43 @@ public class OrganizationValueSetter extends ValueSetter {
             Intent request = new Intent(OrganizationValueSetter.this, RelationshipListActivity.class);
             switch (view.getId()) {
                 case R.id.org_event_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, orgInstance.getOrgEventRelationships());
+                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgEventRelationships());
+                    Pointer.setPoint(orgInstance.getOrgEventRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVENT);
                 }
                 break;
                 case R.id.org_org_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, orgInstance.getOrgOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgOrgRelationships());
+                    Pointer.setPoint(orgInstance.getOrgOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_ORG);
                 }
                 break;
                 case R.id.man_org_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, orgInstance.getManOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, orgInstance.getManOrgRelationships());
+                    Pointer.setPoint(orgInstance.getManOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_ORG);
                 }
                 break;
                 case R.id.org_thing_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, orgInstance.getOrgThingRelationships());
+                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgThingRelationships());
+                    Pointer.setPoint(orgInstance.getOrgThingRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVIDENCE);
                 }
                 break;
                 default:
                     throw new IllegalArgumentException("Error View Id");
             }
-            request.putExtra(ValueSetter.CONNECTOR, orgInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, orgInstance);
+            Pointer.setConnector(orgInstance);
             startActivityForResult(request, 1);
         }
     }
 
+
     /***
      * 编辑完成调用
      * @author Hayring
-     */
+     *//*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
@@ -164,7 +178,7 @@ public class OrganizationValueSetter extends ValueSetter {
         }
 
 
-    }
+    }*/
 
 
 

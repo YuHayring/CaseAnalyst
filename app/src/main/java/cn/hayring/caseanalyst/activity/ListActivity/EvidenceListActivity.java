@@ -31,12 +31,12 @@ public class EvidenceListActivity extends MyListActivity<Evidence> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestInfo = getIntent();
+        init();
+        /*requestInfo = getIntent();
         ArrayList<Evidence> evidences =
                 (ArrayList<Evidence>) requestInfo.getSerializableExtra(ValueSetter.DATA);
 
-        mainItemListAdapter.addAllItem(evidences);
+        mainItemListAdapter.addAllItem(evidences);*/
 
     }
 
@@ -46,7 +46,7 @@ public class EvidenceListActivity extends MyListActivity<Evidence> {
     @Override
     public void finish() {
 
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Evidence>) mainItemListAdapter.getItems());
+        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Evidence>) mainItemListAdapter.getItems());
         requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.EVIDENCE_LIST);
         setResult(2, requestInfo);
         super.finish();

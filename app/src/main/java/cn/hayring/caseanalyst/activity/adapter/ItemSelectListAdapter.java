@@ -6,13 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.ItemSelectListActivity;
-import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Listable;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHolder> {
 
@@ -109,7 +108,8 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
             //从表中取出对应的元素
             Listable item = (Listable) items.get(position);
             //返回元素
-            mActivity.getRequestInfo().putExtra(ValueSetter.DATA, item);
+            //mActivity.getRequestInfo().putExtra(ValueSetter.DATA, item);
+            Pointer.setPoint(item);
             mActivity.returnIntent();
         }
     }

@@ -14,6 +14,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EvidenceValueSetter extends ValueSetter {
     Evidence evidenceInstance;
@@ -43,7 +44,10 @@ public class EvidenceValueSetter extends ValueSetter {
         countInputer = findViewById(R.id.evidence_count_inputer);
         saveButton = findViewById(R.id.evidence_save_button);
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            evidenceInstance = (Evidence) requestInfo.getSerializableExtra(DATA);
+            //evidenceInstance = (Evidence) requestInfo.getSerializableExtra(DATA);
+            evidenceInstance = (Evidence) Pointer.getPoint();
+
+
             nameInputer.setText(evidenceInstance.getName());
             infoInputer.setText(evidenceInstance.getInfo());
             Integer count = evidenceInstance.getCount();
@@ -83,8 +87,12 @@ public class EvidenceValueSetter extends ValueSetter {
             if (!"".equals(countStr) && isInteger(countStr)) {
                 evidenceInstance.setCount(Integer.valueOf(countStr));
             }
-            requestInfo.putExtra(DATA, evidenceInstance);
+            //requestInfo.putExtra(DATA, evidenceInstance);
+
             requestInfo.putExtra(CHANGED, true);
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(evidenceInstance);
+            }
         }
     }
 
@@ -97,23 +105,26 @@ public class EvidenceValueSetter extends ValueSetter {
         public void onClick(View view) {
             Intent request = new Intent(EvidenceValueSetter.this, RelationshipListActivity.class);
             if (view.getId() == R.id.org_thing_relationship_text_view) {
-                request.putExtra(ValueSetter.DATA, evidenceInstance.getOrgThingRelationships());
+                //request.putExtra(ValueSetter.DATA, evidenceInstance.getOrgThingRelationships());
+                Pointer.setPoint(evidenceInstance.getOrgThingRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVIDENCE);
             } else if (view.getId() == R.id.man_thing_relationship_text_view) {
-                request.putExtra(ValueSetter.DATA, evidenceInstance.getManThingRelationships());
+                //request.putExtra(ValueSetter.DATA, evidenceInstance.getManThingRelationships());
+                Pointer.setPoint(evidenceInstance.getManThingRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVIDENCE);
             } else {
                 throw new IllegalArgumentException("Error View Id");
             }
-            request.putExtra(ValueSetter.CONNECTOR, evidenceInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, evidenceInstance);
+            Pointer.setConnector(evidenceInstance);
             startActivityForResult(request, 1);
         }
     }
 
-    /***
+    /*    *//***
      * 编辑完成调用
      * @author Hayring
-     */
+     *//*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
@@ -133,7 +144,7 @@ public class EvidenceValueSetter extends ValueSetter {
         }
 
 
-    }
+    }*/
 
     /***
      * 返回键不保存，返回未改动

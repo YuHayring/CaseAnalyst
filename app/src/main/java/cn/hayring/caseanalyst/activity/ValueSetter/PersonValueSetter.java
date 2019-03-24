@@ -15,6 +15,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Person;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class PersonValueSetter extends ValueSetter {
     /***
@@ -105,7 +106,10 @@ public class PersonValueSetter extends ValueSetter {
 
         //设置属性显示
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            personInstance = (Person) requestInfo.getSerializableExtra(DATA);
+            //personInstance = (Person) requestInfo.getSerializableExtra(DATA);
+            personInstance = (Person) Pointer.getPoint();
+
+
             //基本信息设置
             nameInputer.setText(personInstance.getName());
             infoInputer.setText(personInstance.getInfo());
@@ -229,8 +233,11 @@ public class PersonValueSetter extends ValueSetter {
                 default:
             }
             //装载数据
-            requestInfo.putExtra(DATA, personInstance);
+            //requestInfo.putExtra(DATA, personInstance);
             requestInfo.putExtra(CHANGED, true);
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(personInstance);
+            }
         }
 
 
@@ -246,29 +253,34 @@ public class PersonValueSetter extends ValueSetter {
             Intent request = new Intent(PersonValueSetter.this, RelationshipListActivity.class);
             switch (view.getId()) {
                 case R.id.man_event_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, personInstance.getManEventRelationships());
+                    //request.putExtra(ValueSetter.DATA, personInstance.getManEventRelationships());
+                    Pointer.setPoint(personInstance.getManEventRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVENT);
                 }
                 break;
                 case R.id.man_man_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, personInstance.getManManRelationships());
+                    //request.putExtra(ValueSetter.DATA, personInstance.getManManRelationships());
+                    Pointer.setPoint(personInstance.getManManRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_MAN);
                 }
                 break;
                 case R.id.man_org_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, personInstance.getManOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, personInstance.getManOrgRelationships());
+                    Pointer.setPoint(personInstance.getManOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_ORG);
                 }
                 break;
                 case R.id.man_thing_relationship_text_view: {
-                    request.putExtra(ValueSetter.DATA, personInstance.getManThingRelationships());
+                    //request.putExtra(ValueSetter.DATA, personInstance.getManThingRelationships());
+                    Pointer.setPoint(personInstance.getManThingRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVIDENCE);
                 }
                 break;
                 default:
                     throw new IllegalArgumentException("Error View Id");
             }
-            request.putExtra(ValueSetter.CONNECTOR, personInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, personInstance);
+            Pointer.setConnector(personInstance);
             startActivityForResult(request, 1);
         }
     }
@@ -278,7 +290,7 @@ public class PersonValueSetter extends ValueSetter {
      * 编辑完成调用
      * @author Hayring
      */
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
 
@@ -309,7 +321,7 @@ public class PersonValueSetter extends ValueSetter {
         }
 
 
-    }
+    }*/
 
 
     /***

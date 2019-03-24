@@ -58,4 +58,7 @@
     <string name="org_thing_relationship">组织-物 关系</string>
     <string name="org_event_relationship">组织-事 关系</string>
 
+
+    <string name="create_new_example">生成示例</string>
+
 </resources>

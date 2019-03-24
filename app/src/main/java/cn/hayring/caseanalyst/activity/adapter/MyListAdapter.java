@@ -1,12 +1,16 @@
 package cn.hayring.caseanalyst.activity.adapter;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import com.longsh.optionframelibrary.OptionBottomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Listable;
 import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 /***
  * 案件列表设置器
@@ -91,6 +96,12 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
         //注册点击监听器
         holder.itemView.setOnClickListener(new EditItemListener());
+
+
+        List<String> stringList = new ArrayList<String>();
+        stringList.add("删除");
+
+        holder.itemView.setOnLongClickListener(new DeleteDialogListener());
     }
 
 
@@ -118,12 +129,58 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
             //绑定参数
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
-            itemTransporter.putExtra(ValueSetter.DATA, item);
-            itemTransporter.putExtra(ValueSetter.POSITION, position);
+
+            Pointer.setPoint(item);
+            //itemTransporter.putExtra(ValueSetter.DATA, item);
+            //itemTransporter.putExtra(ValueSetter.POSITION, position);
 
             //启动ValueSetter
             mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUESTCODE);
 
+        }
+    }
+
+    /***
+     * 元素删除监听器
+     */
+    class DeleteDialogListener implements View.OnLongClickListener {
+
+
+        @Override
+        public boolean onLongClick(View view) {
+            AlertDialog alertDialog2 = new AlertDialog.Builder(mActivity)
+                    .setTitle("警告！")
+                    .setMessage("是否要删除？")
+                    //.setIcon(R.mipmap.ic_launcher)
+                    .setPositiveButton("确定", new DeleteItemListener(view))
+
+                    .setNegativeButton("取消", null)
+                    /*
+                    .setNeutralButton("普通按钮", new DialogInterface.OnClickListener() {//添加普通按钮
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(AlertDialogActivity.this, "这是普通按钮按钮", Toast.LENGTH_SHORT).show();
+                        }
+                    })*/
+                    .create();
+            alertDialog2.show();
+            return true;
+        }
+    }
+
+    //确认删除监听器
+    class DeleteItemListener implements DialogInterface.OnClickListener {//添加"Yes"按钮
+        View view;
+
+        public DeleteItemListener(View view) {
+            super();
+            this.view = view;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
+            deleteItem(position);
         }
     }
 

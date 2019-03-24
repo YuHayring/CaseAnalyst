@@ -18,6 +18,7 @@ import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Person;
 import cn.hayring.caseanalyst.pojo.Relationable;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class RelationshipValueSetter<T extends Relationable, E extends Relationable> extends ValueSetter {
 
@@ -58,10 +59,13 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
         saveButton.setOnClickListener(new RelationshipFinishEditListener());
 
         //入口元素
-        connector = (Listable) requestInfo.getSerializableExtra(ValueSetter.CONNECTOR);
+        //connector = (Listable) requestInfo.getSerializableExtra(ValueSetter.CONNECTOR);
+        connector = Pointer.getConnector();
 
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            relationshipInstance = (Relationship) requestInfo.getSerializableExtra(DATA);
+            //relationshipInstance = (Relationship) requestInfo.getSerializableExtra(DATA);
+            relationshipInstance = (Relationship) Pointer.getPoint();
+
             tTextView.setText(relationshipInstance.getItemT().getName());
             eTextView.setText(relationshipInstance.getItemE().getName());
             keyInputer.setText(relationshipInstance.getKey());
@@ -71,6 +75,7 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
             }
 
         } else {
+            relationshipInstance = Relationship.createRelationship(relationshipType);
             if (connector.getClass().equals(Person.class)) {
                 isEConnector = false;
                 itemT = (T) connector;
@@ -96,9 +101,6 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
     class RelationshipFinishEditListener extends FinishEditListener {
         @Override
         void editReaction() {
-            if (relationshipInstance == null) {
-                relationshipInstance = Relationship.createRelationship(relationshipType);
-            }
             relationshipInstance.setItemE(itemE);
             relationshipInstance.setItemT(itemT);
             relationshipInstance.setKey(keyInputer.getText().toString());
@@ -111,7 +113,10 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
             }
 
 
-            requestInfo.putExtra(DATA, relationshipInstance);
+            //requestInfo.putExtra(DATA, relationshipInstance);
+            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
+                Pointer.setPoint(relationshipInstance);
+            }
             requestInfo.putExtra(CHANGED, true);
         }
     }
@@ -160,7 +165,8 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
             ArrayList dataSrc = caseInstance.getListableList(clazz);
             Intent request = new Intent(RelationshipValueSetter.this, ItemSelectListActivity.class);
-            request.putExtra(ValueSetter.DATA, dataSrc);
+            //request.putExtra(ValueSetter.DATA, dataSrc);
+            Pointer.setPoint(dataSrc);
             request.putExtra(ValueSetter.IS_E, isE);
             startActivityForResult(request, 1);
         }
@@ -182,10 +188,12 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
 
         if (itemTransporter.getBooleanExtra(ValueSetter.IS_E, true)) {
-            itemE = (E) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            //itemE = (E) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            itemE = (E) Pointer.getPoint();
             eTextView.setText(itemE.getName());
         } else {
-            itemT = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            //itemT = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
+            itemT = (T) Pointer.getPoint();
             tTextView.setText(itemT.getName());
         }
 

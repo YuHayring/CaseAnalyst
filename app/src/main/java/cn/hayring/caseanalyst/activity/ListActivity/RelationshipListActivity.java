@@ -21,7 +21,9 @@ import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.RelationshipListAdapter;
 import cn.hayring.caseanalyst.pojo.Listable;
 import cn.hayring.caseanalyst.pojo.Organization;
+import cn.hayring.caseanalyst.pojo.Relationable;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.Pointer;
 
 public class RelationshipListActivity<T extends Relationship> extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
     /***
      * 关系设置窗口的入口元素
      */
-    Listable connector;
+    Relationable connector;
 
     /***
      * 请求传输者
@@ -75,7 +77,7 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
         createRelationshipButton = findViewById(R.id.add_item_button);
         createRelationshipButton.setOnClickListener(new CreateNewRelationshipListener());
         //初始化数据源
-        List<T> relationships = new ArrayList<T>();
+        List<T> relationships = (ArrayList) Pointer.getPoint();
         //绑定数据源
         relationshipListRecycler = findViewById(R.id.recycler_list);
         relationshipListRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -90,11 +92,10 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
 
 
         requestInfo = getIntent();
-        ArrayList<T> relationshipSources =
-                (ArrayList<T>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        connector = (Listable) requestInfo.getSerializableExtra(ValueSetter.CONNECTOR);
+        //ArrayList<T> relationshipSources = (ArrayList) Pointer.getPoint();
+        connector = Pointer.getConnector();
         relationshipType = requestInfo.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1);
-        mainRelationshipListAdapter.addAllItem(relationshipSources);
+        //mainRelationshipListAdapter.addAllItem(relationshipSources);
 
 
     }
@@ -117,7 +118,8 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
             relationshipTransporter.putExtra(ValueSetter.CREATE_OR_NOT, true);
 
             //发送关联者
-            relationshipTransporter.putExtra(ValueSetter.CONNECTOR, connector);
+            //relationshipTransporter.putExtra(ValueSetter.CONNECTOR, connector);
+            Pointer.setConnector(connector);
 
             //类型设置
             relationshipTransporter.putExtra(ValueSetter.RELATIONSHIP_TYPE, relationshipType);
@@ -145,14 +147,20 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
 
         if (relationshipTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, false)) {
             //新元素
-            T newRelationship = (T) relationshipTransporter.getSerializableExtra(ValueSetter.DATA);
+            //T newRelationship = (T) relationshipTransporter.getSerializableExtra(ValueSetter.DATA);
+
+            T newRelationship = (T) Pointer.getPoint();
+
             //内部已实现Notificate UI 变化
             mainRelationshipListAdapter.addItem(newRelationship);
         } else if (!relationshipTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true)) {
             //修改元素
-            int position = relationshipTransporter.getIntExtra(ValueSetter.POSITION, 0);
+            /*int position = relationshipTransporter.getIntExtra(ValueSetter.POSITION, 0);
             T newRelationship = (T) relationshipTransporter.getSerializableExtra(ValueSetter.DATA);
-            mainRelationshipListAdapter.setItem(position, newRelationship);
+            mainRelationshipListAdapter.setItem(position, newRelationship);*/
+
+
+            mainRelationshipListAdapter.notifyDataSetChanged();
         }
 
 
@@ -164,10 +172,12 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
     @Override
     public void finish() {
         //传输参数和数据
-        requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Relationship>) mainRelationshipListAdapter.getRelationships());
+        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Relationship>) mainRelationshipListAdapter.getRelationships());
         setResult(2, requestInfo);
         super.finish();
     }
 
-
+    public Relationable getConnector() {
+        return connector;
+    }
 }
