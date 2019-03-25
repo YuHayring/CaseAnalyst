@@ -2,7 +2,6 @@ package cn.hayring.caseanalyst.activity.ListActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
@@ -25,6 +23,7 @@ public class ItemSelectListActivity extends AppCompatActivity {
      */
     protected Intent requestInfo;
 
+    //请求代码
     public static final int REQUESTCODE = 1;
 
 
@@ -39,6 +38,7 @@ public class ItemSelectListActivity extends AppCompatActivity {
      */
     ItemSelectListAdapter mainItemListAdapter;
 
+    //获取Recycler
     public RecyclerView getItemListRecycler() {
         return itemListRecycler;
     }
@@ -81,6 +81,7 @@ public class ItemSelectListActivity extends AppCompatActivity {
     }
 
 
+    //结束生命周期前的操作：更改完毕
     @Override
     public void finish() {
         requestInfo.putExtra(ValueSetter.CHANGED, false);

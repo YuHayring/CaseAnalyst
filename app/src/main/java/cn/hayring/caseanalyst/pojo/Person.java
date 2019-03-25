@@ -1,6 +1,5 @@
 package cn.hayring.caseanalyst.pojo;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /***
@@ -43,6 +42,11 @@ public class Person implements Relationable {
     public static final String B = "B";
     public static final String O = "O";
     public static final String RHAB = "RHAB";
+
+    /***
+     * 头像资源id
+     */
+    protected Integer imageIndex;
 
     @Override
     public String getName() {
@@ -147,6 +151,15 @@ public class Person implements Relationable {
 
     public void setGender(Boolean gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public Integer getImageIndex() {
+        return imageIndex;
+    }
+
+    public void setImageIndex(Integer imageIndex) {
+        this.imageIndex = imageIndex;
     }
 
     public String getInfo() {

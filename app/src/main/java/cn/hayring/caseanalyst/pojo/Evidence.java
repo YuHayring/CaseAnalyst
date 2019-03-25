@@ -1,6 +1,5 @@
 package cn.hayring.caseanalyst.pojo;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /***
@@ -14,6 +13,11 @@ public class Evidence implements Relationable {
      * 证物名称
      */
     protected String name;
+
+    /***
+     * 图片资源id
+     */
+    protected Integer imageIndex;
 
     /***
      * 证物产生的时间
@@ -99,6 +103,15 @@ public class Evidence implements Relationable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    @Override
+    public Integer getImageIndex() {
+        return imageIndex;
+    }
+
+    public void setImageIndex(Integer imageIndex) {
+        this.imageIndex = imageIndex;
     }
 
     public Place getCreatedPlace() {

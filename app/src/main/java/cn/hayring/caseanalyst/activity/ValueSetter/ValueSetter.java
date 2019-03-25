@@ -3,6 +3,7 @@ package cn.hayring.caseanalyst.activity.ValueSetter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public abstract class ValueSetter extends AppCompatActivity {
+public class ValueSetter extends AppCompatActivity {
     public static final String CONNECTOR = "connector";
     public static final String CHANGED = "changed";
     public static final int PERSON_LIST = 2;
@@ -43,6 +44,11 @@ public abstract class ValueSetter extends AppCompatActivity {
     public static final String FEMALE = "女";
     public static final String TRUE = "是";
     public static final String FALSE = "否";
+
+
+    public static Random random = new Random();
+
+
     //废弃
     //protected ArrayList<EditText> editTexts;
 
@@ -58,30 +64,26 @@ public abstract class ValueSetter extends AppCompatActivity {
 
 
     ////-----------------------------debug code
-    public static ArrayList<Case> list;
+    //public static ArrayList<Case> list;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_value_setter);
-        rootLayout = findViewById(R.id.value_setter_root_layout);
-        //editTexts = new ArrayList<EditText>();
-        requestInfo = getIntent();
-
         //加载页面
-        loadView();
-
-
-
-
-
+        initView();
     }
 
     /***
      * 加载页面
      */
-    abstract void loadView();
+    @CallSuper
+    protected void initView() {
+        rootLayout = findViewById(R.id.value_setter_root_layout);
+        //editTexts = new ArrayList<EditText>();
+        requestInfo = getIntent();
+    }
 
     /***
      * 保存按钮监听器

@@ -19,8 +19,6 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.RelationshipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.RelationshipListAdapter;
-import cn.hayring.caseanalyst.pojo.Listable;
-import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Relationable;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;

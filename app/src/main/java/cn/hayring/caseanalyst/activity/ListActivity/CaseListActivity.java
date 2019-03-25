@@ -11,25 +11,29 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.CaseValueSetter;
-import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
 import cn.hayring.caseanalyst.pojo.Case;
 
+/***
+ * 案件列表活动
+ */
 public class CaseListActivity extends MyListActivity<Case> {
 
 
-    Handler handler;
+    /***
+     * 数据存储handler
+     */
+    protected Handler saveHandler;
 
     /***
      * 获得本Activity所对应的元素类型
@@ -50,12 +54,11 @@ public class CaseListActivity extends MyListActivity<Case> {
     }
 
 
+    /***
+     * 重写初始化view
+     */
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-
-        //------------------
-        setContentView(R.layout.activity_list);
+    protected void initView() {
         //注册
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,20 +77,34 @@ public class CaseListActivity extends MyListActivity<Case> {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
         itemListRecycler.addItemDecoration(dividerItemDecoration);
-        //-----------------------
+    }
+
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+        //------------------
+        setContentView(R.layout.activity_list);
+
+        //初始化view
+        initView();
 
 
         //原始数据添加
         //Case item = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
         //mainItemListAdapter.addItem(item);
-        handler = new SaveHandler();
+
+
+        //保存修改的案件
+        saveHandler = new SaveHandler();
         Intent instance = getIntent();
         ArrayList<Case> data = (ArrayList<Case>) instance.getSerializableExtra("DATA");
         mainItemListAdapter.addAllItem(data);
 
 
         ////-----------------------------debug code
-        ValueSetter.list = (ArrayList<Case>) mainItemListAdapter.getItems();
+        //ValueSetter.list = (ArrayList<Case>) mainItemListAdapter.getItems();
 
     }
 
@@ -129,28 +146,37 @@ public class CaseListActivity extends MyListActivity<Case> {
     }
 
 
+    /***
+     * 保存案件线程
+     */
     class SaveThread extends Thread {
         @Override
         public void run() {
-            Message msg = handler.obtainMessage();
+            //发送消息
+            Message msg = saveHandler.obtainMessage();
             msg.obj = mainItemListAdapter.getItems();
             msg.arg1 = mainItemListAdapter.getItemCount();
-            handler.sendMessage(msg);
+            saveHandler.sendMessage(msg);
         }
     }
 
+    //保存Handler
     class SaveHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             int i = msg.arg1;
+            //获取待保存的案件
             List<Case> caseList = (List<Case>) msg.obj;
             for (int j = 0; j < i; j++) {
                 try {
+                    //输出案件
                     FileOutputStream fo = openFileOutput(Integer.toString(j) + ".case", Context.MODE_PRIVATE);
                     ObjectOutputStream oos = new ObjectOutputStream(fo);
                     oos.writeObject(caseList.get(j));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    //失败提示
+                    Toast.makeText(CaseListActivity.this, "保存失败", Toast.LENGTH_LONG).show();
                 }
 
             }

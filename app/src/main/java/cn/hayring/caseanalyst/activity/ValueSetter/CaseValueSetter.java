@@ -10,15 +10,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.activity.ListActivity.OrganizationListActivity;
-import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.EventListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.EvidenceListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.OrganizationListActivity;
+import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
 import cn.hayring.caseanalyst.pojo.Case;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Organization;
-import cn.hayring.caseanalyst.pojo.Person;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class CaseValueSetter extends ValueSetter {
@@ -47,7 +43,8 @@ public class CaseValueSetter extends ValueSetter {
      * 加载页面
      */
     @Override
-    public void loadView() {
+    protected void initView() {
+        super.initView();
         //加载layout实例
         LayoutInflater inflater = getLayoutInflater();
         sonView = (ScrollView) inflater.inflate(R.layout.case_value_setter, null);

@@ -2,9 +2,7 @@ package cn.hayring.caseanalyst.activity.ListActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,10 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.longsh.optionframelibrary.OptionBottomDialog;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
@@ -25,6 +20,10 @@ import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
 import cn.hayring.caseanalyst.pojo.Listable;
 import cn.hayring.caseanalyst.utils.Pointer;
 
+/***
+ * 自定义ListActivity
+ * @param <T extends Listable>
+ */
 public abstract class MyListActivity<T extends Listable> extends AppCompatActivity {
     /***
      * 获得本Activity所对应的元素类型
@@ -67,10 +66,22 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         return itemListRecycler;
     }
 
-
-    protected void init() {
-
+    /***
+     * 生命周期加载方法
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        initView();
+    }
+
+    /***
+     * 初始化view
+     */
+    protected void initView() {
+
+
         //注册
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,6 +110,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         mainRelationshipListAdapter.addItem(item);
         */
     }
+
 
     /***
      * 新元素点击监听器
@@ -148,7 +160,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
             //T newItem = (T) itemTransporter.getSerializableExtra(ValueSetter.DATA);
             //mainItemListAdapter.setItem(position, newItem);
 
-
+            //改变了内部引用，直接检测数据源变化
             mainItemListAdapter.notifyDataSetChanged();
         }
 

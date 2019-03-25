@@ -13,6 +13,10 @@ import cn.hayring.caseanalyst.activity.ListActivity.ItemSelectListActivity;
 import cn.hayring.caseanalyst.pojo.Listable;
 import cn.hayring.caseanalyst.utils.Pointer;
 
+/***
+ * 元素选择列表设置器
+ * @author Hayring
+ */
 public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHolder> {
 
     /***
@@ -80,7 +84,7 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
         }
         holder.name.setText(name);
 
-        //缩减并绑定信息绑定
+        //缩减并绑定信息
         String info = ((Listable) items.get(position)).getInfo();
         if (info.length() > INFO_CHAR_LENGTH) {
             info = info.substring(0, INFO_CHAR_LENGTH - 2) + "...";
@@ -94,7 +98,6 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
 
     /***
      * 元素选中监听器
-     * @return
      */
     public class ItemSelectedListener implements View.OnClickListener {
         /***
@@ -107,9 +110,10 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
             int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
             //从表中取出对应的元素
             Listable item = (Listable) items.get(position);
-            //返回元素
-            //mActivity.getRequestInfo().putExtra(ValueSetter.DATA, item);
+            //传输引用
+            // 旧方法 mActivity.getRequestInfo().putExtra(ValueSetter.DATA, item);
             Pointer.setPoint(item);
+
             mActivity.returnIntent();
         }
     }
@@ -120,12 +124,5 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
         return items.size();
     }
 
-    /***
-     * 添加大量元素
-     * @param items
-     */
-    public void addAllItem(List items) {
-        this.items.addAll(items);
-        notifyDataSetChanged();
-    }
+
 }

@@ -2,7 +2,6 @@ package cn.hayring.caseanalyst.pojo;
 
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /***
@@ -11,6 +10,11 @@ import java.util.ArrayList;
  * @author Hayring
  */
 public class Organization implements Relationable {
+
+    /***
+     * 头像资源id
+     */
+    protected Integer imageIndex;
     /***
      * 名字
      */
@@ -97,6 +101,15 @@ public class Organization implements Relationable {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    @Override
+    public Integer getImageIndex() {
+        return imageIndex;
+    }
+
+    public void setImageIndex(Integer imageIndex) {
+        this.imageIndex = imageIndex;
     }
 
     /***

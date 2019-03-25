@@ -1,12 +1,17 @@
 package cn.hayring.caseanalyst.activity.ValueSetter;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
@@ -22,22 +27,64 @@ import cn.hayring.caseanalyst.utils.Pointer;
 
 public class RelationshipValueSetter<T extends Relationable, E extends Relationable> extends ValueSetter {
 
+    /***
+     * E实例是否为入口实例
+     */
     boolean isEConnector;
+
+    /***
+     * 元素T,类签名靠前的那个类
+     */
     T itemT;
+
+    /***
+     * 元素E，类签名靠后的那个类
+     */
     E itemE;
 
+    //元素名称显示器
     TextView tTextView;
     TextView eTextView;
+
+    /***
+     * 关键字输入框
+     */
     EditText keyInputer;
+
+    /***
+     * 信息输入框
+     */
     EditText infoInputer;
+
+    /***
+     * T头像
+     */
+    ImageView imageViewT;
+
+    /***
+     * E头像
+     */
+    ImageView imageViewE;
+
+    /***
+     * 此ValueSetter管理的关系实例
+     */
     Relationship<T, E> relationshipInstance;
+
+    /***
+     * 入口元素
+     */
     Listable connector;
 
+    /***
+     * 关系类型，ValueSetter静态常量
+     */
     int relationshipType;
 
 
     @Override
-    void loadView() {
+    protected void initView() {
+        super.initView();
         //加载layout实例
         LayoutInflater inflater = getLayoutInflater();
         sonView = (ScrollView) inflater.inflate(R.layout.relationship_value_setter, null);
@@ -52,6 +99,8 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
         keyInputer = findViewById(R.id.relationship_key_inputer);
         infoInputer = findViewById(R.id.relationship_info_inputer);
         saveButton = findViewById(R.id.relationship_save_button);
+        imageViewE = findViewById(R.id.imageViewE);
+        imageViewT = findViewById(R.id.imageViewT);
 
         ChangeListableListener changeListableListener = new ChangeListableListener();
         tTextView.setOnClickListener(changeListableListener);
@@ -73,6 +122,32 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
             if (info != null) {
                 infoInputer.setText(info);
             }
+
+
+            //Event只会在E的位置出现，判断是否有头像并加载
+            if (!(itemE instanceof Event) && itemE.getImageIndex() != null) {
+                try {
+                    FileInputStream headIS = openFileInput(itemE.getImageIndex() + ".jpg");
+                    Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
+                    imageViewE.setImageBitmap(headBitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (itemE instanceof Event) {
+                imageViewE.setEnabled(false);
+            }
+
+            //判断是否有头像并加载
+            if (itemT.getImageIndex() != null) {
+                try {
+                    FileInputStream headIS = openFileInput(itemT.getImageIndex() + ".jpg");
+                    Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
+                    imageViewT.setImageBitmap(headBitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
 
         } else {
             relationshipInstance = Relationship.createRelationship(relationshipType);
@@ -133,6 +208,7 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
             Class clazz;
 
 
+            //确定申请选择的数据类型
             switch (relationshipType) {
                 case Relationship.MAN_EVENT: {
                     clazz = isE ? Event.class : Person.class;

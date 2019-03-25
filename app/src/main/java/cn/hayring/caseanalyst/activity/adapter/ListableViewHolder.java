@@ -17,7 +17,9 @@ public class ListableViewHolder extends RecyclerView.ViewHolder {
     //信息显示View
     public final TextView info;
 
-    //注册
+    /***
+     * 注册控件
+     */
     public ListableViewHolder(View v) {
         super(v);
         name = v.findViewById(R.id.item_list_name_item);

@@ -61,4 +61,6 @@
 
     <string name="create_new_example">生成示例</string>
 
+    <string name="person_graph_enter">查看人物关系图</string>
+
 </resources>

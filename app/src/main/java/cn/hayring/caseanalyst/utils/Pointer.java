@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import cn.hayring.caseanalyst.pojo.Relationable;
 
+/***
+ * 引用传输类，线程不安全
+ */
 public class Pointer {
     private static Serializable point;
 

@@ -7,4 +7,9 @@ public interface Relationable extends Listable {
      * @param instance
      */
     public void regRelationship(Relationship instance);
+
+    /***
+     * 返回头像id
+     */
+    public Integer getImageIndex();
 }

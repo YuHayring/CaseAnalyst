@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Event;
@@ -15,6 +13,10 @@ import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EventValueSetter extends ValueSetter {
+
+    /***
+     * 此ValueSetter管理的事件实例
+     */
     Event eventInstance;
 
     /***
@@ -33,7 +35,8 @@ public class EventValueSetter extends ValueSetter {
      * 加载页面
      */
     @Override
-    public void loadView() {
+    protected void initView() {
+        super.initView();
         //加载layout实例
         LayoutInflater inflater = getLayoutInflater();
         sonView = (ScrollView) inflater.inflate(R.layout.event_value_setter, null);

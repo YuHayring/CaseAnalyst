@@ -1,11 +1,6 @@
 package cn.hayring.caseanalyst.activity.ListActivity;
 
-import android.os.Bundle;
-
-import java.util.ArrayList;
-
 import cn.hayring.caseanalyst.activity.ValueSetter.OrganizationValueSetter;
-import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Organization;
 
@@ -33,21 +28,7 @@ public class OrganizationListActivity extends MyListActivity<Organization> {
     }
 
     /***
-     * 生命周期方法
-     * @param savedInstanceState
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
-/*        requestInfo = getIntent();
-        ArrayList<Organization> organizations =
-                (ArrayList<Organization>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(organizations);*/
-    }
-
-    /***
-     * 按返回键之后的操作---------不保存
+     * 按返回键之后的操作---------保存
      */
     @Override
     public void finish() {

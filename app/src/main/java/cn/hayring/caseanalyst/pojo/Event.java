@@ -1,7 +1,5 @@
 package cn.hayring.caseanalyst.pojo;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.ArrayList;
 
 /***
@@ -228,5 +226,10 @@ public class Event implements Relationable {
                 orgEventRelationships.add(instance);
             }
         }
+    }
+
+    @Override
+    public Integer getImageIndex() {
+        return null;
     }
 }

@@ -26,7 +26,7 @@ import cn.hayring.caseanalyst.utils.Pointer;
 public class RelationshipListAdapter<T extends Relationship> extends RecyclerView.Adapter<RelationshipListAdapter.RelationshipViewHolder> {
 
     /***
-     * head显示长度限制
+     * 列表文字显示长度限制
      */
     public static final int HEAD_CHAR_LENGTH = 24;
 

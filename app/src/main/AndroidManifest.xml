@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.hayring.caseanalyst">
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/holmes_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.PersonGraph"></activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.Splash">
             <intent-filter>
@@ -26,12 +27,10 @@
             android:name=".activity.ListActivity.CaseListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.ValueSetter.CaseValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.ListActivity.PersonListActivity"
             android:label="@string/title_activity_case_list"
@@ -72,7 +71,6 @@
             android:name=".activity.ListActivity.RelationshipListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.ListActivity.OrganizationListActivity"
             android:label="@string/title_activity_case_list"

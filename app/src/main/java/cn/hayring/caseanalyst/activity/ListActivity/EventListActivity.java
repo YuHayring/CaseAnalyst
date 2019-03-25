@@ -1,13 +1,12 @@
 package cn.hayring.caseanalyst.activity.ListActivity;
 
-import android.os.Bundle;
-
-import java.util.ArrayList;
-
 import cn.hayring.caseanalyst.activity.ValueSetter.EventValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Event;
 
+/***
+ * 事件列表Activity
+ */
 public class EventListActivity extends MyListActivity<Event> {
 
     /***
@@ -26,16 +25,6 @@ public class EventListActivity extends MyListActivity<Event> {
     @Override
     public Class getValueSetterClass() {
         return EventValueSetter.class;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
-        /*requestInfo = getIntent();
-        ArrayList<Event> activeUnits =
-                (ArrayList<Event>) requestInfo.getSerializableExtra(ValueSetter.DATA);
-        mainItemListAdapter.addAllItem(activeUnits);*/
     }
 
     /***
