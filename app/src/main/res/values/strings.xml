@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">CaseAnalyst</string>
+    <!--string name="app_name">CaseAnalyst</string-->
+    <string name="app_name">真相</string>
     <string name="head_name">Git pushed!</string>
     <string name="title_activity_main_page">MainPage</string>
     <string name="title_activity_case_list">CaseList</string>
@@ -62,5 +63,12 @@
     <string name="create_new_example">生成示例</string>
 
     <string name="person_graph_enter">查看人物关系图</string>
+
+    <string name="is_short_time_case">是否为短期案件</string>
+
+    <string name="create_time">产生日期</string>
+
+    <string name="date">日期</string>
+    <string name="time">时间</string>
 
 </resources>

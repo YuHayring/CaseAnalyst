@@ -93,11 +93,6 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
         //注册点击监听器
         holder.itemView.setOnClickListener(new EditItemListener());
-
-
-        List<String> stringList = new ArrayList<String>();
-        stringList.add("删除");
-
         holder.itemView.setOnLongClickListener(new DeleteDialogListener());
     }
 
@@ -132,7 +127,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
             //itemTransporter.putExtra(ValueSetter.POSITION, position);
 
             //启动ValueSetter
-            mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUESTCODE);
+            mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUEST_CODE);
 
         }
     }

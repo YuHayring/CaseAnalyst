@@ -19,11 +19,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EvidenceValueSetter extends ValueSetter {
@@ -64,6 +67,22 @@ public class EvidenceValueSetter extends ValueSetter {
      */
     TextView orgThingRelationshipEnter;
 
+    /***
+     * 产生时间临时变量
+     */
+    Calendar time;
+
+    /***
+     * 产生日期显示设置
+     *
+     */
+    TextView createDate;
+
+    /***
+     * 产生时间显示设置
+     */
+    TextView createTime;
+
     @Override
     protected void initView() {
         super.initView();
@@ -77,6 +96,11 @@ public class EvidenceValueSetter extends ValueSetter {
         countInputer = findViewById(R.id.evidence_count_inputer);
         saveButton = findViewById(R.id.evidence_save_button);
         headImage = findViewById(R.id.evidence_image);
+        createDate = findViewById(R.id.create_date);
+        createTime = findViewById(R.id.create_time);
+
+
+
 
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
             //evidenceInstance = (Evidence) requestInfo.getSerializableExtra(DATA);
@@ -89,6 +113,16 @@ public class EvidenceValueSetter extends ValueSetter {
             if (count != null) {
                 countInputer.setText(count.toString());
             }
+            if ((time = evidenceInstance.getCreatedTime()) != null) {
+                if (!caseInstance.isShortTimeCase()) {
+                    createDate.setText(dateFormatter.format(time.getTime()));
+                } else {
+                    createDate.setText("第" + time.get(Calendar.DATE) + "天");
+                }
+                createTime.setText(timeFormatter.format(time.getTime()));
+            } else {
+                time = new GregorianCalendar(1970, 1, 1, 0, 0);
+            }
 
             //判断是否有头像并加载
             if (evidenceInstance.getImageIndex() != null) {
@@ -100,8 +134,12 @@ public class EvidenceValueSetter extends ValueSetter {
                     e.printStackTrace();
                 }
             }
+
+
         } else {
             evidenceInstance = caseInstance.createEvidence();
+            //2000-1-1 00:00
+            time = new GregorianCalendar(2000, 1, 1, 0, 0);
         }
         manThingRelationshipEnter = sonView.findViewById(R.id.man_thing_relationship_text_view);
         orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
@@ -117,6 +155,63 @@ public class EvidenceValueSetter extends ValueSetter {
             setResult(Activity.RESULT_OK, importIntent);
             //importIntent.putExtra("return-data", true);
             startActivityForResult(importIntent, 2); //对应onActivityResult()
+        });
+
+        if (caseInstance.isShortTimeCase()) {
+            createDate.setOnClickListener(view -> {
+                BasisTimesUtils.showDatePickerDialog(EvidenceValueSetter.this, true, "", 2000, 1, 1,
+                        new BasisTimesUtils.OnDatePickerListener() {
+
+                            @Override
+                            public void onConfirm(int year, int month, int dayOfMonth) {
+                                if (time.get(Calendar.YEAR) == 1970) {
+                                    time.setTimeInMillis(946656000000l);
+                                }
+                                time.set(Calendar.DATE, dayOfMonth);
+                                createDate.setText("第" + dayOfMonth + "天");
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        }).setOnlyDay();
+            });
+        } else {
+            createDate.setOnClickListener(view -> {
+                BasisTimesUtils.showDatePickerDialog(EvidenceValueSetter.this, true, "", 2000, 1, 1,
+                        new BasisTimesUtils.OnDatePickerListener() {
+
+                            @Override
+                            public void onConfirm(int year, int month, int dayOfMonth) {
+                                time.set(Calendar.YEAR, year);
+                                time.set(Calendar.MONTH, month);
+                                time.set(Calendar.DATE, dayOfMonth);
+                                createDate.setText(dateFormatter.format(time.getTime()));
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+            });
+        }
+        createTime.setOnClickListener(view -> {
+
+            BasisTimesUtils.showTimerPickerDialog(this, true, "请选择时间", 00, 00, true, new BasisTimesUtils.OnTimerPickerListener() {
+                @Override
+                public void onConfirm(int hourOfDay, int minute) {
+                    if (time.get(Calendar.YEAR) == 1970) {
+                        time.setTimeInMillis(946656000000l);
+                    }
+                    time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    time.set(Calendar.MINUTE, minute);
+                    createTime.setText(timeFormatter.format(time.getTime()));
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            });
         });
 
         View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
@@ -164,6 +259,9 @@ public class EvidenceValueSetter extends ValueSetter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            if (time.get(Calendar.YEAR) != 1970) {
+                evidenceInstance.setCreatedTime(time);
             }
 
             requestInfo.putExtra(CHANGED, true);

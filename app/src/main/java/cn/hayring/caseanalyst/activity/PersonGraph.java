@@ -2,7 +2,6 @@ package cn.hayring.caseanalyst.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -72,7 +71,7 @@ public class PersonGraph extends AppCompatActivity {
         int width = metric.widthPixels;     // 屏幕宽度（像素）
         frameLayout = (FrameLayout) findViewById(R.id.person_graph_layout);
         custumViewGroup = new CustumViewGroup(PersonGraph.this, width);
-        custumViewGroup.setBackgroundColor(Color.parseColor("#888888"));
+        //custumViewGroup.setBackgroundColor(Color.parseColor("#888888"));
         /*for (int i = 0; i <20; i++) {
          *//*
             button=new Button(this);
@@ -141,13 +140,12 @@ public class PersonGraph extends AppCompatActivity {
         int[] loc = new int[2];
         linearLayout.getLocationInWindow(loc);
         topHeight = loc[1];
-        //DashArrow dashArrow = new DashArrow(MainActivity.this,cicle1,cicle2,loc[1]);
         //constraintLayout.addView(dashArrow);
         //图的遍历算法类
         GraphLoopTest tool = new GraphLoopTest(persons);
         //广度优先画图
         tool.BFSSearch(persons.get(0));
-
+        custumViewGroup.bringToFront();
     }
 
     /**

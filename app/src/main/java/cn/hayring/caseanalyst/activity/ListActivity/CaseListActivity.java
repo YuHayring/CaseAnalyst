@@ -126,7 +126,11 @@ public class CaseListActivity extends MyListActivity<Case> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save_all_case_button) {
-            new SaveThread().start();
+            //new SaveThread().start();
+            Message msg = saveHandler.obtainMessage();
+            msg.obj = mainItemListAdapter.getItems();
+            msg.arg1 = mainItemListAdapter.getItemCount();
+            saveHandler.sendMessage(msg);
         } else if (item.getItemId() == R.id.create_example_button) {
             Case caseInstance = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
             mainItemListAdapter.addItem(caseInstance);
@@ -141,7 +145,11 @@ public class CaseListActivity extends MyListActivity<Case> {
      */
     @Override
     public void finish() {
-        new SaveThread().start();
+        //new SaveThread().start();
+        Message msg = saveHandler.obtainMessage();
+        msg.obj = mainItemListAdapter.getItems();
+        msg.arg1 = mainItemListAdapter.getItemCount();
+        saveHandler.sendMessage(msg);
         super.finish();
     }
 
@@ -149,7 +157,7 @@ public class CaseListActivity extends MyListActivity<Case> {
     /***
      * 保存案件线程
      */
-    class SaveThread extends Thread {
+/*    class SaveThread extends Thread {
         @Override
         public void run() {
             //发送消息
@@ -158,7 +166,7 @@ public class CaseListActivity extends MyListActivity<Case> {
             msg.arg1 = mainItemListAdapter.getItemCount();
             saveHandler.sendMessage(msg);
         }
-    }
+    }*/
 
     //保存Handler
     class SaveHandler extends Handler {

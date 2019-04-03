@@ -14,8 +14,6 @@ public class Relationship<T extends Relationable, E extends Relationable> implem
     public static final int ORG_EVIDENCE = 5;
     public static final int ORG_EVENT = 6;
 
-    protected Relationship() {
-    }
 
     protected Relationship(int type) {
         this.type = type;
@@ -110,4 +108,123 @@ public class Relationship<T extends Relationable, E extends Relationable> implem
     public void setType(int type) {
         this.type = type;
     }
+
+    public void removeSelf() {
+        switch (type) {
+            case MAN_MAN: {
+                ((Person) itemT).getManManRelationships().remove(this);
+                ((Person) itemE).getManManRelationships().remove(this);
+            }
+            break;
+            case MAN_ORG: {
+                ((Person) itemT).getManOrgRelationships().remove(this);
+                ((Organization) itemE).getManOrgRelationships().remove(this);
+            }
+            break;
+            case ORG_ORG: {
+                ((Organization) itemT).getOrgOrgRelationships().remove(this);
+                ((Organization) itemE).getOrgOrgRelationships().remove(this);
+            }
+            break;
+            case MAN_EVIDENCE: {
+                ((Person) itemT).getManThingRelationships().remove(this);
+                ((Evidence) itemE).getManThingRelationships().remove(this);
+            }
+            break;
+            case MAN_EVENT: {
+                ((Person) itemT).getManEventRelationships().remove(this);
+                ((Event) itemE).getManEventRelationships().remove(this);
+            }
+            break;
+            case ORG_EVIDENCE: {
+                ((Organization) itemT).getOrgThingRelationships().remove(this);
+                ((Evidence) itemE).getOrgThingRelationships().remove(this);
+            }
+            break;
+            case ORG_EVENT: {
+                ((Organization) itemT).getOrgEventRelationships().remove(this);
+                ((Event) itemE).getOrgEventRelationships().remove(this);
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("ERROR Relationship type");
+        }
+    }
+
+    public static Relationship<Person, Person> createManManRelationship(Person itemT, String key, Person itemE) {
+        Relationship relationship = new Relationship(MAN_MAN);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getManManRelationships().add(relationship);
+        itemE.getManManRelationships().add(relationship);
+        return relationship;
+    }
+
+
+    public static Relationship<Person, Organization> createManOrgRelationship(Person itemT, String key, Organization itemE) {
+        Relationship relationship = new Relationship(MAN_ORG);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getManOrgRelationships().add(relationship);
+        itemE.getManOrgRelationships().add(relationship);
+        return relationship;
+    }
+
+    public static Relationship<Organization, Organization> createOrgOrgRelationship(Organization itemT, String key, Organization itemE) {
+        Relationship relationship = new Relationship(ORG_ORG);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getOrgOrgRelationships().add(relationship);
+        itemE.getOrgOrgRelationships().add(relationship);
+        return relationship;
+    }
+
+    public static Relationship<Person, Event> createManEventRelationship(Person itemT, String key, Event itemE) {
+        Relationship relationship = new Relationship(MAN_EVENT);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getManEventRelationships().add(relationship);
+        itemE.getManEventRelationships().add(relationship);
+        return relationship;
+    }
+
+    public static Relationship<Person, Evidence> createManThingRelationship(Person itemT, String key, Evidence itemE) {
+        Relationship relationship = new Relationship(MAN_EVIDENCE);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getManThingRelationships().add(relationship);
+        itemE.getManThingRelationships().add(relationship);
+        return relationship;
+    }
+
+    public static Relationship<Organization, Evidence> createOrgThingRelationship(Organization itemT, String key, Evidence itemE) {
+        Relationship relationship = new Relationship(ORG_EVIDENCE);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getOrgThingRelationships().add(relationship);
+        itemE.getOrgThingRelationships().add(relationship);
+        return relationship;
+    }
+
+    public static Relationship<Organization, Event> createOrgEventRelationship(Organization itemT, String key, Event itemE) {
+        Relationship relationship = new Relationship(ORG_EVENT);
+        relationship.itemT = itemT;
+        relationship.itemE = itemE;
+        relationship.key = key;
+        itemT.getOrgEventRelationships().add(relationship);
+        itemE.getOrgEventRelationships().add(relationship);
+        return relationship;
+    }
+
+
 }
+
+
+
+

@@ -5,12 +5,10 @@ import org.junit.Test;
 import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.pojo.Event;
 import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.ManEventRelationship;
-import cn.hayring.caseanalyst.pojo.ManManRelationship;
-import cn.hayring.caseanalyst.pojo.ManThingRelationship;
 import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.pojo.Relationship;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -30,8 +28,6 @@ public class ExampleUnitTest {
         //定义案件
         mainCase.setName("名侦探柯南");
         mainCase.setInfo("追查黑衣组织测试数据结构");
-        //Time time = new Time(new Date("2000-01-01 00:00:00"),new Date("2000-06-30 23:59:59"));
-        //mainCase.setTime(time);
 
         //定义人物
         Person shiJi, gin;
@@ -43,20 +39,18 @@ public class ExampleUnitTest {
 
         //事件发生
         Event mainEvent = mainCase.createEvent("新一服用APTX4869", "新一被琴酒灌下APTX4869");
-        //Time time2 = new Time(new Date("2000-01-01 18:00:00"),new Date("2000-01-01 18:30:00"));
-        //mainEvent.setTime(time2);
         //人与事件建立关系
-        new ManEventRelationship(shiJi, mainEvent, "服药的人");
-        new ManEventRelationship(gin, mainEvent, "灌药的人");
+        Relationship.createManEventRelationship(shiJi, "服药的人", mainEvent);
+        Relationship.createManEventRelationship(gin, "灌药的人", mainEvent);
 
 
         //人与人建立关系
-        new ManManRelationship(shiJi, "敌对关系", gin, false);
+        Relationship.createManManRelationship(shiJi, "敌对关系", gin);
 
 
         Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
-        new ManThingRelationship(shiJi, APTX4869, "被服用");
-        new ManThingRelationship(gin, APTX4869, "凶器使用者");
+        Relationship.createManThingRelationship(shiJi, "被服用", APTX4869);
+        Relationship.createManThingRelationship(gin, "凶器使用者", APTX4869);
 
         println("OK");
         return mainCase;

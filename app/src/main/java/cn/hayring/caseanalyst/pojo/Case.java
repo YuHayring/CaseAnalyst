@@ -19,12 +19,6 @@ public class Case implements Listable {
     protected String info;
 
     /***
-     * 案件发生的时间
-     * Time when case happened;
-     */
-    protected Time time;
-
-    /***
      * 证物集合
      */
     protected ArrayList<Evidence> evidences;
@@ -43,6 +37,12 @@ public class Case implements Listable {
      * 组织集合
      */
     protected ArrayList<Organization> organizations;
+
+
+    /***
+     * 是否是短期案件
+     */
+    boolean isShortTimeCase = true;
 
     public Case() {
         organizations = new ArrayList<Organization>();
@@ -181,14 +181,6 @@ public class Case implements Listable {
         this.name = name;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
     public String getInfo() {
         return info;
     }
@@ -229,5 +221,13 @@ public class Case implements Listable {
 
     public void setOrganizations(ArrayList<Organization> organizations) {
         this.organizations = organizations;
+    }
+
+    public boolean isShortTimeCase() {
+        return isShortTimeCase;
+    }
+
+    public void setShortTimeCase(boolean shortTimeCase) {
+        isShortTimeCase = shortTimeCase;
     }
 }

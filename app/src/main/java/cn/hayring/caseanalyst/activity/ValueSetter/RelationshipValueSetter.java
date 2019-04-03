@@ -111,9 +111,14 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
         //connector = (Listable) requestInfo.getSerializableExtra(ValueSetter.CONNECTOR);
         connector = Pointer.getConnector();
 
+
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
             //relationshipInstance = (Relationship) requestInfo.getSerializableExtra(DATA);
             relationshipInstance = (Relationship) Pointer.getPoint();
+
+            isEConnector = relationshipInstance.getItemE().equals(connector);
+            itemT = relationshipInstance.getItemT();
+            itemE = relationshipInstance.getItemE();
 
             tTextView.setText(relationshipInstance.getItemT().getName());
             eTextView.setText(relationshipInstance.getItemE().getName());
@@ -163,6 +168,30 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
                 isEConnector = true;
                 itemE = (E) connector;
                 eTextView.setText(connector.getName());
+            }
+
+            if (!(connector instanceof Event)) {
+                if (isEConnector) {
+                    if (itemE.getImageIndex() != null) {
+                        try {
+                            FileInputStream headIS = openFileInput(itemE.getImageIndex() + ".jpg");
+                            Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
+                            imageViewE.setImageBitmap(headBitmap);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    if (itemT.getImageIndex() != null) {
+                        try {
+                            FileInputStream headIS = openFileInput(itemT.getImageIndex() + ".jpg");
+                            Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
+                            imageViewT.setImageBitmap(headBitmap);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 

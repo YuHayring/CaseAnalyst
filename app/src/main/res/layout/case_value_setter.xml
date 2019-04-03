@@ -43,6 +43,18 @@
         </android.support.design.widget.TextInputLayout>
 
         <TextView
+            android:id="@+id/label_is_short_time_case"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/is_short_time_case" />
+
+        <Spinner
+            android:id="@+id/short_time_case_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/boolean_not_null" />
+
+        <TextView
             android:id="@+id/person_list_enter"
             android:layout_width="match_parent"
             android:gravity="center"

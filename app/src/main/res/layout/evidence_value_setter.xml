@@ -65,13 +65,35 @@
 
 
         <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/create_time" />
+
+        <TextView
+            android:id="@+id/create_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/create_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/time"
+            android:textSize="25dp" />
+
+        <TextView
             android:id="@+id/man_thing_relationship_text_view"
             android:layout_width="match_parent"
-            android:gravity="center"
             android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/man_thing_relationship" />
-
+            android:gravity="center"
+            android:text="@string/man_thing_relationship"
+            android:textSize="36sp" />
 
         <TextView
             android:id="@+id/org_thing_relationship_text_view"

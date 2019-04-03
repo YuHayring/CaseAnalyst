@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class CaseValueSetter extends ValueSetter {
+
 
     /***
      * 相关人士列表入口
@@ -40,6 +42,11 @@ public class CaseValueSetter extends ValueSetter {
     TextView evidenceEnter;
 
     /***
+     * 短期案件设置器
+     */
+    Spinner shortTimeCaseSetter;
+
+    /***
      * 加载页面
      */
     @Override
@@ -50,18 +57,26 @@ public class CaseValueSetter extends ValueSetter {
         sonView = (ScrollView) inflater.inflate(R.layout.case_value_setter, null);
         rootLayout.addView(sonView);
 
+
         //注册控件,信息显示
         nameInputer = findViewById(R.id.case_name_inputer);
         infoInputer = findViewById(R.id.case_info_inputer);
         saveButton = findViewById(R.id.case_save_button);
+        shortTimeCaseSetter = findViewById(R.id.short_time_case_switcher);
+
+
+
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
 
             //caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
+
+            //ValueSetter静态变量，全局可用
             caseInstance = (Case) Pointer.getPoint();
 
 
             nameInputer.setText(caseInstance.getName());
             infoInputer.setText(caseInstance.getInfo());
+            shortTimeCaseSetter.setSelection(caseInstance.isShortTimeCase() ? 0 : 1);
         } else {
             caseInstance = new Case();
         }
@@ -89,6 +104,12 @@ public class CaseValueSetter extends ValueSetter {
         void editReaction() {
             caseInstance.setName(nameInputer.getText().toString());
             caseInstance.setInfo(infoInputer.getText().toString());
+            int index = shortTimeCaseSetter.getSelectedItemPosition();
+            if (index == 0) {
+                caseInstance.setShortTimeCase(true);
+            } else if (index == 1) {
+                caseInstance.setShortTimeCase(false);
+            }
             //requestInfo.putExtra(DATA, caseInstance);
             requestInfo.putExtra(CHANGED, true);
             if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {

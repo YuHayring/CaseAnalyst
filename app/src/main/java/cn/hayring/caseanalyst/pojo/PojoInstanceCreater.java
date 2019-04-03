@@ -11,8 +11,6 @@ public class PojoInstanceCreater {
         //定义案件
         caseInstance.setName("名侦探柯南");
         caseInstance.setInfo("追查黑衣组织测试数据结构");
-        //Time time = new Time(new Date("2000-01-01 00:00:00"),new Date("2000-06-30 23:59:59"));
-        //mainCase.setTime(time);
 
         //定义人物
         Person shiJi, gin;
@@ -29,9 +27,9 @@ public class PojoInstanceCreater {
         akai.setAge(32);
         akai.setGender(Person.MALE);
         caseInstance.getPersons().add(akai);
-        new ManManRelationship(shiJi, "追踪", gin, true);
-        new ManManRelationship(shiJi, "伙伴", akai, false);
-        new ManManRelationship(gin, "敌人", akai, false);
+        Relationship.createManManRelationship(shiJi, "追踪", gin);
+        Relationship.createManManRelationship(shiJi, "伙伴", akai);
+        Relationship.createManManRelationship(gin, "敌人", akai);
 
 
 
@@ -47,11 +45,9 @@ public class PojoInstanceCreater {
         //事件发生
         Event mainEvent = caseInstance.createEvent("新一服用APTX4869", "新一被琴酒灌下APTX4869");
         caseInstance.getEvents().add(mainEvent);
-        //Time time2 = new Time(new Date("2000-01-01 18:00:00"),new Date("2000-01-01 18:30:00"));
-        //mainEvent.setTime(time2);
         //人与事件建立关系
-        new ManEventRelationship(shiJi, mainEvent, "服药的人");
-        new ManEventRelationship(gin, mainEvent, "灌药的人");
+        Relationship.createManEventRelationship(shiJi, "服药的人", mainEvent);
+        Relationship.createManEventRelationship(gin, "灌药的人", mainEvent);
         //new orgEventRelationship(blackOrg, mainEvent, "幕后组织");
         Relationship oE = new Relationship(Relationship.ORG_EVENT);
         oE.setItemT(blackOrg);
@@ -61,15 +57,12 @@ public class PojoInstanceCreater {
         mainEvent.regRelationship(oE);
 
 
-        //人与人建立关系
-        new ManManRelationship(shiJi, "敌对关系", gin, false);
-
 
         Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
         mainEvent.getEvidences().add(APTX4869);
-        new ManThingRelationship(shiJi, APTX4869, "被服用");
-        new ManThingRelationship(gin, APTX4869, "凶器使用者");
-        //new ManThingRelationship(blackOrg, APTX4869, "开发组织");
+        Relationship.createManThingRelationship(shiJi, "被服用", APTX4869);
+        Relationship.createManThingRelationship(gin, "凶器使用者", APTX4869);
+        Relationship.createOrgThingRelationship(blackOrg, "开发组织", APTX4869);
 
         Relationship oT = new Relationship(Relationship.ORG_EVIDENCE);
         oT.setItemT(blackOrg);

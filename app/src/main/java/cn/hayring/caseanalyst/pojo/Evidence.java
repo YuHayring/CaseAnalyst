@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /***
  * 物件，痕迹，证物
@@ -22,7 +23,7 @@ public class Evidence implements Relationable {
     /***
      * 证物产生的时间
      */
-    protected Time createdTime;
+    protected Calendar createdTime;
 
     /***
      * 数量
@@ -89,11 +90,11 @@ public class Evidence implements Relationable {
         this.name = name;
     }
 
-    public Time getCreatedTime() {
+    public Calendar getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Time createdTime) {
+    public void setCreatedTime(Calendar createdTime) {
         this.createdTime = createdTime;
     }
 

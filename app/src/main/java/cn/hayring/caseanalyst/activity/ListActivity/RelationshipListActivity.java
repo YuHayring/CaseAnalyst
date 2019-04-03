@@ -178,4 +178,8 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
     public Relationable getConnector() {
         return connector;
     }
+
+    public RelationshipListAdapter<T> getMainRelationshipListAdapter() {
+        return mainRelationshipListAdapter;
+    }
 }

@@ -18,20 +18,16 @@ public class CustumViewGroup extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        System.out.println("-onMeasure--" + getWidth());
-
         //将所有的子View进行测量，这会触发每个子View的onMeasure函数
         //注意要与measureChild区分，measureChild是对单个view进行测量
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        //int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        //int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        //int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        int childCount = getChildCount();
-
-        if (childCount == 0) {//如果没有子View,当前ViewGroup没有存在的意义，不用占用空间
+        if (getChildCount() == 0) {//如果没有子View,当前ViewGroup没有存在的意义，不用占用空间
             setMeasuredDimension(0, 0);
         } else {
             if (heightMode == MeasureSpec.AT_MOST) {//如果只有高度是包裹内容
@@ -54,7 +50,7 @@ public class CustumViewGroup extends ViewGroup {
             View child = getChildAt(i);
             int height = child.getMeasuredHeight();
             int width = child.getMeasuredWidth();
-            System.out.println("-onLayout--。。》" + width);
+            //System.out.println("-onLayout--。。》" + width);
             if (widthPixels - curWidth > width) {//计算行的剩余宽度判断是否换行
                 if (isLineFead) {
                     curHeight = heights;
@@ -106,8 +102,6 @@ public class CustumViewGroup extends ViewGroup {
                 isFirst = false;
                 widthM = heights + height;
             }
-
-
         }
         return widthM;
     }

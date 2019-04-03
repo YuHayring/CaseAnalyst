@@ -49,11 +49,12 @@ public class Splash extends AppCompatActivity {
             }
         };*/
         handler = new ReadHandler();
-        new ReadThread().start();
+        handler.sendEmptyMessage(0);
+        //new ReadThread().start();
     }
 
 
-    class ReadThread extends Thread {
+/*    class ReadThread extends Thread {
         @Override
         public void run() {
             Message msg = handler.obtainMessage();
@@ -70,7 +71,7 @@ public class Splash extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
-    }
+    }*/
 
     class ReadHandler extends Handler {
         @Override

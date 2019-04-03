@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /***
  * 事件
@@ -11,11 +12,6 @@ public class Event implements Relationable {
      * 事件名称
      */
     protected String name;
-
-    /***
-     * 事件发生时间
-     */
-    protected Time time;
 
     /***
      * 事件与人关系集合
@@ -30,7 +26,7 @@ public class Event implements Relationable {
     /***
      * 证物与能动关系集合
      */
-    protected ArrayList<ManThingRelationship> manThingRelationships;
+    protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
 
     /***
      * 事件所参与的证物的集合-----是否存在有待考量
@@ -69,7 +65,7 @@ public class Event implements Relationable {
     protected Event() {
         manEventRelationships = new ArrayList<Relationship<Person, Event>>();
         orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
-        manThingRelationships = new ArrayList<ManThingRelationship>();
+        manThingRelationships = new ArrayList<Relationship<Person, Evidence>>();
         evidences = new ArrayList<Evidence>();
         factors = new ArrayList<Event>();
         results = new ArrayList<Event>();
@@ -126,19 +122,11 @@ public class Event implements Relationable {
         this.name = name;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    public ArrayList<ManThingRelationship> getManThingRelationships() {
+    public ArrayList<Relationship<Person, Evidence>> getManThingRelationships() {
         return manThingRelationships;
     }
 
-    public void setManThingRelationships(ArrayList<ManThingRelationship> manThingRelationships) {
+    public void setManThingRelationships(ArrayList<Relationship<Person, Evidence>> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
     }
 
@@ -232,4 +220,16 @@ public class Event implements Relationable {
     public Integer getImageIndex() {
         return null;
     }
+
+
+    /***
+     * 时间轴
+     */
+    protected LinkedList<EventClip> timeAxis;
+
+    public void addEventClip(EventClip eventClip) {
+        timeAxis.add(eventClip);
+    }
+
+
 }

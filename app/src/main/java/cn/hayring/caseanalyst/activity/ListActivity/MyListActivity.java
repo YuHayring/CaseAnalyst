@@ -43,7 +43,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     protected Intent requestInfo;
 
 
-    public static final int REQUESTCODE = 1;
+    public static final int REQUEST_CODE = 1;
 
 
     Toolbar toolbar;
@@ -129,7 +129,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
             //行为:新建数据行为
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, true);
             //启动新Activity
-            startActivityForResult(itemTransporter, REQUESTCODE);
+            startActivityForResult(itemTransporter, REQUEST_CODE);
 
         }
     }

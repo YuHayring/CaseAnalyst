@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -44,6 +45,9 @@ public class ValueSetter extends AppCompatActivity {
     public static final String FEMALE = "女";
     public static final String TRUE = "是";
     public static final String FALSE = "否";
+
+    public static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
 
     public static Random random = new Random();
