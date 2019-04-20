@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+        <!--android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -23,14 +23,14 @@
                 android:maxLines="1"
                 android:singleLine="true" />
 
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout-->
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/event_info_inputer"
+                android:id="@+id/event_clip_info_inputer"
                 android:layout_width="match_parent"
                 android:layout_height="116dp"
                 android:hint="@string/event_info"
@@ -39,32 +39,30 @@
         </android.support.design.widget.TextInputLayout>
 
         <TextView
-            android:id="@+id/man_event_relationship_text_view"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/man_event_relationship" />
-
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/create_time" />
 
         <TextView
-            android:id="@+id/org_event_relationship_text_view"
+            android:id="@+id/happen_date"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/org_event_relationship" />
+            android:text="@string/date"
+            android:textSize="25dp" />
 
         <TextView
-            android:id="@+id/time_axis_enter"
+            android:id="@+id/happen_time"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_height="58sp"
-            android:textSize="36sp"
-            android:text="@string/time_axis_enter" />
+            android:text="@string/time"
+            android:textSize="25dp" />
 
         <Button
-            android:id="@+id/event_save_button"
+            android:id="@+id/event_clip_save_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

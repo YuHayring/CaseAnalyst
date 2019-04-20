@@ -134,6 +134,20 @@ public class Case implements Listable {
         return evidence;
     }
 
+
+    /***
+     * 新建并注册证据
+     * @param name
+     * @param info
+     * @return
+     */
+    public Evidence createEvidence(String name, String info) {
+        Evidence evidence = new Evidence(name, info);
+        //evidences.add(evidence);
+        evidences.add(evidence);
+        return evidence;
+    }
+
     /***
      * 显示名字
      * @return it's name

@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.activity.adapter;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,8 @@ import java.util.List;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
+import cn.hayring.caseanalyst.listener.RecyclerItemDeleteDialogListener;
+import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Listable;
 import cn.hayring.caseanalyst.pojo.Organization;
@@ -93,7 +96,8 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
         //注册点击监听器
         holder.itemView.setOnClickListener(new EditItemListener());
-        holder.itemView.setOnLongClickListener(new DeleteDialogListener());
+        //holder.itemView.setOnLongClickListener(new DeleteDialogListener());
+        holder.itemView.setOnLongClickListener(new deleteItemListener(mActivity));
     }
 
 
@@ -184,6 +188,33 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
                 }
             }
             deleteItem(position);
+        }
+    }
+
+
+    class deleteItemListener extends RecyclerItemDeleteDialogListener {
+
+        public deleteItemListener(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void delete(int index) {
+            Class clazz = mActivity.getTClass();
+
+            //若删除的是的有头像的类,删除其图片
+            if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
+                Relationable instance = (Relationable) items.get(index);
+                if (instance.getImageIndex() != null) {
+                    mActivity.deleteFile(instance.getImageIndex() + ".jpg");
+                }
+            }
+            Listable listable = items.get(index);
+            if (!(listable instanceof Case)) {
+                Relationable relationable = (Relationable) listable;
+                relationable.removeSelf();
+            }
+            deleteItem(index);
         }
     }
 

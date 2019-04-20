@@ -111,6 +111,12 @@ public class Evidence implements Relationable {
         return imageIndex;
     }
 
+    @Override
+    public void removeSelf() {
+        Relationship.removeAllRelationship(manThingRelationships);
+        Relationship.removeAllRelationship(orgThingRelationships);
+    }
+
     public void setImageIndex(Integer imageIndex) {
         this.imageIndex = imageIndex;
     }

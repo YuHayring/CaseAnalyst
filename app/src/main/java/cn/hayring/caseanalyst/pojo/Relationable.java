@@ -12,4 +12,9 @@ public interface Relationable extends Listable {
      * 返回头像id
      */
     public Integer getImageIndex();
+
+    /***
+     * 删除时解除关系
+     */
+    public void removeSelf();
 }

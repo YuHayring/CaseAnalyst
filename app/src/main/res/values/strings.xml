@@ -59,10 +59,13 @@
     <string name="org_thing_relationship">组织-物 关系</string>
     <string name="org_event_relationship">组织-事 关系</string>
 
+    <string name="time_axis_enter">时间线入口</string>
+
 
     <string name="create_new_example">生成示例</string>
 
     <string name="person_graph_enter">查看人物关系图</string>
+    <string name="show_time_axis">查看时间线</string>
 
     <string name="is_short_time_case">是否为短期案件</string>
 
@@ -70,5 +73,7 @@
 
     <string name="date">日期</string>
     <string name="time">时间</string>
+    <string name="action">行为</string>
+
 
 </resources>

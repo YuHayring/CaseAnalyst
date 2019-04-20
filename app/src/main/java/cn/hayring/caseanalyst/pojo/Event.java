@@ -1,7 +1,6 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /***
  * 事件
@@ -26,12 +25,12 @@ public class Event implements Relationable {
     /***
      * 证物与能动关系集合
      */
-    protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
+    //protected ArrayList<Relationship<Person, Evidence>> manThingRelationships;
 
     /***
      * 事件所参与的证物的集合-----是否存在有待考量
      */
-    protected ArrayList<Evidence> evidences;
+    //protected ArrayList<Evidence> evidences;
 
     /***
      * 事件信息
@@ -65,10 +64,11 @@ public class Event implements Relationable {
     protected Event() {
         manEventRelationships = new ArrayList<Relationship<Person, Event>>();
         orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
-        manThingRelationships = new ArrayList<Relationship<Person, Evidence>>();
-        evidences = new ArrayList<Evidence>();
+        //manThingRelationships = new ArrayList<Relationship<Person, Evidence>>();
+        //evidences = new ArrayList<Evidence>();
         factors = new ArrayList<Event>();
         results = new ArrayList<Event>();
+        timeAxis = new ArrayList<EventClip>();
     }
 
     /***
@@ -88,21 +88,21 @@ public class Event implements Relationable {
      * @param info
      * @return
      */
-    public Evidence createEvidence(String name, String info) {
+    /*public Evidence createEvidence(String name, String info) {
         Evidence evidence = new Evidence(name, info);
-        evidences.add(evidence);
+        //evidences.add(evidence);
         parentCase.getEvidences().add(evidence);
         return evidence;
-    }
+    }*/
 
     /***
      * 添加证据
      * @param evidence
      */
-    public void addEvidence(Evidence evidence) {
-        evidences.add(evidence);
+    /*public void addEvidence(Evidence evidence) {
+        //evidences.add(evidence);
         evidence.getEvents().add(this);
-    }
+    }*/
 
     /***
      * 显示名字
@@ -122,22 +122,22 @@ public class Event implements Relationable {
         this.name = name;
     }
 
-    public ArrayList<Relationship<Person, Evidence>> getManThingRelationships() {
+/*    public ArrayList<Relationship<Person, Evidence>> getManThingRelationships() {
         return manThingRelationships;
     }
 
     public void setManThingRelationships(ArrayList<Relationship<Person, Evidence>> manThingRelationships) {
         this.manThingRelationships = manThingRelationships;
-    }
+    }*/
 
-
+/*
     public ArrayList<Evidence> getEvidences() {
         return evidences;
     }
 
     public void setEvidences(ArrayList<Evidence> evidences) {
         this.evidences = evidences;
-    }
+    }*/
 
     public String getInfo() {
         return info;
@@ -221,15 +221,26 @@ public class Event implements Relationable {
         return null;
     }
 
+    /***
+     * 删除时调用
+     */
+    @Override
+    public void removeSelf() {
+        Relationship.removeAllRelationship(manEventRelationships);
+        Relationship.removeAllRelationship(orgEventRelationships);
+    }
+
 
     /***
      * 时间轴
      */
-    protected LinkedList<EventClip> timeAxis;
+    protected ArrayList<EventClip> timeAxis;
 
     public void addEventClip(EventClip eventClip) {
         timeAxis.add(eventClip);
     }
 
-
+    public ArrayList<EventClip> getTimeAxis() {
+        return timeAxis;
+    }
 }

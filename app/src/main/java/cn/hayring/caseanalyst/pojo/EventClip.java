@@ -1,25 +1,27 @@
 package cn.hayring.caseanalyst.pojo;
 
+import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /***
  * 事件片段
  */
-public class EventClip {
+public class EventClip implements Serializable {
     /***
      * 参与者
      */
-    protected Person person;
+    //protected Person person;
 
     /***
      * 证物
      */
-    protected Evidence evidence;
+    //protected Evidence evidence;
 
     /***
      * 行为
      */
-    protected String action;
+    //protected String action;
 
     /***
      * 信息
@@ -30,7 +32,7 @@ public class EventClip {
      * 具体时刻
      */
     protected Calendar timePoint;
-
+/*
     public Person getPerson() {
         return person;
     }
@@ -53,7 +55,7 @@ public class EventClip {
 
     public void setAction(String action) {
         this.action = action;
-    }
+    }*/
 
     public String getInfo() {
         return info;
@@ -69,5 +71,12 @@ public class EventClip {
 
     public void setTimePoint(Calendar timePoint) {
         this.timePoint = timePoint;
+    }
+
+
+    public EventClip() {
+        this.timePoint = new GregorianCalendar(0, 0, 0);
+        {
+        }
     }
 }

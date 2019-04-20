@@ -264,7 +264,7 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
                 }
                 break;
                 default:
-                    throw new IllegalArgumentException("Error relationshipType");
+                    throw new IllegalArgumentException("Error relationshipType or null pointer object");
             }
 
 

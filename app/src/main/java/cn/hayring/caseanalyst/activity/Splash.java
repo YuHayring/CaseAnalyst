@@ -1,10 +1,12 @@
 package cn.hayring.caseanalyst.activity;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
@@ -89,7 +91,17 @@ public class Splash extends AppCompatActivity {
                     break;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new RuntimeException(e);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
+                    builder.setTitle("错误！");
+                    builder.setMessage("数据版本过旧，请在系统设置清除所有数据再启动。");
+                    builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    builder.show();
+                    return;
                 }
 
 
@@ -98,6 +110,7 @@ public class Splash extends AppCompatActivity {
             Intent it = new Intent(getApplicationContext(), CaseListActivity.class);
             it.putExtra("DATA", caseList);
             startActivity(it);
+            finish();
         }
     }
 

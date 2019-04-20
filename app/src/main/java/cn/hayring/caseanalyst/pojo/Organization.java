@@ -108,6 +108,14 @@ public class Organization implements Relationable {
         return imageIndex;
     }
 
+    @Override
+    public void removeSelf() {
+        Relationship.removeAllRelationship(orgEventRelationships);
+        Relationship.removeAllRelationship(orgOrgRelationships);
+        Relationship.removeAllRelationship(orgThingRelationships);
+        Relationship.removeAllRelationship(manOrgRelationships);
+    }
+
     public void setImageIndex(Integer imageIndex) {
         this.imageIndex = imageIndex;
     }

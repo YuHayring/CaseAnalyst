@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
+import cn.hayring.caseanalyst.activity.TimeAxis;
 import cn.hayring.caseanalyst.pojo.Event;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
@@ -29,6 +30,10 @@ public class EventValueSetter extends ValueSetter {
      */
     TextView manEventRelationshipEnter;
 
+    /***
+     * 时间线入口
+     */
+    TextView timeAxisEnter;
 
 
     /***
@@ -46,6 +51,8 @@ public class EventValueSetter extends ValueSetter {
         nameInputer = findViewById(R.id.event_name_inputer);
         infoInputer = findViewById(R.id.event_info_inputer);
         saveButton = findViewById(R.id.event_save_button);
+        timeAxisEnter = findViewById(R.id.time_axis_enter);
+
         if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
 
             //eventInstance = (Event) requestInfo.getSerializableExtra(DATA);
@@ -62,6 +69,7 @@ public class EventValueSetter extends ValueSetter {
 
         //设置监听器
         saveButton.setOnClickListener(new EventFinishEditListener());
+        timeAxisEnter.setOnClickListener(new TimeAxisEnterListener());
 
         View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
         orgEventRelationshipEnter.setOnClickListener(relationshipEnterListener);
@@ -111,6 +119,17 @@ public class EventValueSetter extends ValueSetter {
             //request.putExtra(ValueSetter.CONNECTOR, eventInstance);
             Pointer.setConnector(eventInstance);
             startActivityForResult(request, 1);
+        }
+    }
+
+
+    class TimeAxisEnterListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(EventValueSetter.this, TimeAxis.class);
+            Pointer.setPoint(eventInstance.getTimeAxis());
+            startActivity(intent);
         }
     }
 

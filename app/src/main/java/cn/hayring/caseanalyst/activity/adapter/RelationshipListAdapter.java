@@ -1,9 +1,8 @@
 package cn.hayring.caseanalyst.activity.adapter;
 
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.RelationshipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
+import cn.hayring.caseanalyst.listener.RecyclerItemDeleteDialogListener;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
@@ -93,7 +93,7 @@ public class RelationshipListAdapter<T extends Relationship> extends RecyclerVie
 
         //注册点击监听器
         holder.itemView.setOnClickListener(new EditRelationshipListener());
-        holder.itemView.setOnLongClickListener(new DeleteDialogListener());
+        holder.itemView.setOnLongClickListener(new DeleteRelationShipListener(mActivity));
     }
 
 
@@ -137,48 +137,15 @@ public class RelationshipListAdapter<T extends Relationship> extends RecyclerVie
     /***
      * 关系删除监听器
      */
-    class DeleteDialogListener implements View.OnLongClickListener {
+    class DeleteRelationShipListener extends RecyclerItemDeleteDialogListener {
 
-
-        @Override
-        public boolean onLongClick(View view) {
-            AlertDialog alertDialog = new AlertDialog.Builder(mActivity)
-                    .setTitle("警告！")
-                    .setMessage("是否要删除？")
-                    //.setIcon(R.mipmap.ic_launcher)
-                    .setPositiveButton("确定", new ConfirmDeleteItemListener(view))
-
-                    .setNegativeButton("取消", null)
-                    /*
-                    .setNeutralButton("普通按钮", new DialogInterface.OnClickListener() {//添加普通按钮
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(AlertDialogActivity.this, "---info----", Toast.LENGTH_SHORT).show();
-                        }
-                    })*/
-                    .create();
-            alertDialog.show();
-            return true;
-        }
-    }
-
-    /***
-     * 确认删除监听器
-     */
-    class ConfirmDeleteItemListener implements DialogInterface.OnClickListener {//添加"Yes"按钮
-        View view;
-
-        public ConfirmDeleteItemListener(View view) {
-            super();
-            this.view = view;
+        public DeleteRelationShipListener(Context context) {
+            super(context);
         }
 
         @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            int position = mActivity.getRelationshipListRecycler().getChildAdapterPosition(view);
-            Relationship relationship = (Relationship) mActivity.getMainRelationshipListAdapter().getRelationships().get(position);
-            relationship.removeSelf();
-            notifyItemRemoved(position);
+        protected void delete(int index) {
+            deleteItem(index);
         }
     }
 
@@ -222,6 +189,8 @@ public class RelationshipListAdapter<T extends Relationship> extends RecyclerVie
 
     public void deleteItem(int position) {
         relationships.remove(position);
+        Relationship relationship = (Relationship) mActivity.getMainRelationshipListAdapter().getRelationships().get(position);
+        relationship.removeSelf();
         notifyItemRemoved(position);
     }
 

@@ -10,17 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class ValueSetter extends AppCompatActivity {
+    public static final String INDEX = "index";
     public static final String CONNECTOR = "connector";
     public static final String CHANGED = "changed";
     public static final int PERSON_LIST = 2;
@@ -159,6 +163,73 @@ public class ValueSetter extends AppCompatActivity {
 
 
     }*/
+
+
+    /***
+     * 注册时间选择器
+     * @param dateLabel
+     * @param timeLabel
+     * @param context
+     * @param time
+     */
+    protected void setOnClickListenerForTimeSetter(TextView dateLabel, TextView timeLabel, Context context, Calendar time) {
+        if (caseInstance.isShortTimeCase()) {
+            dateLabel.setOnClickListener(view -> {
+                BasisTimesUtils.showDatePickerDialog(context, true, "", 2000, 1, 1,
+                        new BasisTimesUtils.OnDatePickerListener() {
+
+                            @Override
+                            public void onConfirm(int year, int month, int dayOfMonth) {
+                                if (time.get(Calendar.YEAR) == 1970) {
+                                    time.setTimeInMillis(946656000000l);
+                                }
+                                time.set(Calendar.DATE, dayOfMonth);
+                                dateLabel.setText("第" + dayOfMonth + "天");
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        }).setOnlyDay();
+            });
+        } else {
+            dateLabel.setOnClickListener(view -> {
+                BasisTimesUtils.showDatePickerDialog(context, true, "", 2000, 1, 1,
+                        new BasisTimesUtils.OnDatePickerListener() {
+
+                            @Override
+                            public void onConfirm(int year, int month, int dayOfMonth) {
+                                time.set(Calendar.YEAR, year);
+                                time.set(Calendar.MONTH, month - 1);
+                                time.set(Calendar.DATE, dayOfMonth);
+                                dateLabel.setText(dateFormatter.format(time.getTime()));
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+            });
+        }
+        timeLabel.setOnClickListener(view -> {
+
+            BasisTimesUtils.showTimerPickerDialog(context, true, "请选择时间", 00, 00, true, new BasisTimesUtils.OnTimerPickerListener() {
+                @Override
+                public void onConfirm(int hourOfDay, int minute) {
+                    if (time.get(Calendar.YEAR) == 1970) {
+                        time.setTimeInMillis(946656000000l);
+                    }
+                    time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    time.set(Calendar.MINUTE, minute);
+                    timeLabel.setText(timeFormatter.format(time.getTime()));
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            });
+        });
+    }
 
 
 }

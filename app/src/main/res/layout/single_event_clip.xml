@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/single_event_clip_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/date"
+        android:textSize="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
+
+        <View
+            android:id="@+id/tv_line_top"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:background="#0000ee" />
+
+        <View
+            android:id="@+id/tv_dot"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_below="@+id/tv_line_top"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/dot_normal" />
+
+        <View
+            android:id="@+id/tv_line_bottom"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tv_dot"
+            android:layout_centerHorizontal="true"
+            android:background="#0000ee" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="13dp">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/time"
+            android:textSize="10dp" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

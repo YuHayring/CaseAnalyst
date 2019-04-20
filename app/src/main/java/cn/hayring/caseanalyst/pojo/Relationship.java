@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Relationship<T extends Relationable, E extends Relationable> implements Serializable {
 
@@ -220,6 +221,16 @@ public class Relationship<T extends Relationable, E extends Relationable> implem
         itemT.getOrgEventRelationships().add(relationship);
         itemE.getOrgEventRelationships().add(relationship);
         return relationship;
+    }
+
+    public static void removeAllRelationship(ArrayList arrayList) {
+        if (!arrayList.isEmpty() && !(arrayList.get(0) instanceof Relationship)) {
+            throw new IllegalArgumentException("Error type: its not Relationship!");
+        }
+        while (!arrayList.isEmpty()) {
+            Relationship relationship = (Relationship) arrayList.remove(0);
+            relationship.removeSelf();
+        }
     }
 
 

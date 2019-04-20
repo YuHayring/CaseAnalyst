@@ -26,7 +26,6 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Relationship;
-import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EvidenceValueSetter extends ValueSetter {
@@ -157,62 +156,7 @@ public class EvidenceValueSetter extends ValueSetter {
             startActivityForResult(importIntent, 2); //对应onActivityResult()
         });
 
-        if (caseInstance.isShortTimeCase()) {
-            createDate.setOnClickListener(view -> {
-                BasisTimesUtils.showDatePickerDialog(EvidenceValueSetter.this, true, "", 2000, 1, 1,
-                        new BasisTimesUtils.OnDatePickerListener() {
-
-                            @Override
-                            public void onConfirm(int year, int month, int dayOfMonth) {
-                                if (time.get(Calendar.YEAR) == 1970) {
-                                    time.setTimeInMillis(946656000000l);
-                                }
-                                time.set(Calendar.DATE, dayOfMonth);
-                                createDate.setText("第" + dayOfMonth + "天");
-                            }
-
-                            @Override
-                            public void onCancel() {
-                            }
-                        }).setOnlyDay();
-            });
-        } else {
-            createDate.setOnClickListener(view -> {
-                BasisTimesUtils.showDatePickerDialog(EvidenceValueSetter.this, true, "", 2000, 1, 1,
-                        new BasisTimesUtils.OnDatePickerListener() {
-
-                            @Override
-                            public void onConfirm(int year, int month, int dayOfMonth) {
-                                time.set(Calendar.YEAR, year);
-                                time.set(Calendar.MONTH, month);
-                                time.set(Calendar.DATE, dayOfMonth);
-                                createDate.setText(dateFormatter.format(time.getTime()));
-                            }
-
-                            @Override
-                            public void onCancel() {
-                            }
-                        });
-            });
-        }
-        createTime.setOnClickListener(view -> {
-
-            BasisTimesUtils.showTimerPickerDialog(this, true, "请选择时间", 00, 00, true, new BasisTimesUtils.OnTimerPickerListener() {
-                @Override
-                public void onConfirm(int hourOfDay, int minute) {
-                    if (time.get(Calendar.YEAR) == 1970) {
-                        time.setTimeInMillis(946656000000l);
-                    }
-                    time.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    time.set(Calendar.MINUTE, minute);
-                    createTime.setText(timeFormatter.format(time.getTime()));
-                }
-
-                @Override
-                public void onCancel() {
-                }
-            });
-        });
+        setOnClickListenerForTimeSetter(createDate, createTime, this, evidenceInstance.getCreatedTime());
 
         View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
         orgThingRelationshipEnter.setOnClickListener(relationshipEnterListener);

@@ -48,7 +48,7 @@ public class ExampleUnitTest {
         Relationship.createManManRelationship(shiJi, "敌对关系", gin);
 
 
-        Evidence APTX4869 = mainEvent.createEvidence("APTX4869", "黑衣组织神秘药物");
+        Evidence APTX4869 = mainCase.createEvidence("APTX4869", "黑衣组织神秘药物");
         Relationship.createManThingRelationship(shiJi, "被服用", APTX4869);
         Relationship.createManThingRelationship(gin, "凶器使用者", APTX4869);
 

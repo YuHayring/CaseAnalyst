@@ -158,6 +158,17 @@ public class Person implements Relationable {
         return imageIndex;
     }
 
+    /***
+     * 删除时调用
+     */
+    @Override
+    public void removeSelf() {
+        Relationship.removeAllRelationship(manEventRelationships);
+        Relationship.removeAllRelationship(manManRelationships);
+        Relationship.removeAllRelationship(manOrgRelationships);
+        Relationship.removeAllRelationship(manThingRelationships);
+    }
+
     public void setImageIndex(Integer imageIndex) {
         this.imageIndex = imageIndex;
     }
