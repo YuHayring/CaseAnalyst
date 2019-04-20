@@ -27,7 +27,7 @@ import cn.hayring.caseanalyst.pojo.Person;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class PersonValueSetter extends ValueSetter {
+public class PersonValueSetter extends ValueSetter<Person> {
 
     //标记头像是否改过
     protected boolean imageChanged;
@@ -41,12 +41,6 @@ public class PersonValueSetter extends ValueSetter {
      * 头像显示View
      */
     ImageView headImage;
-
-
-    /***
-     * 人实例
-     */
-    public Person personInstance;
 
     /***
      * 性别选择器
@@ -129,7 +123,7 @@ public class PersonValueSetter extends ValueSetter {
 
 
         //设置监听器
-        saveButton.setOnClickListener(new PersonFinishEditListener());
+        saveButton.setOnClickListener(new FinishEditListener());
         headImage.setOnClickListener(view -> {
             Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
             importIntent.setType("image/*");//选择图片
@@ -139,39 +133,40 @@ public class PersonValueSetter extends ValueSetter {
         });
 
         //设置属性显示
-        if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            //personInstance = (Person) requestInfo.getSerializableExtra(DATA);
-            personInstance = (Person) Pointer.getPoint();
+        if (!isCreate) {
+            saveButton.setEnabled(false);
+            saveButton.setVisibility(View.GONE);
+            instance = (Person) Pointer.getPoint();
 
 
             //基本信息设置
-            nameInputer.setText(personInstance.getName());
-            infoInputer.setText(personInstance.getInfo());
-            nickNameInputer.setText(personInstance.getNickName());
-            Integer age = personInstance.getAge();
+            nameInputer.setText(instance.getName());
+            infoInputer.setText(instance.getInfo());
+            nickNameInputer.setText(instance.getNickName());
+            Integer age = instance.getAge();
             if (age != null) {
                 ageInputer.setText(age.toString());
             }
 
 
             //设置性别
-            if (null == personInstance.getGender()) {
+            if (null == instance.getGender()) {
                 genderSwitcher.setSelection(2);
-            } else if (personInstance.getGender()/*==Person.MALE*/) {
+            } else if (instance.getGender()/*==Person.MALE*/) {
                 genderSwitcher.setSelection(0);
             } else {
                 genderSwitcher.setSelection(1);
             }
 
             //设置是否为嫌犯
-            if (null == personInstance.getSuspect()) {
+            if (null == instance.getSuspect()) {
                 suspectSwitcher.setSelection(2);
-            } else if (personInstance.getGender()) {
+            } else if (instance.getGender()) {
                 suspectSwitcher.setSelection(0);
             } else {
                 suspectSwitcher.setSelection(1);
             }
-            String bloodType = personInstance.getBloodType();
+            String bloodType = instance.getBloodType();
             if (bloodType != null) {
                 switch (bloodType) {
                     case Person.A: {
@@ -202,9 +197,9 @@ public class PersonValueSetter extends ValueSetter {
             }
 
             //判断是否有头像并加载
-            if (personInstance.getImageIndex() != null) {
+            if (instance.getImageIndex() != null) {
                 try {
-                    FileInputStream headIS = openFileInput(personInstance.getImageIndex() + ".jpg");
+                    FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
                     headImage.setImageBitmap(image);
                 } catch (FileNotFoundException e) {
@@ -216,102 +211,85 @@ public class PersonValueSetter extends ValueSetter {
 
 
         } else {
-            personInstance = caseInstance.createPerson();
+            instance = caseInstance.createPerson();
         }
     }
 
 
-    class PersonFinishEditListener extends FinishEditListener {
+    @Override
+    protected void save() {
+        String name = nameInputer.getText().toString();
+        String info = infoInputer.getText().toString();
+        String nickName = nickNameInputer.getText().toString();
+        String genderStr = genderSwitcher.getSelectedItem().toString();
+        Boolean gender;
+        if (genderStr.equals(MALE)) {
+            gender = Person.MALE;
+        } else if (genderStr.equals(FEMALE)) {
+            gender = Person.FEMALE;
+        } else {
+            gender = null;
+        }
 
-        @Override
-        void editReaction() {
-            /*if (personInstance == null) {
-                personInstance = caseInstance.createPerson();
-            }*/
-            //获取输入框数据
-            String name = nameInputer.getText().toString();
-            String info = infoInputer.getText().toString();
-            String nickName = nickNameInputer.getText().toString();
-            String genderStr = genderSwitcher.getSelectedItem().toString();
-            Boolean gender;
-            if (genderStr.equals(MALE)) {
-                gender = Person.MALE;
-            } else if (genderStr.equals(FEMALE)) {
-                gender = Person.FEMALE;
-            } else {
-                gender = null;
-            }
-
-            //嫌犯属性
-            String suspectStr = suspectSwitcher.getSelectedItem().toString();
-            Boolean suspect;
-            if (suspectStr.equals(TRUE)) {
-                suspect = true;
-            } else if (suspectStr.equals(FALSE)) {
-                suspect = false;
-            } else {
-                suspect = null;
-            }
-
-
-            //设置已输入的数据
-            personInstance.setName(name);
-            personInstance.setInfo(info);
-            personInstance.setSuspect(suspect);
-            personInstance.setGender(gender);
-            personInstance.setNickName(nickName);
-
-
-            String ageStr = ageInputer.getText().toString();
-            if (!"".equals(ageStr) && isInteger(ageStr)) {
-                personInstance.setAge(Integer.valueOf(ageStr));
-            }
-
-
-
-
-            switch (bloodTypeSwitcher.getSelectedItem().toString()) {
-                case Person.A:
-                case Person.B:
-                case Person.AB:
-                case Person.O:
-                case Person.RHAB:
-                    personInstance.setBloodType(bloodTypeSwitcher.getSelectedItem().toString());
-                default:
-            }
-
-            //判断头像是否变化，是则保存并写入
-            if (imageChanged) {
-                try {
-                    FileOutputStream fo;
-                    File f;
-                    int imageIndex;
-                    if (personInstance.getImageIndex() == null) {
-                        do {
-                            imageIndex = random.nextInt();
-                            f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
-                        } while (f.exists());
-                        personInstance.setImageIndex(imageIndex);
-                    } else {
-                        imageIndex = personInstance.getImageIndex();
-                    }
-                    fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            //装载数据
-            //requestInfo.putExtra(DATA, personInstance);
-            requestInfo.putExtra(CHANGED, true);
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                Pointer.setPoint(personInstance);
-            }
+        //嫌犯属性
+        String suspectStr = suspectSwitcher.getSelectedItem().toString();
+        Boolean suspect;
+        if (suspectStr.equals(TRUE)) {
+            suspect = true;
+        } else if (suspectStr.equals(FALSE)) {
+            suspect = false;
+        } else {
+            suspect = null;
         }
 
 
+        //设置已输入的数据
+        instance.setName(name);
+        instance.setInfo(info);
+        instance.setSuspect(suspect);
+        instance.setGender(gender);
+        instance.setNickName(nickName);
+
+
+        String ageStr = ageInputer.getText().toString();
+        if (!"".equals(ageStr) && isInteger(ageStr)) {
+            instance.setAge(Integer.valueOf(ageStr));
+        }
+
+
+        switch (bloodTypeSwitcher.getSelectedItem().toString()) {
+            case Person.A:
+            case Person.B:
+            case Person.AB:
+            case Person.O:
+            case Person.RHAB:
+                instance.setBloodType(bloodTypeSwitcher.getSelectedItem().toString());
+            default:
+        }
+
+        //判断头像是否变化，是则保存并写入
+        if (imageChanged) {
+            try {
+                FileOutputStream fo;
+                File f;
+                int imageIndex;
+                if (instance.getImageIndex() == null) {
+                    do {
+                        imageIndex = random.nextInt();
+                        f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
+                    } while (f.exists());
+                    instance.setImageIndex(imageIndex);
+                } else {
+                    imageIndex = instance.getImageIndex();
+                }
+                fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        super.save();
     }
 
 
@@ -324,34 +302,34 @@ public class PersonValueSetter extends ValueSetter {
             Intent request = new Intent(PersonValueSetter.this, RelationshipListActivity.class);
             switch (view.getId()) {
                 case R.id.man_event_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, personInstance.getManEventRelationships());
-                    Pointer.setPoint(personInstance.getManEventRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getManEventRelationships());
+                    Pointer.setPoint(instance.getManEventRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVENT);
                 }
                 break;
                 case R.id.man_man_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, personInstance.getManManRelationships());
-                    Pointer.setPoint(personInstance.getManManRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getManManRelationships());
+                    Pointer.setPoint(instance.getManManRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_MAN);
                 }
                 break;
                 case R.id.man_org_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, personInstance.getManOrgRelationships());
-                    Pointer.setPoint(personInstance.getManOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getManOrgRelationships());
+                    Pointer.setPoint(instance.getManOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_ORG);
                 }
                 break;
                 case R.id.man_thing_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, personInstance.getManThingRelationships());
-                    Pointer.setPoint(personInstance.getManThingRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getManThingRelationships());
+                    Pointer.setPoint(instance.getManThingRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVIDENCE);
                 }
                 break;
                 default:
                     throw new IllegalArgumentException("Error View Id");
             }
-            //request.putExtra(ValueSetter.CONNECTOR, personInstance);
-            Pointer.setConnector(personInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, instance);
+            Pointer.setConnector(instance);
             startActivity(request);
         }
     }
@@ -381,45 +359,7 @@ public class PersonValueSetter extends ValueSetter {
             }
         }
 
-/*        //未改变就结束
-        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true)) {
-            return;
-        }
-        ArrayList data = (ArrayList) itemTransporter.getSerializableExtra(ValueSetter.DATA);
-        switch (itemTransporter.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1)) {
-            case Relationship.MAN_EVENT: {
-                personInstance.setManEventRelationships(data);
-            }
-            break;
-            case Relationship.MAN_MAN: {
-                personInstance.setManManRelationships(data);
-            }
-            break;
-            case Relationship.MAN_ORG: {
-                personInstance.setManOrgRelationships(data);
-            }
-            break;
-            case Relationship.MAN_EVIDENCE: {
-                personInstance.setManThingRelationships(data);
-            }
-            break;
-            default:
-                throw new IllegalArgumentException("Error relationship type!");
-        }*/
 
-
-    }
-
-
-    /***
-     * 返回键不保存，返回未改动
-     */
-    @Override
-    public void finish() {
-        personInstance = null;
-        requestInfo.putExtra(CHANGED, false);
-        setResult(2, requestInfo);
-        super.finish();
     }
 
 

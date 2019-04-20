@@ -25,7 +25,7 @@ import cn.hayring.caseanalyst.pojo.Relationable;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class RelationshipValueSetter<T extends Relationable, E extends Relationable> extends ValueSetter {
+public class RelationshipValueSetter<T extends Relationable, E extends Relationable> extends ValueSetter<Relationship<T, E>> {
 
     /***
      * E实例是否为入口实例
@@ -67,11 +67,6 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
     ImageView imageViewE;
 
     /***
-     * 此ValueSetter管理的关系实例
-     */
-    Relationship<T, E> relationshipInstance;
-
-    /***
      * 入口元素
      */
     Listable connector;
@@ -105,25 +100,27 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
         ChangeListableListener changeListableListener = new ChangeListableListener();
         tTextView.setOnClickListener(changeListableListener);
         eTextView.setOnClickListener(changeListableListener);
-        saveButton.setOnClickListener(new RelationshipFinishEditListener());
+        saveButton.setOnClickListener(new FinishEditListener());
 
         //入口元素
         //connector = (Listable) requestInfo.getSerializableExtra(ValueSetter.CONNECTOR);
         connector = Pointer.getConnector();
 
 
-        if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            //relationshipInstance = (Relationship) requestInfo.getSerializableExtra(DATA);
-            relationshipInstance = (Relationship) Pointer.getPoint();
+        if (!isCreate) {
+            saveButton.setEnabled(false);
+            saveButton.setVisibility(View.GONE);
+            //instance = (Relationship) requestInfo.getSerializableExtra(DATA);
+            instance = (Relationship) Pointer.getPoint();
 
-            isEConnector = relationshipInstance.getItemE().equals(connector);
-            itemT = relationshipInstance.getItemT();
-            itemE = relationshipInstance.getItemE();
+            isEConnector = instance.getItemE().equals(connector);
+            itemT = instance.getItemT();
+            itemE = instance.getItemE();
 
-            tTextView.setText(relationshipInstance.getItemT().getName());
-            eTextView.setText(relationshipInstance.getItemE().getName());
-            keyInputer.setText(relationshipInstance.getKey());
-            String info = relationshipInstance.getInfo();
+            tTextView.setText(instance.getItemT().getName());
+            eTextView.setText(instance.getItemE().getName());
+            keyInputer.setText(instance.getKey());
+            String info = instance.getInfo();
             if (info != null) {
                 infoInputer.setText(info);
             }
@@ -155,7 +152,7 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
 
         } else {
-            relationshipInstance = Relationship.createRelationship(relationshipType);
+            instance = Relationship.createRelationship(relationshipType);
             if (connector.getClass().equals(Person.class)) {
                 isEConnector = false;
                 itemT = (T) connector;
@@ -199,30 +196,19 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
     }
 
 
-    /***
-     * 保存按钮监听器
-     */
-    class RelationshipFinishEditListener extends FinishEditListener {
-        @Override
-        void editReaction() {
-            relationshipInstance.setItemE(itemE);
-            relationshipInstance.setItemT(itemT);
-            relationshipInstance.setKey(keyInputer.getText().toString());
-            relationshipInstance.setInfo(infoInputer.getText().toString());
+    @Override
+    protected void save() {
+        instance.setItemE(itemE);
+        instance.setItemT(itemT);
+        instance.setKey(keyInputer.getText().toString());
+        instance.setInfo(infoInputer.getText().toString());
 
-            if (isEConnector) {
-                itemT.regRelationship(relationshipInstance);
-            } else {
-                itemE.regRelationship(relationshipInstance);
-            }
-
-
-            //requestInfo.putExtra(DATA, relationshipInstance);
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                Pointer.setPoint(relationshipInstance);
-            }
-            requestInfo.putExtra(CHANGED, true);
+        if (isEConnector) {
+            itemT.regRelationship(instance);
+        } else {
+            itemE.regRelationship(instance);
         }
+        super.save();
     }
 
 
@@ -303,16 +289,6 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
         }
 
 
-    }
-
-    /***
-     * 返回键不保存，返回未改动
-     */
-    @Override
-    public void finish() {
-        requestInfo.putExtra(CHANGED, false);
-        setResult(2, requestInfo);
-        super.finish();
     }
 
 

@@ -23,7 +23,7 @@ import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class ValueSetter extends AppCompatActivity {
+public abstract class ValueSetter<T extends Serializable> extends AppCompatActivity {
     public static final String INDEX = "index";
     public static final String CONNECTOR = "connector";
     public static final String CHANGED = "changed";
@@ -66,6 +66,16 @@ public class ValueSetter extends AppCompatActivity {
     protected Button saveButton;
 
     /***
+     * 是否为新建元素
+     */
+    protected boolean isCreate;
+
+    /***
+     * 实例
+     */
+    protected T instance;
+
+    /***
      * 案件实例
      */
     public static Case caseInstance;
@@ -91,30 +101,36 @@ public class ValueSetter extends AppCompatActivity {
         rootLayout = findViewById(R.id.value_setter_root_layout);
         //editTexts = new ArrayList<EditText>();
         requestInfo = getIntent();
+        isCreate = requestInfo.getBooleanExtra(CREATE_OR_NOT, true);
     }
 
     /***
      * 保存按钮监听器
      */
-    abstract class FinishEditListener implements View.OnClickListener {
+    class FinishEditListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            editReaction();
+            save();
             //设置结果
             setResult(2, requestInfo);
             //要注意
             ValueSetter.super.finish();
         }
 
-
-        /***
-         * 编辑元素完成行为
-         */
-        abstract void editReaction();
-
-
     }
+
+    /***
+     * 保存，必须被重写
+     */
+    @CallSuper
+    protected void save() {
+        requestInfo.putExtra(CHANGED, true);
+        if (isCreate) {
+            Pointer.setPoint(instance);
+        }
+    }
+
 
     /***
      * ListView入口监听器
@@ -131,7 +147,6 @@ public class ValueSetter extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent dataTransporter = new Intent(packageContext, getListViewClass());
-            //dataTransporter.putExtra(ValueSetter.DATA, getList());
             Pointer.setPoint(getList());
             //启动新Activity
             startActivity(dataTransporter);
@@ -231,5 +246,19 @@ public class ValueSetter extends AppCompatActivity {
         });
     }
 
+
+    /***
+     * 返回键判断是否需要保存
+     */
+    @Override
+    public void finish() {
+        if (isCreate) {
+            requestInfo.putExtra(CHANGED, false);
+        } else {
+            save();
+        }
+        setResult(2, requestInfo);
+        super.finish();
+    }
 
 }

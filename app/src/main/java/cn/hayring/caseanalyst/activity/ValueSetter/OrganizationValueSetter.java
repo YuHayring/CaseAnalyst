@@ -25,7 +25,7 @@ import cn.hayring.caseanalyst.pojo.Organization;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class OrganizationValueSetter extends ValueSetter {
+public class OrganizationValueSetter extends ValueSetter<Organization> {
 
     //标记头像是否改过
     protected boolean imageChanged;
@@ -39,11 +39,6 @@ public class OrganizationValueSetter extends ValueSetter {
      * 头像显示View
      */
     ImageView headImage;
-
-    /***
-     * 此ValueSetter管理的组织实例
-     */
-    Organization orgInstance;
 
 
     /***
@@ -84,19 +79,20 @@ public class OrganizationValueSetter extends ValueSetter {
         headImage = findViewById(R.id.org_image);
 
 
+        if (!isCreate) {
+            saveButton.setEnabled(false);
+            saveButton.setVisibility(View.GONE);
+            //instance = (Organization) requestInfo.getSerializableExtra(DATA);
+            instance = (Organization) Pointer.getPoint();
 
-        if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            //orgInstance = (Organization) requestInfo.getSerializableExtra(DATA);
-            orgInstance = (Organization) Pointer.getPoint();
 
-
-            nameInputer.setText(orgInstance.getName());
-            infoInputer.setText(orgInstance.getInfo());
+            nameInputer.setText(instance.getName());
+            infoInputer.setText(instance.getInfo());
 
             //判断是否有头像并加载
-            if (orgInstance.getImageIndex() != null) {
+            if (instance.getImageIndex() != null) {
                 try {
-                    FileInputStream headIS = openFileInput(orgInstance.getImageIndex() + ".jpg");
+                    FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
                     headImage.setImageBitmap(image);
                 } catch (FileNotFoundException e) {
@@ -104,7 +100,7 @@ public class OrganizationValueSetter extends ValueSetter {
                 }
             }
         } else {
-            orgInstance = caseInstance.createOrganization();
+            instance = caseInstance.createOrganization();
         }
 
         orgEventRelationshipEnter = sonView.findViewById(R.id.org_event_relationship_text_view);
@@ -113,7 +109,7 @@ public class OrganizationValueSetter extends ValueSetter {
         orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
 
         //设置监听器
-        saveButton.setOnClickListener(new OrganizationFinishEditListener());
+        saveButton.setOnClickListener(new FinishEditListener());
         headImage.setOnClickListener(view -> {
             Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
             importIntent.setType("image/*");//选择图片
@@ -131,49 +127,36 @@ public class OrganizationValueSetter extends ValueSetter {
 
     }
 
-    /***
-     * 保存按钮监听器
-     */
-    class OrganizationFinishEditListener extends FinishEditListener {
-        @Override
-        void editReaction() {
-            /*if (orgInstance == null) {
-                orgInstance = caseInstance.createOrganization();
-            }*/
-            orgInstance.setName(nameInputer.getText().toString());
-            orgInstance.setInfo(infoInputer.getText().toString());
-            //requestInfo.putExtra(DATA, orgInstance);
-            requestInfo.putExtra(CHANGED, true);
 
-            //判断头像是否变化，是则保存并写入
-            if (imageChanged) {
-                try {
-                    FileOutputStream fo;
-                    File f;
-                    int imageIndex;
-                    if (orgInstance.getImageIndex() == null) {
-                        do {
-                            imageIndex = random.nextInt();
-                            f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
-                        } while (f.exists());
-                        orgInstance.setImageIndex(imageIndex);
-                    } else {
-                        imageIndex = orgInstance.getImageIndex();
-                    }
-                    fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+    @Override
+    protected void save() {
+        instance.setName(nameInputer.getText().toString());
+        instance.setInfo(infoInputer.getText().toString());
+        //requestInfo.putExtra(DATA, instance);
+        //判断头像是否变化，是则保存并写入
+        if (imageChanged) {
+            try {
+                FileOutputStream fo;
+                File f;
+                int imageIndex;
+                if (instance.getImageIndex() == null) {
+                    do {
+                        imageIndex = random.nextInt();
+                        f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
+                    } while (f.exists());
+                    instance.setImageIndex(imageIndex);
+                } else {
+                    imageIndex = instance.getImageIndex();
                 }
-            }
+                fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
 
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                Pointer.setPoint(orgInstance);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        super.save();
     }
-
 
     /***
      * 关系编辑入口监听器
@@ -184,34 +167,34 @@ public class OrganizationValueSetter extends ValueSetter {
             Intent request = new Intent(OrganizationValueSetter.this, RelationshipListActivity.class);
             switch (view.getId()) {
                 case R.id.org_event_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgEventRelationships());
-                    Pointer.setPoint(orgInstance.getOrgEventRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getOrgEventRelationships());
+                    Pointer.setPoint(instance.getOrgEventRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVENT);
                 }
                 break;
                 case R.id.org_org_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgOrgRelationships());
-                    Pointer.setPoint(orgInstance.getOrgOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getOrgOrgRelationships());
+                    Pointer.setPoint(instance.getOrgOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_ORG);
                 }
                 break;
                 case R.id.man_org_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, orgInstance.getManOrgRelationships());
-                    Pointer.setPoint(orgInstance.getManOrgRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getManOrgRelationships());
+                    Pointer.setPoint(instance.getManOrgRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_ORG);
                 }
                 break;
                 case R.id.org_thing_relationship_text_view: {
-                    //request.putExtra(ValueSetter.DATA, orgInstance.getOrgThingRelationships());
-                    Pointer.setPoint(orgInstance.getOrgThingRelationships());
+                    //request.putExtra(ValueSetter.DATA, instance.getOrgThingRelationships());
+                    Pointer.setPoint(instance.getOrgThingRelationships());
                     request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVIDENCE);
                 }
                 break;
                 default:
                     throw new IllegalArgumentException("Error View Id");
             }
-            //request.putExtra(ValueSetter.CONNECTOR, orgInstance);
-            Pointer.setConnector(orgInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, instance);
+            Pointer.setConnector(instance);
             startActivityForResult(request, 1);
         }
     }
@@ -248,19 +231,19 @@ public class OrganizationValueSetter extends ValueSetter {
         ArrayList data = (ArrayList) itemTransporter.getSerializableExtra(ValueSetter.DATA);
         switch (itemTransporter.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1)) {
             case Relationship.ORG_EVENT: {
-                orgInstance.setOrgEventRelationships(data);
+                instance.setOrgEventRelationships(data);
             }
             break;
             case Relationship.ORG_ORG: {
-                orgInstance.setOrgOrgRelationships(data);
+                instance.setOrgOrgRelationships(data);
             }
             break;
             case Relationship.MAN_ORG: {
-                orgInstance.setManOrgRelationships(data);
+                instance.setManOrgRelationships(data);
             }
             break;
             case Relationship.ORG_EVIDENCE: {
-                orgInstance.setOrgThingRelationships(data);
+                instance.setOrgThingRelationships(data);
             }
             break;
             default:
@@ -268,20 +251,6 @@ public class OrganizationValueSetter extends ValueSetter {
         }*/
 
 
-    }
-
-
-
-
-    /***
-     * 返回键不保存，返回未改动
-     */
-    @Override
-    public void finish() {
-        orgInstance = null;
-        requestInfo.putExtra(CHANGED, false);
-        setResult(2, requestInfo);
-        super.finish();
     }
 
 

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.PersonGraph;
 import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
-import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.pojo.Person;
 import cn.hayring.caseanalyst.utils.Pointer;
 
@@ -37,17 +36,6 @@ public class PersonListActivity extends MyListActivity<Person> {
     }
 
 
-    /***
-     * 按返回键之后的操作---------保存
-     */
-    @Override
-    public void finish() {
-        //传输参数和数据
-        //requestInfo.putExtra(ValueSetter.DATA, (ArrayList<Person>) mainItemListAdapter.getItems());
-        requestInfo.putExtra(ValueSetter.TYPE, ValueSetter.PERSON_LIST);
-        setResult(2, requestInfo);
-        super.finish();
-    }
 
 
     /***

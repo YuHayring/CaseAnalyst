@@ -28,7 +28,7 @@ import cn.hayring.caseanalyst.pojo.Evidence;
 import cn.hayring.caseanalyst.pojo.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class EvidenceValueSetter extends ValueSetter {
+public class EvidenceValueSetter extends ValueSetter<Evidence> {
 
     //标记头像是否改过
     protected boolean imageChanged;
@@ -42,12 +42,6 @@ public class EvidenceValueSetter extends ValueSetter {
      * 头像显示View
      */
     ImageView headImage;
-
-
-    /***
-     * 此ValueSetter管理的证据实例
-     */
-    Evidence evidenceInstance;
 
     /***
      * 数量编辑器
@@ -99,20 +93,20 @@ public class EvidenceValueSetter extends ValueSetter {
         createTime = findViewById(R.id.create_time);
 
 
+        if (!isCreate) {
+            saveButton.setEnabled(false);
+            saveButton.setVisibility(View.GONE);
+            //instance = (Evidence) requestInfo.getSerializableExtra(DATA);
+            instance = (Evidence) Pointer.getPoint();
 
 
-        if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-            //evidenceInstance = (Evidence) requestInfo.getSerializableExtra(DATA);
-            evidenceInstance = (Evidence) Pointer.getPoint();
-
-
-            nameInputer.setText(evidenceInstance.getName());
-            infoInputer.setText(evidenceInstance.getInfo());
-            Integer count = evidenceInstance.getCount();
+            nameInputer.setText(instance.getName());
+            infoInputer.setText(instance.getInfo());
+            Integer count = instance.getCount();
             if (count != null) {
                 countInputer.setText(count.toString());
             }
-            if ((time = evidenceInstance.getCreatedTime()) != null) {
+            if ((time = instance.getCreatedTime()) != null) {
                 if (!caseInstance.isShortTimeCase()) {
                     createDate.setText(dateFormatter.format(time.getTime()));
                 } else {
@@ -124,9 +118,9 @@ public class EvidenceValueSetter extends ValueSetter {
             }
 
             //判断是否有头像并加载
-            if (evidenceInstance.getImageIndex() != null) {
+            if (instance.getImageIndex() != null) {
                 try {
-                    FileInputStream headIS = openFileInput(evidenceInstance.getImageIndex() + ".jpg");
+                    FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
                     headImage.setImageBitmap(image);
                 } catch (FileNotFoundException e) {
@@ -136,7 +130,7 @@ public class EvidenceValueSetter extends ValueSetter {
 
 
         } else {
-            evidenceInstance = caseInstance.createEvidence();
+            instance = caseInstance.createEvidence();
             //2000-1-1 00:00
             time = new GregorianCalendar(2000, 1, 1, 0, 0);
         }
@@ -146,7 +140,7 @@ public class EvidenceValueSetter extends ValueSetter {
 
 
         //设置监听器
-        saveButton.setOnClickListener(new EvidenceFinishEditListener());
+        saveButton.setOnClickListener(new FinishEditListener());
         headImage.setOnClickListener(view -> {
             Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
             importIntent.setType("image/*");//选择图片
@@ -156,7 +150,7 @@ public class EvidenceValueSetter extends ValueSetter {
             startActivityForResult(importIntent, 2); //对应onActivityResult()
         });
 
-        setOnClickListenerForTimeSetter(createDate, createTime, this, evidenceInstance.getCreatedTime());
+        setOnClickListenerForTimeSetter(createDate, createTime, this, instance.getCreatedTime());
 
         View.OnClickListener relationshipEnterListener = new EditRelationshipListener();
         orgThingRelationshipEnter.setOnClickListener(relationshipEnterListener);
@@ -164,55 +158,42 @@ public class EvidenceValueSetter extends ValueSetter {
     }
 
 
-    /***
-     * 保存按钮监听器
-     */
-    class EvidenceFinishEditListener extends FinishEditListener {
-        @Override
-        void editReaction() {
-            /*if (evidenceInstance == null) {
-                evidenceInstance = caseInstance.createEvidence();
-            }*/
+    @Override
+    protected void save() {
+        instance.setName(nameInputer.getText().toString());
+        instance.setInfo(infoInputer.getText().toString());
+        String countStr = countInputer.getText().toString();
+        if (!"".equals(countStr) && isInteger(countStr)) {
+            instance.setCount(Integer.valueOf(countStr));
+        }
+        //requestInfo.putExtra(DATA, instance);
 
-            evidenceInstance.setName(nameInputer.getText().toString());
-            evidenceInstance.setInfo(infoInputer.getText().toString());
-            String countStr = countInputer.getText().toString();
-            if (!"".equals(countStr) && isInteger(countStr)) {
-                evidenceInstance.setCount(Integer.valueOf(countStr));
-            }
-            //requestInfo.putExtra(DATA, evidenceInstance);
-
-            //判断头像是否变化，是则保存并写入
-            if (imageChanged) {
-                try {
-                    FileOutputStream fo;
-                    File f;
-                    int imageIndex;
-                    if (evidenceInstance.getImageIndex() == null) {
-                        do {
-                            imageIndex = random.nextInt();
-                            f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
-                        } while (f.exists());
-                        evidenceInstance.setImageIndex(imageIndex);
-                    } else {
-                        imageIndex = evidenceInstance.getImageIndex();
-                    }
-                    fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+        //判断头像是否变化，是则保存并写入
+        if (imageChanged) {
+            try {
+                FileOutputStream fo;
+                File f;
+                int imageIndex;
+                if (instance.getImageIndex() == null) {
+                    do {
+                        imageIndex = random.nextInt();
+                        f = new File(getFilesDir().getPath() + "/" + imageIndex + ".jpg");
+                    } while (f.exists());
+                    instance.setImageIndex(imageIndex);
+                } else {
+                    imageIndex = instance.getImageIndex();
                 }
-            }
-            if (time.get(Calendar.YEAR) != 1970) {
-                evidenceInstance.setCreatedTime(time);
-            }
+                fo = openFileOutput(imageIndex + ".jpg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fo);
 
-            requestInfo.putExtra(CHANGED, true);
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                Pointer.setPoint(evidenceInstance);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        if (time.get(Calendar.YEAR) != 1970) {
+            instance.setCreatedTime(time);
+        }
+        super.save();
     }
 
 
@@ -224,18 +205,18 @@ public class EvidenceValueSetter extends ValueSetter {
         public void onClick(View view) {
             Intent request = new Intent(EvidenceValueSetter.this, RelationshipListActivity.class);
             if (view.getId() == R.id.org_thing_relationship_text_view) {
-                //request.putExtra(ValueSetter.DATA, evidenceInstance.getOrgThingRelationships());
-                Pointer.setPoint(evidenceInstance.getOrgThingRelationships());
+                //request.putExtra(ValueSetter.DATA, instance.getOrgThingRelationships());
+                Pointer.setPoint(instance.getOrgThingRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.ORG_EVIDENCE);
             } else if (view.getId() == R.id.man_thing_relationship_text_view) {
-                //request.putExtra(ValueSetter.DATA, evidenceInstance.getManThingRelationships());
-                Pointer.setPoint(evidenceInstance.getManThingRelationships());
+                //request.putExtra(ValueSetter.DATA, instance.getManThingRelationships());
+                Pointer.setPoint(instance.getManThingRelationships());
                 request.putExtra(ValueSetter.RELATIONSHIP_TYPE, Relationship.MAN_EVIDENCE);
             } else {
                 throw new IllegalArgumentException("Error View Id");
             }
-            //request.putExtra(ValueSetter.CONNECTOR, evidenceInstance);
-            Pointer.setConnector(evidenceInstance);
+            //request.putExtra(ValueSetter.CONNECTOR, instance);
+            Pointer.setConnector(instance);
             startActivityForResult(request, 1);
         }
     }
@@ -292,25 +273,14 @@ public class EvidenceValueSetter extends ValueSetter {
         ArrayList data = (ArrayList) itemTransporter.getSerializableExtra(ValueSetter.DATA);
         int type = itemTransporter.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1);
         if (type == Relationship.ORG_EVIDENCE) {
-            evidenceInstance.setOrgThingRelationships(data);
+            instance.setOrgThingRelationships(data);
         } else if (type == Relationship.MAN_EVIDENCE) {
-            evidenceInstance.setManThingRelationships(data);
+            instance.setManThingRelationships(data);
         } else {
             throw new IllegalArgumentException("Error relationship type!");
         }
 */
 
-    }
-
-    /***
-     * 返回键不保存，返回未改动
-     */
-    @Override
-    public void finish() {
-        evidenceInstance = null;
-        requestInfo.putExtra(CHANGED, false);
-        setResult(2, requestInfo);
-        super.finish();
     }
 
 

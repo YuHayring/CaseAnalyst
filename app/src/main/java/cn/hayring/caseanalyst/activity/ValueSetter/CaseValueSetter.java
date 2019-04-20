@@ -1,14 +1,13 @@
 package cn.hayring.caseanalyst.activity.ValueSetter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.EventListActivity;
@@ -18,7 +17,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
 import cn.hayring.caseanalyst.pojo.Case;
 import cn.hayring.caseanalyst.utils.Pointer;
 
-public class CaseValueSetter extends ValueSetter {
+public class CaseValueSetter extends ValueSetter<Case> {
 
 
     /***
@@ -65,20 +64,21 @@ public class CaseValueSetter extends ValueSetter {
         shortTimeCaseSetter = findViewById(R.id.short_time_case_switcher);
 
 
-
-        if (!requestInfo.getBooleanExtra(CREATE_OR_NOT, true)) {
-
-            //caseInstance = (Case) requestInfo.getSerializableExtra(DATA);
+        if (!isCreate) {
+            saveButton.setEnabled(false);
+            saveButton.setVisibility(View.GONE);
+            //instance = (Case) requestInfo.getSerializableExtra(DATA);
 
             //ValueSetter静态变量，全局可用
-            caseInstance = (Case) Pointer.getPoint();
+            instance = (Case) Pointer.getPoint();
+            caseInstance = instance;
 
 
-            nameInputer.setText(caseInstance.getName());
-            infoInputer.setText(caseInstance.getInfo());
-            shortTimeCaseSetter.setSelection(caseInstance.isShortTimeCase() ? 0 : 1);
+            nameInputer.setText(instance.getName());
+            infoInputer.setText(instance.getInfo());
+            shortTimeCaseSetter.setSelection(instance.isShortTimeCase() ? 0 : 1);
         } else {
-            caseInstance = new Case();
+            instance = new Case();
         }
         personsEnter = findViewById(R.id.person_list_enter);
         orgsEnter = findViewById(R.id.org_list_enter);
@@ -86,7 +86,7 @@ public class CaseValueSetter extends ValueSetter {
         evidenceEnter = findViewById(R.id.evidence_list_enter);
 
         //设置监听器
-        saveButton.setOnClickListener(new CaseFinishEditListener());
+        saveButton.setOnClickListener(new FinishEditListener());
         personsEnter.setOnClickListener(new PersonsEnterListener(this));
         orgsEnter.setOnClickListener(new OrgsEnterListener(this));
         eventsEnter.setOnClickListener(new EventEnterListener(this));
@@ -97,26 +97,22 @@ public class CaseValueSetter extends ValueSetter {
     }
 
     /***
-     * 保存按钮监听器
+     * 保存
      */
-    class CaseFinishEditListener extends FinishEditListener {
-        @Override
-        void editReaction() {
-            caseInstance.setName(nameInputer.getText().toString());
-            caseInstance.setInfo(infoInputer.getText().toString());
-            int index = shortTimeCaseSetter.getSelectedItemPosition();
-            if (index == 0) {
-                caseInstance.setShortTimeCase(true);
-            } else if (index == 1) {
-                caseInstance.setShortTimeCase(false);
-            }
-            //requestInfo.putExtra(DATA, caseInstance);
-            requestInfo.putExtra(CHANGED, true);
-            if (requestInfo.getBooleanExtra(CREATE_OR_NOT, false)) {
-                Pointer.setPoint(caseInstance);
-            }
+    @Override
+    protected void save() {
+        instance.setName(nameInputer.getText().toString());
+        instance.setInfo(infoInputer.getText().toString());
+        int index = shortTimeCaseSetter.getSelectedItemPosition();
+        if (index == 0) {
+            instance.setShortTimeCase(true);
+        } else if (index == 1) {
+            instance.setShortTimeCase(false);
         }
+        super.save();
     }
+
+
 
     /***
      * 相关人士列表入口按钮监听器
@@ -136,7 +132,7 @@ public class CaseValueSetter extends ValueSetter {
 
         @Override
         Serializable getList() {
-            return caseInstance.getPersons();
+            return instance.getPersons();
         }
     }
 
@@ -158,7 +154,7 @@ public class CaseValueSetter extends ValueSetter {
 
         @Override
         Serializable getList() {
-            return caseInstance.getOrganizations();
+            return instance.getOrganizations();
         }
     }
 
@@ -179,7 +175,7 @@ public class CaseValueSetter extends ValueSetter {
 
         @Override
         Serializable getList() {
-            return caseInstance.getEvents();
+            return instance.getEvents();
         }
     }
 
@@ -200,58 +196,13 @@ public class CaseValueSetter extends ValueSetter {
 
         @Override
         Serializable getList() {
-            return caseInstance.getEvidences();
+            return instance.getEvidences();
         }
     }
 
-    /***
-     * 编辑完成调用
-     * @author Hayring
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
-        super.onActivityResult(requestCode, resultCode, itemTransporter);
-        int type = itemTransporter.getIntExtra(TYPE, -1);
-        ArrayList data = (ArrayList) Pointer.getPoint();
-        //设置返回的已修改数据
-        switch (type) {
-            case PERSON_LIST: {
-                //ArrayList<Person> persons = (ArrayList<Person>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setPersons(data);
-            }
-            break;
-            case ORG_LIST: {
-                //ArrayList<Organization> orgs = (ArrayList<Organization>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setOrganizations(data);
-            }
-            break;
-            case EVENT_LIST: {
-                //ArrayList<Event> events = (ArrayList<Event>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setEvents(data);
-            }
-            break;
-            case EVIDENCE_LIST: {
-                //ArrayList<Evidence> evidences = (ArrayList<Evidence>) itemTransporter.getSerializableExtra(DATA);
-                caseInstance.setEvidences(data);
-            }
-            break;
-            default:
-                throw new IllegalArgumentException("Error type!");
-        }
 
 
-    }
 
-
-    /***
-     * 返回键不保存，返回未改动
-     */
-    @Override
-    public void finish() {
-        requestInfo.putExtra(CHANGED, false);
-        setResult(2, requestInfo);
-        super.finish();
-    }
 
 
 
