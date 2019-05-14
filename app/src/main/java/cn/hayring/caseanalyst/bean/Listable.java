@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 
 import java.io.Serializable;

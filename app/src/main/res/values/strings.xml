@@ -76,4 +76,15 @@
     <string name="action">行为</string>
 
 
+    <string name="title_activity_main">MainActivity</string>
+    <string name="person">人物</string>
+    <string name="organization">组织</string>
+    <string name="event">事件</string>
+    <string name="evidence">证据</string>
+
+
+    <string name="test">test</string>
+    <string name="to_old_ui">换回旧界面</string>
+    <string name="to_new_ui">使用新界面</string>
+
 </resources>

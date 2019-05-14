@@ -17,7 +17,7 @@ import cn.hayring.caseanalyst.activity.TimeAxis;
 import cn.hayring.caseanalyst.activity.ValueSetter.EventClipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.listener.RecyclerItemDeleteDialogListener;
-import cn.hayring.caseanalyst.pojo.EventClip;
+import cn.hayring.caseanalyst.bean.EventClip;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class TimeAxisAdapter extends RecyclerView.Adapter<TimeAxisAdapter.TimeAxisViewHolder> {

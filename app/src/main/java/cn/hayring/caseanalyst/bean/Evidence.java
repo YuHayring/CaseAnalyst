@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,7 +7,7 @@ import java.util.Calendar;
  * 物件，痕迹，证物
  * @author Hayring
  */
-public class Evidence implements Relationable {
+public class Evidence implements HaveHead {
 
     //////////////////证物合成
     /***

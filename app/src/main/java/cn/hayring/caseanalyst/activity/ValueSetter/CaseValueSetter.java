@@ -14,7 +14,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.EventListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.EvidenceListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.OrganizationListActivity;
 import cn.hayring.caseanalyst.activity.ListActivity.PersonListActivity;
-import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.bean.Case;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class CaseValueSetter extends ValueSetter<Case> {
@@ -63,6 +63,10 @@ public class CaseValueSetter extends ValueSetter<Case> {
         saveButton = findViewById(R.id.case_save_button);
         shortTimeCaseSetter = findViewById(R.id.short_time_case_switcher);
 
+        personsEnter = findViewById(R.id.person_list_enter);
+        orgsEnter = findViewById(R.id.org_list_enter);
+        eventsEnter = findViewById(R.id.event_list_enter);
+        evidenceEnter = findViewById(R.id.evidence_list_enter);
 
         if (!isCreate) {
             saveButton.setEnabled(false);
@@ -78,12 +82,13 @@ public class CaseValueSetter extends ValueSetter<Case> {
             infoInputer.setText(instance.getInfo());
             shortTimeCaseSetter.setSelection(instance.isShortTimeCase() ? 0 : 1);
         } else {
+
+            personsEnter.setVisibility(View.GONE);
+            eventsEnter.setVisibility(View.GONE);
+            evidenceEnter.setVisibility(View.GONE);
+            orgsEnter.setVisibility(View.GONE);
             instance = new Case();
         }
-        personsEnter = findViewById(R.id.person_list_enter);
-        orgsEnter = findViewById(R.id.org_list_enter);
-        eventsEnter = findViewById(R.id.event_list_enter);
-        evidenceEnter = findViewById(R.id.evidence_list_enter);
 
         //设置监听器
         saveButton.setOnClickListener(new FinishEditListener());
@@ -97,10 +102,10 @@ public class CaseValueSetter extends ValueSetter<Case> {
     }
 
     /***
-     * 保存
+     * 写入
      */
     @Override
-    protected void save() {
+    protected void writeInstance() {
         instance.setName(nameInputer.getText().toString());
         instance.setInfo(infoInputer.getText().toString());
         int index = shortTimeCaseSetter.getSelectedItemPosition();
@@ -109,7 +114,6 @@ public class CaseValueSetter extends ValueSetter<Case> {
         } else if (index == 1) {
             instance.setShortTimeCase(false);
         }
-        super.save();
     }
 
 

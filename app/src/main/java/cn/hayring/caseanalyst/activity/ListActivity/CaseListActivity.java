@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +18,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
+import cn.hayring.caseanalyst.activity.MainActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.CaseValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
-import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.bean.Case;
 
 /***
  * 案件列表活动
  */
 public class CaseListActivity extends MyListActivity<Case> {
+
+    @Override
+    public int getSingleLayoutId() {
+        return R.layout.single_background_frame;
+    }
+
+    boolean isEditWayNew = true;
 
 
     /***
@@ -49,8 +55,12 @@ public class CaseListActivity extends MyListActivity<Case> {
      * @return
      */
     @Override
-    public Class<CaseValueSetter> getValueSetterClass() {
-        return CaseValueSetter.class;
+    public Class getValueSetterClass() {
+        if (isEditWayNew) {
+            return MainActivity.class;
+        } else {
+            return CaseValueSetter.class;
+        }
     }
 
 
@@ -73,10 +83,10 @@ public class CaseListActivity extends MyListActivity<Case> {
         mainItemListAdapter = new MyListAdapter(this, items);
 
 
-        itemListRecycler.setAdapter(mainItemListAdapter);
+        itemListRecycler.setAdapter(mainItemListAdapter);/*
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
-        itemListRecycler.addItemDecoration(dividerItemDecoration);
+        itemListRecycler.addItemDecoration(dividerItemDecoration);*/
     }
 
 
@@ -125,15 +135,37 @@ public class CaseListActivity extends MyListActivity<Case> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.save_all_case_button) {
-            //new SaveThread().start();
-            Message msg = saveHandler.obtainMessage();
-            msg.obj = mainItemListAdapter.getItems();
-            msg.arg1 = mainItemListAdapter.getItemCount();
-            saveHandler.sendMessage(msg);
-        } else if (item.getItemId() == R.id.create_example_button) {
-            Case caseInstance = cn.hayring.caseanalyst.pojo.PojoInstanceCreater.getConanCase();
-            mainItemListAdapter.addItem(caseInstance);
+        switch (item.getItemId()) {
+            case R.id.save_all_case_button: {
+                //new SaveThread().start();
+                Message msg = saveHandler.obtainMessage();
+                msg.obj = mainItemListAdapter.getItems();
+                msg.arg1 = mainItemListAdapter.getItemCount();
+                saveHandler.sendMessage(msg);
+            }
+            break;
+            case R.id.create_example_button: {
+                Case caseInstance = cn.hayring.caseanalyst.bean.PojoInstanceCreater.getConanCase();
+                mainItemListAdapter.addItem(caseInstance);
+            }
+            break;
+            case R.id.ui_switch_button: {
+                //startActivity(new Intent(this,MainActivity.class));
+                if (isEditWayNew) {
+                    item.setTitle(R.string.to_old_ui);
+                } else {
+                    item.setTitle(R.string.to_new_ui);
+                }
+                isEditWayNew = !isEditWayNew;
+            }
+            break;
+            case R.id.test_button: {
+                //startActivity(new Intent(this, PersonGraphV2.class));
+                Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("Error item id");
         }
 
         return super.onOptionsItemSelected(item);

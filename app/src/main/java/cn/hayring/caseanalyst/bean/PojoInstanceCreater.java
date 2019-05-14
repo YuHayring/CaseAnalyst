@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 
 import java.util.GregorianCalendar;
@@ -21,6 +21,7 @@ public class PojoInstanceCreater {
         shiJi.setGender(Person.MALE);
         caseInstance.getPersons().add(shiJi);
         gin = caseInstance.createPerson("琴酒", true, "黑衣组织高官，喂工藤新一喝药的人");
+
         gin.setAge(45);
         gin.setGender(Person.MALE);
         caseInstance.getPersons().add(gin);
@@ -42,6 +43,7 @@ public class PojoInstanceCreater {
 
 
         Organization blackOrg = caseInstance.createOrganization("黑衣组织", "乌丸集团");
+        gin.setOrganization(blackOrg);
         caseInstance.getOrganizations().add(blackOrg);
 
         //事件发生

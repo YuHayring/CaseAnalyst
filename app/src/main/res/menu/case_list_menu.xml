@@ -6,4 +6,10 @@
     <item
         android:id="@+id/create_example_button"
         android:title="@string/create_new_example" />
+    <item
+        android:id="@+id/ui_switch_button"
+        android:title="@string/to_old_ui" />
+    <item
+        android:id="@+id/test_button"
+        android:title="@string/test" />
 </menu>

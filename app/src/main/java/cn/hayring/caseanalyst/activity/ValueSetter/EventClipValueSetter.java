@@ -9,7 +9,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.pojo.EventClip;
+import cn.hayring.caseanalyst.bean.EventClip;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EventClipValueSetter extends ValueSetter<EventClip> {
@@ -60,13 +60,17 @@ public class EventClipValueSetter extends ValueSetter<EventClip> {
 
 
     @Override
+    protected void writeInstance() {
+
+    }
+    @Override
     protected void save() {
+
         if (instance.getTimePoint().get(Calendar.YEAR) == 1970) {
             Toast.makeText(EventClipValueSetter.this, "时间未设置", Toast.LENGTH_SHORT);
             return;
         }
         instance.setInfo(infoInputer.getText().toString());
-        //requestInfo.putExtra(DATA, instance);
         super.save();
     }
 

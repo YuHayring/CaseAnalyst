@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,8 +22,8 @@ import java.io.InputStream;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Person;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class PersonValueSetter extends ValueSetter<Person> {
@@ -197,7 +196,7 @@ public class PersonValueSetter extends ValueSetter<Person> {
             }
 
             //判断是否有头像并加载
-            if (instance.getImageIndex() != null) {
+            /*if (instance.getImageIndex() != null) {
                 try {
                     FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
@@ -205,19 +204,24 @@ public class PersonValueSetter extends ValueSetter<Person> {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
+            image = loadHeadImage(instance, headImage, this);
 
 
 
 
         } else {
+            manEventRelationshipEnter.setVisibility(View.GONE);
+            manManRelationshipEnter.setVisibility(View.GONE);
+            manOrgRelationshipEnter.setVisibility(View.GONE);
+            manThingRelationshipEnter.setVisibility(View.GONE);
             instance = caseInstance.createPerson();
         }
     }
 
 
     @Override
-    protected void save() {
+    protected void writeInstance() {
         String name = nameInputer.getText().toString();
         String info = infoInputer.getText().toString();
         String nickName = nickNameInputer.getText().toString();
@@ -289,7 +293,6 @@ public class PersonValueSetter extends ValueSetter<Person> {
                 e.printStackTrace();
             }
         }
-        super.save();
     }
 
 
@@ -360,6 +363,13 @@ public class PersonValueSetter extends ValueSetter<Person> {
         }
 
 
+    }
+
+    @Override
+    protected void onDestory() {
+        if (instance.getImageIndex() != null) {
+            deleteFile(instance.getImageIndex() + ".jpg");
+        }
     }
 
 

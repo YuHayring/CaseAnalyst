@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/person_graph_v2_root"
+    android:background="@drawable/value_setter_background"
+    android:gravity="center">
+    <!--FrameLayout
+        android:id="@+id/dash_arrow_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /-->
+
+
+    <cn.hayring.caseanalyst.view.HVScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/person_graph_v2_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="horizontal|vertical"
+        android:scrollbars="horizontal|vertical"
+        app:childLayoutCenter="true"
+        app:fillViewportH="true"
+        app:fillViewportV="true"
+        app:scrollOrientation="both">
+
+
+        <!-- app:scrollOrientation="both" 可以滚动的方向，默认双向滚动-->
+        <!--childLayoutCenter 内容是否居中显示，默认false右上角对齐-->
+        <!--fillViewportV  垂直内容宽度是否充满，默认false自适应-->
+        <!--fillViewportV  水平内容高度是否充满，默认false自适应-->
+
+        <!--android:scrollbars="horizontal|vertical" 显示滚动条-->
+        <!--android:fadingEdge="horizontal|vertical" 显示滚动条-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dash_arrow_root">
+            <!--TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="扩充测试扩充测试扩充测试扩充测试扩充测试扩充测试扩充测试"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:ems="1"
+                android:text="扩充测试扩充测试扩充测试扩充测试扩充测试扩充测试扩充测试扩充测试"
+                android:textSize="25sp"/-->
+            <LinearLayout
+                android:id="@+id/person_graph_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <GridLayout
+                    android:id="@+id/non_org_person_graph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></GridLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+
+    </cn.hayring.caseanalyst.view.HVScrollView>
+
+
+</FrameLayout>

@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 import java.util.ArrayList;
 
@@ -216,10 +216,6 @@ public class Event implements Relationable {
         }
     }
 
-    @Override
-    public Integer getImageIndex() {
-        return null;
-    }
 
     /***
      * 删除时调用

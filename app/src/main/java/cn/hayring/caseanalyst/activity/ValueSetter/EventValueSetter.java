@@ -9,8 +9,8 @@ import android.widget.TextView;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.activity.TimeAxis;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Event;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EventValueSetter extends ValueSetter<Event> {
@@ -47,6 +47,8 @@ public class EventValueSetter extends ValueSetter<Event> {
         infoInputer = findViewById(R.id.event_info_inputer);
         saveButton = findViewById(R.id.event_save_button);
         timeAxisEnter = findViewById(R.id.time_axis_enter);
+        orgEventRelationshipEnter = sonView.findViewById(R.id.org_event_relationship_text_view);
+        manEventRelationshipEnter = sonView.findViewById(R.id.man_event_relationship_text_view);
 
         if (!isCreate) {
 
@@ -58,11 +60,11 @@ public class EventValueSetter extends ValueSetter<Event> {
             nameInputer.setText(instance.getName());
             infoInputer.setText(instance.getInfo());
         } else {
+            manEventRelationshipEnter.setVisibility(View.GONE);
+            orgEventRelationshipEnter.setVisibility(View.GONE);
             instance = caseInstance.createEvent();
         }
 
-        orgEventRelationshipEnter = sonView.findViewById(R.id.org_event_relationship_text_view);
-        manEventRelationshipEnter = sonView.findViewById(R.id.man_event_relationship_text_view);
 
         //设置监听器
         saveButton.setOnClickListener(new FinishEditListener());
@@ -77,11 +79,9 @@ public class EventValueSetter extends ValueSetter<Event> {
 
 
     @Override
-    protected void save() {
+    protected void writeInstance() {
         instance.setName(nameInputer.getText().toString());
         instance.setInfo(infoInputer.getText().toString());
-        //requestInfo.putExtra(DATA, instance);
-        super.save();
     }
 
     /***
@@ -118,10 +118,6 @@ public class EventValueSetter extends ValueSetter<Event> {
             startActivity(intent);
         }
     }
-
-
-
-
 
 
 }

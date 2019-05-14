@@ -2,9 +2,7 @@ package cn.hayring.caseanalyst.activity.adapter;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +11,16 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
+import cn.hayring.caseanalyst.bean.Case;
+import cn.hayring.caseanalyst.bean.Evidence;
+import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Listable;
+import cn.hayring.caseanalyst.bean.Organization;
+import cn.hayring.caseanalyst.bean.Person;
+import cn.hayring.caseanalyst.bean.Relationable;
 import cn.hayring.caseanalyst.listener.RecyclerItemDeleteDialogListener;
-import cn.hayring.caseanalyst.pojo.Case;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Listable;
-import cn.hayring.caseanalyst.pojo.Organization;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationable;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 /***
@@ -34,7 +32,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
     /***
      * 名字显示长度限制
      */
-    public static final int NAME_CHAR_LENGTH = 7;
+    public static final int NAME_CHAR_LENGTH = 11;
 
     /***
      * 信息显示长度限制
@@ -139,59 +137,6 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
     /***
      * 元素删除监听器
      */
-    class DeleteDialogListener implements View.OnLongClickListener {
-
-
-        @Override
-        public boolean onLongClick(View view) {
-            AlertDialog alertDialog = new AlertDialog.Builder(mActivity)
-                    .setTitle("警告！")
-                    .setMessage("是否要删除？")
-                    //.setIcon(R.mipmap.ic_launcher)
-                    .setPositiveButton("确定", new ConfirmDeleteItemListener(view))
-
-                    .setNegativeButton("取消", null)
-                    /*
-                    .setNeutralButton("普通按钮", new DialogInterface.OnClickListener() {//添加普通按钮
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(AlertDialogActivity.this, "---info----", Toast.LENGTH_SHORT).show();
-                        }
-                    })*/
-                    .create();
-            alertDialog.show();
-            return true;
-        }
-    }
-
-    /***
-     * 确认删除监听器
-     */
-    class ConfirmDeleteItemListener implements DialogInterface.OnClickListener {//添加"Yes"按钮
-        View view;
-
-        public ConfirmDeleteItemListener(View view) {
-            super();
-            this.view = view;
-        }
-
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
-            Class clazz = mActivity.getTClass();
-
-            //若删除的是的有头像的类,删除其图片
-            if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
-                Relationable instance = (Relationable) items.get(position);
-                if (instance.getImageIndex() != null) {
-                    mActivity.deleteFile(instance.getImageIndex() + ".jpg");
-                }
-            }
-            deleteItem(position);
-        }
-    }
-
-
     class deleteItemListener extends RecyclerItemDeleteDialogListener {
 
         public deleteItemListener(Context context) {
@@ -204,7 +149,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
             //若删除的是的有头像的类,删除其图片
             if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
-                Relationable instance = (Relationable) items.get(index);
+                HaveHead instance = (HaveHead) items.get(index);
                 if (instance.getImageIndex() != null) {
                     mActivity.deleteFile(instance.getImageIndex() + ".jpg");
                 }
@@ -237,7 +182,8 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
     @Override
     public ListableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //注册单个元素的layout
-        View v = LayoutInflater.from(mActivity).inflate(R.layout.single_item_list_frame, parent, false);
+        View v;
+        v = LayoutInflater.from(mActivity).inflate(mActivity.getSingleLayoutId(), parent, false);
         return new ListableViewHolder(v);
     }
 

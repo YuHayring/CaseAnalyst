@@ -1,7 +1,8 @@
 package cn.hayring.caseanalyst.activity.ListActivity;
 
+import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.EvidenceValueSetter;
-import cn.hayring.caseanalyst.pojo.Evidence;
+import cn.hayring.caseanalyst.bean.Evidence;
 
 public class EvidenceListActivity extends MyListActivity<Evidence> {
 
@@ -23,7 +24,10 @@ public class EvidenceListActivity extends MyListActivity<Evidence> {
         return EvidenceValueSetter.class;
     }
 
-
+    @Override
+    public int getSingleLayoutId() {
+        return R.layout.single_head_frame;
+    }
 
 
 }

@@ -2,16 +2,22 @@ package cn.hayring.caseanalyst.activity.ValueSetter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,7 +25,8 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.bean.Case;
+import cn.hayring.caseanalyst.bean.HaveHead;
 import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
@@ -57,8 +64,7 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     public static Random random = new Random();
 
 
-    //废弃
-    //protected ArrayList<EditText> editTexts;
+    Toolbar toolbar;
 
     /***
      * 保存按钮
@@ -78,7 +84,7 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     /***
      * 案件实例
      */
-    public static Case caseInstance;
+    static Case caseInstance;
 
 
     ////-----------------------------debug code
@@ -102,6 +108,8 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
         //editTexts = new ArrayList<EditText>();
         requestInfo = getIntent();
         isCreate = requestInfo.getBooleanExtra(CREATE_OR_NOT, true);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     /***
@@ -121,15 +129,28 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     }
 
     /***
-     * 保存，必须被重写
+     * 保存
      */
     @CallSuper
     protected void save() {
+        writeInstance();
         requestInfo.putExtra(CHANGED, true);
         if (isCreate) {
             Pointer.setPoint(instance);
         }
     }
+
+    /***
+     * 删除
+     */
+    protected void onDestory() {
+
+    }
+
+    /***
+     * 写入内存
+     */
+    protected abstract void writeInstance();
 
 
     /***
@@ -247,18 +268,46 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     }
 
 
+    @Override
+    public void onPause() {
+        writeInstance();
+        super.onPause();
+    }
+
+
+
     /***
      * 返回键判断是否需要保存
      */
     @Override
     public void finish() {
         if (isCreate) {
+            onDestory();
             requestInfo.putExtra(CHANGED, false);
         } else {
             save();
         }
         setResult(2, requestInfo);
         super.finish();
+    }
+
+    public static void setCaseInstance(Case caseInstance) {
+        ValueSetter.caseInstance = caseInstance;
+    }
+
+    public static Bitmap loadHeadImage(HaveHead instance, ImageView headImage, Context context) {
+        if (instance.getImageIndex() != null) {
+            try {
+                FileInputStream headIS = context.openFileInput(instance.getImageIndex() + ".jpg");
+                Bitmap image = BitmapFactory.decodeStream(headIS);
+                headImage.setImageBitmap(image);
+                return image;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 
 }

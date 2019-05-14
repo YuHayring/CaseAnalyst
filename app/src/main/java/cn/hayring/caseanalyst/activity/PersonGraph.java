@@ -21,13 +21,13 @@ import java.util.Map;
 import java.util.Queue;
 
 import cn.hayring.caseanalyst.R;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Person;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 import cn.hayring.caseanalyst.view.Circle;
 import cn.hayring.caseanalyst.view.CustumViewGroup;
 import cn.hayring.caseanalyst.view.DashArrow;
-import cn.hayring.caseanalyst.view.PersonItemOnTouchListener;
+import cn.hayring.caseanalyst.listener.PersonItemOnTouchListener;
 
 /***
  * 人物关系图Activity
@@ -64,7 +64,7 @@ public class PersonGraph extends AppCompatActivity {
         setContentView(R.layout.activity_person_graph);
 
         //注册控件
-        linearLayout = findViewById(R.id.person_graph_root);
+        linearLayout = findViewById(R.id.person_graph_v2_scroll);
         persons = (ArrayList<Person>) Pointer.getPoint();
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -145,6 +145,7 @@ public class PersonGraph extends AppCompatActivity {
         GraphLoopTest tool = new GraphLoopTest(persons);
         //广度优先画图
         tool.BFSSearch(persons.get(0));
+        //头像置顶
         custumViewGroup.bringToFront();
     }
 

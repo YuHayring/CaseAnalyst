@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 
 import java.util.ArrayList;
@@ -38,6 +38,15 @@ public class Case implements Listable {
      */
     protected ArrayList<Organization> organizations;
 
+    public ArrayList<Person> getNonOrgPersons() {
+        return nonOrgPersons;
+    }
+
+    /***
+     * 无组织成员
+     */
+    protected ArrayList<Person> nonOrgPersons;
+
 
     /***
      * 是否是短期案件
@@ -49,6 +58,7 @@ public class Case implements Listable {
         persons = new ArrayList<Person>();
         evidences = new ArrayList<Evidence>();
         events = new ArrayList<Event>();
+        nonOrgPersons = new ArrayList<Person>();
     }
 
     public Case(String name, String info) {
@@ -91,6 +101,7 @@ public class Case implements Listable {
         Person person = new Person(name, suspect, info);
         //persons.add(person);
         person.setParentCase(this);
+        nonOrgPersons.add(person);
         return person;
     }
 
@@ -98,6 +109,7 @@ public class Case implements Listable {
         Person person = new Person();
         //persons.add(person);
         person.setParentCase(this);
+        nonOrgPersons.add(person);
         return person;
     }
 

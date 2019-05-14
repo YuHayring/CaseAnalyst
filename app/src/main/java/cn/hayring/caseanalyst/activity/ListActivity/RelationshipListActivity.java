@@ -19,8 +19,8 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.RelationshipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.RelationshipListAdapter;
-import cn.hayring.caseanalyst.pojo.Relationable;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Relationable;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class RelationshipListActivity<T extends Relationship> extends AppCompatActivity {

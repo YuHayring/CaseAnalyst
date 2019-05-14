@@ -26,10 +26,10 @@ public class DashArrow extends View {
         this.redrawed = false;
     }
 
-    private int lastX;
-    private int lastY;
-    private Circle startView;
-    private Circle endView;
+    protected int lastX;
+    protected int lastY;
+    protected Circle startView;
+    protected Circle endView;
 
     Context context;
 
@@ -85,7 +85,7 @@ public class DashArrow extends View {
 
     }
 
-    private void calculate() {
+    protected void calculate() {
         int[] location = new int[2];
         startView.getLocationInWindow(location);
         x1 = location[0] + startView.getWidth() / 2;

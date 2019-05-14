@@ -17,7 +17,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.RelationshipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.listener.RecyclerItemDeleteDialogListener;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 /***

@@ -3,10 +3,8 @@ package cn.hayring.caseanalyst.activity.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.MyListAdapter;
-import cn.hayring.caseanalyst.pojo.Listable;
+import cn.hayring.caseanalyst.bean.Listable;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 /***
@@ -30,6 +28,12 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
      * @return
      */
     public abstract Class<T> getTClass();
+
+    /***
+     * 获取元素布局id
+     * @return
+     */
+    public abstract int getSingleLayoutId();
 
     /***
      * 获得本Activity所对应的元素类型
@@ -57,6 +61,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
      * 列表View
      */
     RecyclerView itemListRecycler;
+
     /***
      * 列表适配器
      */
@@ -96,10 +101,10 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         mainItemListAdapter = new MyListAdapter(this, items);
 
 
-        itemListRecycler.setAdapter(mainItemListAdapter);
+        itemListRecycler.setAdapter(mainItemListAdapter);/*
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
-        itemListRecycler.addItemDecoration(dividerItemDecoration);
+        itemListRecycler.addItemDecoration(dividerItemDecoration);*/
 
 
         requestInfo = getIntent();

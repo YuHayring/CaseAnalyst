@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,8 +20,8 @@ import java.io.InputStream;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
-import cn.hayring.caseanalyst.pojo.Organization;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Organization;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class OrganizationValueSetter extends ValueSetter<Organization> {
@@ -78,6 +77,11 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
         saveButton = findViewById(R.id.org_save_button);
         headImage = findViewById(R.id.org_image);
 
+        orgEventRelationshipEnter = sonView.findViewById(R.id.org_event_relationship_text_view);
+        orgOrgRelationshipEnter = sonView.findViewById(R.id.org_org_relationship_text_view);
+        manOrgRelationshipEnter = sonView.findViewById(R.id.man_org_relationship_text_view);
+        orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
+
 
         if (!isCreate) {
             saveButton.setEnabled(false);
@@ -90,7 +94,7 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
             infoInputer.setText(instance.getInfo());
 
             //判断是否有头像并加载
-            if (instance.getImageIndex() != null) {
+            /*if (instance.getImageIndex() != null) {
                 try {
                     FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
@@ -98,15 +102,15 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
+            image = loadHeadImage(instance, headImage, this);
         } else {
+            orgEventRelationshipEnter.setVisibility(View.GONE);
+            orgOrgRelationshipEnter.setVisibility(View.GONE);
+            orgThingRelationshipEnter.setVisibility(View.GONE);
+            manOrgRelationshipEnter.setVisibility(View.GONE);
             instance = caseInstance.createOrganization();
         }
-
-        orgEventRelationshipEnter = sonView.findViewById(R.id.org_event_relationship_text_view);
-        orgOrgRelationshipEnter = sonView.findViewById(R.id.org_org_relationship_text_view);
-        manOrgRelationshipEnter = sonView.findViewById(R.id.man_org_relationship_text_view);
-        orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
 
         //设置监听器
         saveButton.setOnClickListener(new FinishEditListener());
@@ -129,7 +133,7 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
 
 
     @Override
-    protected void save() {
+    protected void writeInstance() {
         instance.setName(nameInputer.getText().toString());
         instance.setInfo(infoInputer.getText().toString());
         //requestInfo.putExtra(DATA, instance);
@@ -155,7 +159,6 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
                 e.printStackTrace();
             }
         }
-        super.save();
     }
 
     /***
@@ -251,6 +254,13 @@ public class OrganizationValueSetter extends ValueSetter<Organization> {
         }*/
 
 
+    }
+
+    @Override
+    protected void onDestory() {
+        if (instance.getImageIndex() != null) {
+            deleteFile(instance.getImageIndex() + ".jpg");
+        }
     }
 
 

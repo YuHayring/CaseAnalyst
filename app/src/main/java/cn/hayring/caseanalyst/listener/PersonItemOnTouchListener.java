@@ -1,8 +1,11 @@
-package cn.hayring.caseanalyst.view;
+package cn.hayring.caseanalyst.listener;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import cn.hayring.caseanalyst.view.Circle;
+import cn.hayring.caseanalyst.view.DashArrow;
 
 /***
  * 人物关系图中的元素触摸监听器

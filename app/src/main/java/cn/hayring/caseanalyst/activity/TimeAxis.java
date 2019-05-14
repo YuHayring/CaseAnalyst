@@ -16,7 +16,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.EventClipValueSetter;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.TimeAxisAdapter;
-import cn.hayring.caseanalyst.pojo.EventClip;
+import cn.hayring.caseanalyst.bean.EventClip;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class TimeAxis extends AppCompatActivity {

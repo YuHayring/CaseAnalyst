@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements Relationable {
+public class Organization implements HaveHead {
 
     /***
      * 头像资源id
@@ -56,8 +56,19 @@ public class Organization implements Relationable {
      */
     protected ArrayList<Relationship<Person, Organization>> manOrgRelationships;
 
-    //所属案件
+    /***
+     * 所属案件
+     */
     protected Case parentCase;
+
+    public ArrayList<Person> getMembers() {
+        return members;
+    }
+
+    /***
+     * 成员
+     */
+    protected ArrayList<Person> members;
 
     public Case getParentCase() {
         return parentCase;
@@ -75,6 +86,7 @@ public class Organization implements Relationable {
         orgEventRelationships = new ArrayList<Relationship<Organization, Event>>();
         orgOrgRelationships = new ArrayList<Relationship<Organization, Organization>>();
         manOrgRelationships = new ArrayList<Relationship<Person, Organization>>();
+        members = new ArrayList<Person>();
 
     }
 
@@ -114,6 +126,10 @@ public class Organization implements Relationable {
         Relationship.removeAllRelationship(orgOrgRelationships);
         Relationship.removeAllRelationship(orgThingRelationships);
         Relationship.removeAllRelationship(manOrgRelationships);
+        //????????
+        for (Person person : members) {
+            person.clearOrganization();
+        }
     }
 
     public void setImageIndex(Integer imageIndex) {

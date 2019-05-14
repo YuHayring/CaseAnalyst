@@ -14,7 +14,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,8 +23,8 @@ import java.util.GregorianCalendar;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.RelationshipListActivity;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Evidence;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class EvidenceValueSetter extends ValueSetter<Evidence> {
@@ -91,6 +90,8 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
         headImage = findViewById(R.id.evidence_image);
         createDate = findViewById(R.id.create_date);
         createTime = findViewById(R.id.create_time);
+        manThingRelationshipEnter = sonView.findViewById(R.id.man_thing_relationship_text_view);
+        orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
 
 
         if (!isCreate) {
@@ -118,7 +119,7 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
             }
 
             //判断是否有头像并加载
-            if (instance.getImageIndex() != null) {
+            /*if (instance.getImageIndex() != null) {
                 try {
                     FileInputStream headIS = openFileInput(instance.getImageIndex() + ".jpg");
                     image = BitmapFactory.decodeStream(headIS);
@@ -126,16 +127,17 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
+            image = loadHeadImage(instance, headImage, this);
 
 
         } else {
+            manThingRelationshipEnter.setVisibility(View.GONE);
+            orgThingRelationshipEnter.setVisibility(View.GONE);
             instance = caseInstance.createEvidence();
             //2000-1-1 00:00
             time = new GregorianCalendar(2000, 1, 1, 0, 0);
         }
-        manThingRelationshipEnter = sonView.findViewById(R.id.man_thing_relationship_text_view);
-        orgThingRelationshipEnter = sonView.findViewById(R.id.org_thing_relationship_text_view);
 
 
 
@@ -159,7 +161,7 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
 
 
     @Override
-    protected void save() {
+    protected void writeInstance() {
         instance.setName(nameInputer.getText().toString());
         instance.setInfo(infoInputer.getText().toString());
         String countStr = countInputer.getText().toString();
@@ -193,7 +195,6 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
         if (time.get(Calendar.YEAR) != 1970) {
             instance.setCreatedTime(time);
         }
-        super.save();
     }
 
 
@@ -231,24 +232,6 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
 
         //将返回的头像存进内存
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            /*try {
-                Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor actualimagecursor = getContentResolver().query(uri, proj, null, null, null);
-                int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                actualimagecursor.moveToFirst();
-                String img_path = actualimagecursor.getString(actual_image_column_index);
-                File file = new File(img_path);
-                if (file.exists()) {
-                    FileInputStream headIS = new FileInputStream(file);
-                    Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
-                    headImage.setImageBitmap(headBitmap);
-                    imageChanged = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "选择的文件无效，请选择从 文件管理→内部存储路径 选择合适的文件", Toast.LENGTH_LONG).show();
-            }*/
 
             //Bundle extras = data.getExtras();
             try {
@@ -266,21 +249,14 @@ public class EvidenceValueSetter extends ValueSetter<Evidence> {
 
         }
 
-        /*//未改变就结束
-        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true)) {
-            return;
-        }
-        ArrayList data = (ArrayList) itemTransporter.getSerializableExtra(ValueSetter.DATA);
-        int type = itemTransporter.getIntExtra(ValueSetter.RELATIONSHIP_TYPE, -1);
-        if (type == Relationship.ORG_EVIDENCE) {
-            instance.setOrgThingRelationships(data);
-        } else if (type == Relationship.MAN_EVIDENCE) {
-            instance.setManThingRelationships(data);
-        } else {
-            throw new IllegalArgumentException("Error relationship type!");
-        }
-*/
 
+    }
+
+    @Override
+    protected void onDestory() {
+        if (instance.getImageIndex() != null) {
+            deleteFile(instance.getImageIndex() + ".jpg");
+        }
     }
 
 

@@ -2,11 +2,11 @@ package cn.hayring.caseanalyst;
 
 import org.junit.Test;
 
-import cn.hayring.caseanalyst.pojo.Case;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Case;
+import cn.hayring.caseanalyst.bean.Event;
+import cn.hayring.caseanalyst.bean.Evidence;
+import cn.hayring.caseanalyst.bean.Person;
+import cn.hayring.caseanalyst.bean.Relationship;
 
 import static org.junit.Assert.assertEquals;
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.PersonGraph;
 import cn.hayring.caseanalyst.activity.ValueSetter.PersonValueSetter;
-import cn.hayring.caseanalyst.pojo.Person;
+import cn.hayring.caseanalyst.bean.Person;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 /***
@@ -35,7 +35,10 @@ public class PersonListActivity extends MyListActivity<Person> {
         return PersonValueSetter.class;
     }
 
-
+    @Override
+    public int getSingleLayoutId() {
+        return R.layout.single_head_frame;
+    }
 
 
     /***

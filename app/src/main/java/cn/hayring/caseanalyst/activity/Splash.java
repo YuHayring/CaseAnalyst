@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.CaseListActivity;
-import cn.hayring.caseanalyst.pojo.Case;
+import cn.hayring.caseanalyst.bean.Case;
 
 public class Splash extends AppCompatActivity {
 

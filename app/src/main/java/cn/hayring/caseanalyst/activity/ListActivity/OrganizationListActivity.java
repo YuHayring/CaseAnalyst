@@ -1,7 +1,8 @@
 package cn.hayring.caseanalyst.activity.ListActivity;
 
+import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ValueSetter.OrganizationValueSetter;
-import cn.hayring.caseanalyst.pojo.Organization;
+import cn.hayring.caseanalyst.bean.Organization;
 
 /***
  * 能动单元列表
@@ -26,5 +27,9 @@ public class OrganizationListActivity extends MyListActivity<Organization> {
         return OrganizationValueSetter.class;
     }
 
+    @Override
+    public int getSingleLayoutId() {
+        return R.layout.single_head_frame;
+    }
 
 }

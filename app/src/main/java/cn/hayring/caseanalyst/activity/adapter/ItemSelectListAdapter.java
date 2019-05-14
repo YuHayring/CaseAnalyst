@@ -10,7 +10,7 @@ import java.util.List;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.ItemSelectListActivity;
-import cn.hayring.caseanalyst.pojo.Listable;
+import cn.hayring.caseanalyst.bean.Listable;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 /***

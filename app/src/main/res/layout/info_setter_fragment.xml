@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <include layout="@layout/app_bar" />
+
+    <ScrollView
+        android:background="@drawable/value_setter_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/case_value_setter_view"
+        android:padding="40dp">
+
+        <LinearLayout
+            android:id="@+id/case_value_setter_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/case_name_inputer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/case_name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/case_info_inputer"
+                    android:layout_width="match_parent"
+                    android:layout_height="116dp"
+                    android:hint="@string/case_info"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/label_is_short_time_case"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/is_short_time_case" />
+
+            <Spinner
+                android:id="@+id/short_time_case_switcher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/boolean_not_null" />
+
+            <TextView
+                android:id="@+id/person_list_enter"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="58sp"
+                android:textSize="36sp"
+                android:text="@string/person_list_enter" />
+
+            <TextView
+                android:id="@+id/org_list_enter"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="58sp"
+                android:textSize="36sp"
+                android:text="@string/org_list_enter" />
+
+            <TextView
+                android:id="@+id/event_list_enter"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="58sp"
+                android:textSize="36sp"
+                android:text="@string/event_list_enter" />
+
+            <TextView
+                android:id="@+id/evidence_list_enter"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="58sp"
+                android:textSize="36sp"
+                android:text="@string/evidence_list_enter" />
+
+            <Button
+                android:id="@+id/case_save_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/save"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

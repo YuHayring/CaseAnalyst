@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 public interface Relationable extends Listable {
 
@@ -7,11 +7,6 @@ public interface Relationable extends Listable {
      * @param instance
      */
     public void regRelationship(Relationship instance);
-
-    /***
-     * 返回头像id
-     */
-    public Integer getImageIndex();
 
     /***
      * 删除时解除关系

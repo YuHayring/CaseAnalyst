@@ -1,8 +1,6 @@
 package cn.hayring.caseanalyst.activity.ValueSetter;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -10,19 +8,18 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.ItemSelectListActivity;
-import cn.hayring.caseanalyst.pojo.Event;
-import cn.hayring.caseanalyst.pojo.Evidence;
-import cn.hayring.caseanalyst.pojo.Listable;
-import cn.hayring.caseanalyst.pojo.Organization;
-import cn.hayring.caseanalyst.pojo.Person;
-import cn.hayring.caseanalyst.pojo.Relationable;
-import cn.hayring.caseanalyst.pojo.Relationship;
+import cn.hayring.caseanalyst.bean.Event;
+import cn.hayring.caseanalyst.bean.Evidence;
+import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Listable;
+import cn.hayring.caseanalyst.bean.Organization;
+import cn.hayring.caseanalyst.bean.Person;
+import cn.hayring.caseanalyst.bean.Relationable;
+import cn.hayring.caseanalyst.bean.Relationship;
 import cn.hayring.caseanalyst.utils.Pointer;
 
 public class RelationshipValueSetter<T extends Relationable, E extends Relationable> extends ValueSetter<Relationship<T, E>> {
@@ -127,28 +124,14 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
 
             //Event只会在E的位置出现，判断是否有头像并加载
-            if (!(itemE instanceof Event) && itemE.getImageIndex() != null) {
-                try {
-                    FileInputStream headIS = openFileInput(itemE.getImageIndex() + ".jpg");
-                    Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
-                    imageViewE.setImageBitmap(headBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+            if (!(itemE instanceof Event)) {
+                loadHeadImage((HaveHead) itemE, imageViewE, this);
             } else if (itemE instanceof Event) {
                 imageViewE.setEnabled(false);
             }
 
             //判断是否有头像并加载
-            if (itemT.getImageIndex() != null) {
-                try {
-                    FileInputStream headIS = openFileInput(itemT.getImageIndex() + ".jpg");
-                    Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
-                    imageViewT.setImageBitmap(headBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+            loadHeadImage((HaveHead) itemT, imageViewT, this);
 
 
         } else {
@@ -169,25 +152,9 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
             if (!(connector instanceof Event)) {
                 if (isEConnector) {
-                    if (itemE.getImageIndex() != null) {
-                        try {
-                            FileInputStream headIS = openFileInput(itemE.getImageIndex() + ".jpg");
-                            Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
-                            imageViewE.setImageBitmap(headBitmap);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    loadHeadImage((HaveHead) itemE, imageViewE, this);
                 } else {
-                    if (itemT.getImageIndex() != null) {
-                        try {
-                            FileInputStream headIS = openFileInput(itemT.getImageIndex() + ".jpg");
-                            Bitmap headBitmap = BitmapFactory.decodeStream(headIS);
-                            imageViewT.setImageBitmap(headBitmap);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    loadHeadImage((HaveHead) itemT, imageViewT, this);
                 }
             }
         }
@@ -197,12 +164,16 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
 
     @Override
-    protected void save() {
+    protected void writeInstance() {
         instance.setItemE(itemE);
         instance.setItemT(itemT);
         instance.setKey(keyInputer.getText().toString());
         instance.setInfo(infoInputer.getText().toString());
+    }
 
+    @Override
+    protected void save() {
+        writeInstance();
         if (isEConnector) {
             itemT.regRelationship(instance);
         } else {

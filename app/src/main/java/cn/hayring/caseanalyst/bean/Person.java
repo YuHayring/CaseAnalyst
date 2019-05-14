@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.pojo;
+package cn.hayring.caseanalyst.bean;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements Relationable {
+public class Person implements HaveHead {
     /***
      * 姓名
      */
@@ -82,6 +82,29 @@ public class Person implements Relationable {
      * 人与组织关系集合
      */
     protected ArrayList<Relationship<Person, Organization>> manOrgRelationships;
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        organization.getMembers().add(this);
+        parentCase.getNonOrgPersons().remove(this);
+        this.organization = organization;
+    }
+
+    public void clearOrganization() {
+        organization.getMembers().remove(this);
+        parentCase.getNonOrgPersons().add(this);
+        organization = null;
+    }
+
+    /***
+     * 所属组织
+     */
+    protected Organization organization;
+
+
 
 
     /***
@@ -167,7 +190,13 @@ public class Person implements Relationable {
         Relationship.removeAllRelationship(manManRelationships);
         Relationship.removeAllRelationship(manOrgRelationships);
         Relationship.removeAllRelationship(manThingRelationships);
+        if (organization == null) {
+            parentCase.getNonOrgPersons().remove(this);
+        } else {
+            organization.getMembers().remove(this);
+        }
     }
+
 
     public void setImageIndex(Integer imageIndex) {
         this.imageIndex = imageIndex;
