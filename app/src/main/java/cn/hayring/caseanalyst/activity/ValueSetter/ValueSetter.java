@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.bean.Case;
-import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Avatars;
 import cn.hayring.caseanalyst.utils.BasisTimesUtils;
 import cn.hayring.caseanalyst.utils.Pointer;
 
@@ -295,7 +295,7 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
         ValueSetter.caseInstance = caseInstance;
     }
 
-    public static Bitmap loadHeadImage(HaveHead instance, ImageView headImage, Context context) {
+    public static Bitmap loadHeadImage(Avatars instance, ImageView headImage, Context context) {
         if (instance.getImageIndex() != null) {
             try {
                 FileInputStream headIS = context.openFileInput(instance.getImageIndex() + ".jpg");

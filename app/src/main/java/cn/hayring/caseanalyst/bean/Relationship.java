@@ -3,6 +3,11 @@ package cn.hayring.caseanalyst.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @param <T>
+ * @param <E>
+ * @author hayring
+ */
 public class Relationship<T extends Relationable, E extends Relationable> implements Serializable {
 
     protected int type;

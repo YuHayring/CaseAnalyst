@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="205dp"
+    android:layout_height="150dp"
+    android:background="@drawable/relationship_bac"
+    android:layout_gravity="bottom|right"
+    android:layout_margin="20dp"
+    android:id="@+id/relationship_window">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/t_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/t_name"
+        android:layout_gravity="center|top"
+        android:textSize="25dp"
+        android:layout_marginTop="15dp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="@string/key"
+        android:layout_gravity="center" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/e_name"
+        android:text="@string/e_name"
+        android:textSize="25dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center|top" />
+
 
 </FrameLayout>

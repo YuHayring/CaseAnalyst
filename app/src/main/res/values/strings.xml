@@ -87,4 +87,7 @@
     <string name="to_old_ui">换回旧界面</string>
     <string name="to_new_ui">使用新界面</string>
 
+    <string name="t_name">T name</string>
+    <string name="e_name">E name</string>
+
 </resources>

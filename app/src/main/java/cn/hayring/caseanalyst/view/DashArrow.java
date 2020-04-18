@@ -41,6 +41,10 @@ public class DashArrow extends View {
 
     int height;
 
+    public DashArrow(Context context) {
+        super(context);
+    }
+
 
     public DashArrow(Context context, Circle startView, Circle endView, int height) {
         super(context);

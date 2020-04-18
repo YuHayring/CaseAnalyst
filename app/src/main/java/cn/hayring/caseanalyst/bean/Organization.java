@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * A group or an organization.
  * @author Hayring
  */
-public class Organization implements HaveHead {
+public class Organization implements Avatars {
 
     /***
      * 头像资源id

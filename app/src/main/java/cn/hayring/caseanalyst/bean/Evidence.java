@@ -7,9 +7,10 @@ import java.util.Calendar;
  * 物件，痕迹，证物
  * @author Hayring
  */
-public class Evidence implements HaveHead {
+public class Evidence implements Avatars {
 
-    //////////////////证物合成
+    //Todo证物合成
+
     /***
      * 证物名称
      */

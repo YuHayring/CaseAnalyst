@@ -5,9 +5,10 @@ import java.io.Serializable;
 
 /***
  * 继承Serializable 是为了putExtra(Serializable)
+ * @author hayring
  */
 public interface Listable extends Serializable {
-    public String getName();
+    String getName();
 
-    public String getInfo();
+    String getInfo();
 }

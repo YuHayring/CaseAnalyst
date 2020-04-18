@@ -67,5 +67,7 @@
 
     </cn.hayring.caseanalyst.view.HVScrollView>
 
+    <include layout="@layout/relationship_window" />
+
 
 </FrameLayout>

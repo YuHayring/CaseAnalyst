@@ -14,10 +14,11 @@
         android:roundIcon="@mipmap/holmes_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.InferenceMap"></activity>
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_case_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.TimeAxis" />
         <activity android:name=".activity.PersonGraph" />
         <activity android:name=".activity.Splash">

@@ -15,7 +15,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.bean.Case;
 import cn.hayring.caseanalyst.bean.Evidence;
-import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Avatars;
 import cn.hayring.caseanalyst.bean.Listable;
 import cn.hayring.caseanalyst.bean.Organization;
 import cn.hayring.caseanalyst.bean.Person;
@@ -149,7 +149,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
 
             //若删除的是的有头像的类,删除其图片
             if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
-                HaveHead instance = (HaveHead) items.get(index);
+                Avatars instance = (Avatars) items.get(index);
                 if (instance.getImageIndex() != null) {
                     mActivity.deleteFile(instance.getImageIndex() + ".jpg");
                 }

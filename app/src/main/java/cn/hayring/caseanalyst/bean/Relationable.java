@@ -1,15 +1,18 @@
 package cn.hayring.caseanalyst.bean;
 
+/**
+ * @author hayring
+ */
 public interface Relationable extends Listable {
 
     /***
      * 关系注册
      * @param instance
      */
-    public void regRelationship(Relationship instance);
+    void regRelationship(Relationship instance);
 
     /***
      * 删除时解除关系
      */
-    public void removeSelf();
+    void removeSelf();
 }

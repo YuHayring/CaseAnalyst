@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * 案件参与的人
  * @author Hayring
  */
-public class Person implements HaveHead {
+public class Person implements Avatars {
     /***
      * 姓名
      */

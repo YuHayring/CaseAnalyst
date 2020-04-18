@@ -14,7 +14,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.activity.ListActivity.ItemSelectListActivity;
 import cn.hayring.caseanalyst.bean.Event;
 import cn.hayring.caseanalyst.bean.Evidence;
-import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Avatars;
 import cn.hayring.caseanalyst.bean.Listable;
 import cn.hayring.caseanalyst.bean.Organization;
 import cn.hayring.caseanalyst.bean.Person;
@@ -125,13 +125,13 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
             //Event只会在E的位置出现，判断是否有头像并加载
             if (!(itemE instanceof Event)) {
-                loadHeadImage((HaveHead) itemE, imageViewE, this);
+                loadHeadImage((Avatars) itemE, imageViewE, this);
             } else if (itemE instanceof Event) {
                 imageViewE.setEnabled(false);
             }
 
             //判断是否有头像并加载
-            loadHeadImage((HaveHead) itemT, imageViewT, this);
+            loadHeadImage((Avatars) itemT, imageViewT, this);
 
 
         } else {
@@ -152,9 +152,9 @@ public class RelationshipValueSetter<T extends Relationable, E extends Relationa
 
             if (!(connector instanceof Event)) {
                 if (isEConnector) {
-                    loadHeadImage((HaveHead) itemE, imageViewE, this);
+                    loadHeadImage((Avatars) itemE, imageViewE, this);
                 } else {
-                    loadHeadImage((HaveHead) itemT, imageViewT, this);
+                    loadHeadImage((Avatars) itemT, imageViewT, this);
                 }
             }
         }

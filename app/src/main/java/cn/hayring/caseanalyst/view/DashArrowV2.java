@@ -21,7 +21,7 @@ public class DashArrowV2 extends DashArrow {
 
     protected Relationship<Person, Person> relationship;
 
-    private HVScrollView scroller;
+    protected HVScrollView scroller;
 
 
     @Override

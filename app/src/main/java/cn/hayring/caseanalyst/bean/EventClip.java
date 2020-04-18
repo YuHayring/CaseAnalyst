@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 /***
  * 事件片段
+ * @author hayring
  */
 public class EventClip implements Serializable {
     /***

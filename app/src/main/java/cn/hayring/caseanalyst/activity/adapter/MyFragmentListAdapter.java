@@ -15,7 +15,7 @@ import cn.hayring.caseanalyst.activity.ListActivity.MyListActivity;
 import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.bean.Case;
 import cn.hayring.caseanalyst.bean.Evidence;
-import cn.hayring.caseanalyst.bean.HaveHead;
+import cn.hayring.caseanalyst.bean.Avatars;
 import cn.hayring.caseanalyst.bean.Listable;
 import cn.hayring.caseanalyst.bean.Organization;
 import cn.hayring.caseanalyst.bean.Person;
@@ -104,8 +104,8 @@ public class MyFragmentListAdapter<T extends Listable> extends RecyclerView.Adap
         //holder.itemView.setOnLongClickListener(new DeleteDialogListener());
         holder.itemView.setOnLongClickListener(new deleteItemListener(myListFragment.getMainActivity()));
 
-        if (instance instanceof HaveHead) {
-            HaveHead haveHead = (HaveHead) instance;
+        if (instance instanceof Avatars) {
+            Avatars haveHead = (Avatars) instance;
             ValueSetter.loadHeadImage(haveHead, holder.head, context);
         }
     }
@@ -159,7 +159,7 @@ public class MyFragmentListAdapter<T extends Listable> extends RecyclerView.Adap
 
             //若删除的是的有头像的类,删除其图片
             if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
-                HaveHead instance = (HaveHead) items.get(index);
+                Avatars instance = (Avatars) items.get(index);
                 if (instance.getImageIndex() != null) {
                     myListFragment.getMainActivity().deleteFile(instance.getImageIndex() + ".jpg");
                 }

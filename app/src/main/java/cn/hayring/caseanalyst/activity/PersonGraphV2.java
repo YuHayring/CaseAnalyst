@@ -28,9 +28,10 @@ import cn.hayring.caseanalyst.bean.Case;
 import cn.hayring.caseanalyst.bean.Organization;
 import cn.hayring.caseanalyst.bean.Person;
 import cn.hayring.caseanalyst.bean.Relationship;
+import cn.hayring.caseanalyst.listener.FreeMovingListener;
 import cn.hayring.caseanalyst.utils.Pointer;
 import cn.hayring.caseanalyst.view.Circle;
-import cn.hayring.caseanalyst.view.DashArrowV2;
+import cn.hayring.caseanalyst.view.DashArrowV3;
 import cn.hayring.caseanalyst.view.HVScrollView;
 
 public class PersonGraphV2 extends AppCompatActivity {
@@ -72,6 +73,11 @@ public class PersonGraphV2 extends AppCompatActivity {
      */
     protected boolean hasDrawed;
 
+    /***
+     * 关系悬浮窗
+     */
+    protected FrameLayout relationshipWindow;
+
 
     /***
      * 生命周期加载方法
@@ -93,6 +99,10 @@ public class PersonGraphV2 extends AppCompatActivity {
         container = findViewById(R.id.person_graph_container);
         GridLayout nonOrgPersonGraph = findViewById(R.id.non_org_person_graph);
         dashArrowRoot = findViewById(R.id.dash_arrow_root);
+        relationshipWindow = findViewById(R.id.relationship_window);
+
+        //注册移动监听
+        relationshipWindow.setOnTouchListener(new FreeMovingListener(relationshipWindow, true));
 
         //layout加载器
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -219,8 +229,26 @@ public class PersonGraphV2 extends AppCompatActivity {
      * @param person1
      * @param person2
      */
-    public void drawDashArrow(FrameLayout person1, FrameLayout person2) {
-        DashArrowV2 dashArrow = new DashArrowV2(this, (Circle) person1.getChildAt(2), (Circle) person2.getChildAt(2), topHeight, personGraphRoot);
+    public void drawDashArrow(FrameLayout person1, FrameLayout person2, Relationship<Person, Person> relationship) {
+        DashArrowV3 dashArrow = new DashArrowV3(this, (Circle) person1.getChildAt(2), (Circle) person2.getChildAt(2), topHeight, personGraphRoot);
+        dashArrow.setRelationship(relationship);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int[] margins = dashArrow.getMargin();
+        layoutParams.setMargins(margins[0], margins[1], margins[2], margins[3]);
+        dashArrow.setLayoutParams(layoutParams);
+        //设置点击监听器，显示关系信息
+        dashArrow.setOnClickListener(view -> {
+            TextView tName = (TextView) relationshipWindow.getChildAt(0);
+            TextView key = (TextView) relationshipWindow.getChildAt(1);
+            TextView eName = (TextView) relationshipWindow.getChildAt(2);
+            String tNameText = dashArrow.getRelationship().getItemT().getName();
+            tName.setText(tNameText);
+            String keyText = dashArrow.getRelationship().getKey();
+            key.setText(keyText);
+            String eNameText = dashArrow.getRelationship().getItemE().getName();
+            eName.setText(eNameText);
+
+        });
         dashArrowRoot.addView(dashArrow);
     }
 
@@ -295,7 +323,7 @@ public class PersonGraphV2 extends AppCompatActivity {
                     //遍历进行的操作
                     FrameLayout that = findViewById(idSet.get(nextPerson));
                     FrameLayout thiss = findViewById(idSet.get(currentQueueHeader));
-                    drawDashArrow(that, thiss);
+                    drawDashArrow(that, thiss, re);
 
 
                     visited.put(re, true);
