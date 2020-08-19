@@ -90,4 +90,7 @@
     <string name="t_name">T name</string>
     <string name="e_name">E name</string>
 
+    <string name="no_relationship">没有关系</string>
+    <string name="same_pserson">同一个人</string>
+
 </resources>

@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -61,7 +64,14 @@ public class PersonGraphV2 extends AppCompatActivity {
     /***
      * Person在ViewGroup中的view-id
      */
-    protected HashMap<Person, Integer> idSet = new HashMap<>();
+    protected BiMap<Person, Integer> idSet = HashBiMap.create();
+    protected BiMap<Integer, Person> personSet = idSet.inverse();
+
+    //关系面板被选中的人
+    Person personTSelected;
+    Person personESelected;
+    //T是否被选中
+    boolean isTSelected = true;
 
     /***
      * 可添加连接线的ViewGroup
@@ -77,6 +87,11 @@ public class PersonGraphV2 extends AppCompatActivity {
      * 关系悬浮窗
      */
     protected FrameLayout relationshipWindow;
+
+    /**
+     * 头像点击监听器
+     */
+    private SinglePerosnOnClickListener singlePersonOnClickListener = new SinglePerosnOnClickListener();
 
 
     /***
@@ -103,6 +118,21 @@ public class PersonGraphV2 extends AppCompatActivity {
 
         //注册移动监听
         relationshipWindow.setOnTouchListener(new FreeMovingListener(relationshipWindow, true));
+
+        //注册点击监听
+        relationshipWindow.getChildAt(0).setOnClickListener(view -> {
+            isTSelected = true;
+            ((TextView) ((FrameLayout) view.getParent()).getChildAt(0)).setTextSize(30);
+            ((TextView) ((FrameLayout) view.getParent()).getChildAt(2)).setTextSize(25);
+        });
+        relationshipWindow.getChildAt(2).setOnClickListener(view -> {
+            isTSelected = false;
+            ((TextView) ((FrameLayout) view.getParent()).getChildAt(2)).setTextSize(30);
+            ((TextView) ((FrameLayout) view.getParent()).getChildAt(0)).setTextSize(25);
+        });
+        ((TextView) (relationshipWindow).getChildAt(0)).setTextSize(30);
+        ((TextView) (relationshipWindow).getChildAt(2)).setTextSize(25);
+
 
         //layout加载器
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -141,6 +171,9 @@ public class PersonGraphV2 extends AppCompatActivity {
             }
             //设置名称
             nameText.setText(a.getName());
+
+            //注册点击监听器
+            personItem.setOnClickListener(singlePersonOnClickListener);
 
             //添加
             nonOrgPersonGraph.addView(personItem);
@@ -188,6 +221,8 @@ public class PersonGraphV2 extends AppCompatActivity {
                 }
                 //设置名称，
                 nameText.setText(a.getName());
+
+                personItem.setOnClickListener(singlePersonOnClickListener);
 
                 //添加
                 orgGraph.addView(personItem);
@@ -237,18 +272,18 @@ public class PersonGraphV2 extends AppCompatActivity {
         layoutParams.setMargins(margins[0], margins[1], margins[2], margins[3]);
         dashArrow.setLayoutParams(layoutParams);
         //设置点击监听器，显示关系信息
-        dashArrow.setOnClickListener(view -> {
-            TextView tName = (TextView) relationshipWindow.getChildAt(0);
-            TextView key = (TextView) relationshipWindow.getChildAt(1);
-            TextView eName = (TextView) relationshipWindow.getChildAt(2);
-            String tNameText = dashArrow.getRelationship().getItemT().getName();
-            tName.setText(tNameText);
-            String keyText = dashArrow.getRelationship().getKey();
-            key.setText(keyText);
-            String eNameText = dashArrow.getRelationship().getItemE().getName();
-            eName.setText(eNameText);
-
-        });
+//        dashArrow.setOnClickListener(view -> {
+//            TextView tName = (TextView) relationshipWindow.getChildAt(0);
+//            TextView key = (TextView) relationshipWindow.getChildAt(1);
+//            TextView eName = (TextView) relationshipWindow.getChildAt(2);
+//            String tNameText = dashArrow.getRelationship().getItemT().getName();
+//            tName.setText(tNameText);
+//            String keyText = dashArrow.getRelationship().getKey();
+//            key.setText(keyText);
+//            String eNameText = dashArrow.getRelationship().getItemE().getName();
+//            eName.setText(eNameText);
+//
+//        });
         dashArrowRoot.addView(dashArrow);
     }
 
@@ -389,4 +424,45 @@ public class PersonGraphV2 extends AppCompatActivity {
 
 
     }
+
+    //点击人物，绘制关系面板
+    class SinglePerosnOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Person person = personSet.get(view.getId());
+            if (isTSelected) {
+                TextView tName = (TextView) relationshipWindow.getChildAt(0);
+                personTSelected = person;
+                tName.setText(person.getName());
+            } else {
+                TextView eName = (TextView) relationshipWindow.getChildAt(2);
+                personESelected = person;
+                eName.setText(person.getName());
+            }
+
+            TextView key = (TextView) relationshipWindow.getChildAt(1);
+            if (personTSelected != null && personESelected != null) {
+                if (personTSelected == personESelected) {
+                    key.setText(R.string.same_pserson);
+                } else {
+                    Relationship target = null;
+                    //遍历邻接表，有待改进
+                    for (Relationship mmR : personTSelected.getManManRelationships()) {
+                        if (mmR.getItemE().equals(personESelected)) {
+                            target = mmR;
+                            break;
+                        }
+                    }
+                    if (null == target) {
+                        key.setText(R.string.no_relationship);
+                    } else {
+                        key.setText(target.getKey());
+                    }
+                }
+            }
+
+        }
+    }
 }
+
