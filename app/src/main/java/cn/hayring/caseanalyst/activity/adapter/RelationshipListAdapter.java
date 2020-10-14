@@ -124,6 +124,9 @@ public class RelationshipListAdapter<T extends Relationship> extends RecyclerVie
             relationshipTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);/*
             relationshipTransporter.putExtra(ValueSetter.DATA, relationship);
             relationshipTransporter.putExtra(ValueSetter.POSITION, position);*/
+
+            relationshipTransporter.putExtra(ValueSetter.RELATIONSHIP_TYPE, mActivity.getRelationshipType());
+
             Pointer.setPoint(relationship);
             Pointer.setConnector(mActivity.getConnector());
 

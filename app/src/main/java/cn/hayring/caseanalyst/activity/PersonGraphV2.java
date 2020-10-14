@@ -449,7 +449,7 @@ public class PersonGraphV2 extends AppCompatActivity {
                     Relationship target = null;
                     //遍历邻接表，有待改进
                     for (Relationship mmR : personTSelected.getManManRelationships()) {
-                        if (mmR.getItemE().equals(personESelected)) {
+                        if (mmR.getItemE().equals(personESelected) || mmR.getItemT().equals(personESelected)) {
                             target = mmR;
                             break;
                         }

@@ -17,6 +17,9 @@ import cn.hayring.caseanalyst.activity.ValueSetter.ValueSetter;
 import cn.hayring.caseanalyst.activity.adapter.ItemSelectListAdapter;
 import cn.hayring.caseanalyst.utils.Pointer;
 
+/**
+ * 关系更变对象选择器
+ */
 public class ItemSelectListActivity extends AppCompatActivity {
     /***
      * 请求传输者

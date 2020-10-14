@@ -182,4 +182,9 @@ public class RelationshipListActivity<T extends Relationship> extends AppCompatA
     public RelationshipListAdapter<T> getMainRelationshipListAdapter() {
         return mainRelationshipListAdapter;
     }
+
+
+    public int getRelationshipType() {
+        return relationshipType;
+    }
 }

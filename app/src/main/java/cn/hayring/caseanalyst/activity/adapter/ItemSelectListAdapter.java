@@ -92,7 +92,7 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
         holder.info.setText(info);
 
         //注册点击监听器
-        holder.itemView.setOnClickListener(new ItemSelectedListener());
+        holder.itemView.setOnClickListener(new ItemSelectedListener());  //单例即可
     }
 
 
@@ -100,6 +100,8 @@ public class ItemSelectListAdapter extends RecyclerView.Adapter<ListableViewHold
      * 元素选中监听器
      */
     public class ItemSelectedListener implements View.OnClickListener {
+
+
         /***
          * 选中元素
          * Edit Item
