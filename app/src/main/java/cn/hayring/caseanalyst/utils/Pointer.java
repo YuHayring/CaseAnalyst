@@ -2,7 +2,7 @@ package cn.hayring.caseanalyst.utils;
 
 import java.io.Serializable;
 
-import cn.hayring.caseanalyst.bean.Relationable;
+import cn.hayring.caseanalyst.domain.Relationable;
 
 /***
  * 引用传输类，线程不安全

@@ -12,7 +12,7 @@
         android:layout_height="match_parent" /-->
 
 
-    <cn.hayring.caseanalyst.view.HVScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <cn.hayring.caseanalyst.view.myview.HVScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/person_graph_v2_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,7 +65,7 @@
         </FrameLayout>
 
 
-    </cn.hayring.caseanalyst.view.HVScrollView>
+    </cn.hayring.caseanalyst.view.myview.HVScrollView>
 
     <include layout="@layout/relationship_window" />
 

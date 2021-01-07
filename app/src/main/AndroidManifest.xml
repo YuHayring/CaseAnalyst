@@ -14,14 +14,13 @@
         android:roundIcon="@mipmap/holmes_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.InferenceMap"></activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.TimeAxis" />
-        <activity android:name=".activity.PersonGraph" />
-        <activity android:name=".activity.Splash">
+        <activity android:name=".view.magic.TimeAxis" />
+        <activity android:name=".view.magic.PersonGraph" />
+        <activity android:name=".view.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,63 +28,63 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ListActivity.CaseListActivity"
+            android:name=".view.CaseListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.CaseValueSetter"
+            android:name=".view.casemanager.old.CaseValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.PersonListActivity"
+            android:name=".view.casemanager.old.PersonListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.PersonValueSetter"
+            android:name=".view.casemanager.casevaluesetter.PersonValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.EventListActivity"
+            android:name=".view.casemanager.old.EventListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.EventValueSetter"
+            android:name=".view.casemanager.casevaluesetter.EventValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.OrganizationValueSetter"
+            android:name=".view.casemanager.casevaluesetter.OrganizationValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.EvidenceListActivity"
+            android:name=".view.casemanager.old.EvidenceListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.EvidenceValueSetter"
+            android:name=".view.casemanager.casevaluesetter.EvidenceValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.RelationshipValueSetter"
+            android:name=".view.casemanager.relationship.RelationshipValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.ItemSelectListActivity"
+            android:name=".view.ItemSelectListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.RelationshipListActivity"
+            android:name=".view.casemanager.relationship.RelationshipListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ListActivity.OrganizationListActivity"
+            android:name=".view.casemanager.old.OrganizationListActivity"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ValueSetter.EventClipValueSetter"
+            android:name=".view.casemanager.casevaluesetter.EventClipValueSetter"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.PersonGraphV2"
+            android:name=".view.magic.PersonGraphV2"
             android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

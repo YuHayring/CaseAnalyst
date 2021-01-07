@@ -25,12 +25,10 @@
         android:text="第二个人"
         android:textSize="10dp" />
 
-    <cn.hayring.caseanalyst.view.Circle
+    <cn.hayring.caseanalyst.view.myview.Circle
         android:id="@+id/point"
         android:layout_width="8dp"
         android:layout_height="8dp"
         android:layout_gravity="center|top"
         android:layout_marginTop="85dp" />
-
-
 </FrameLayout>
