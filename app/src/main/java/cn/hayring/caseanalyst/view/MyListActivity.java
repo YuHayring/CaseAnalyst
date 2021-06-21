@@ -118,7 +118,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     /***
      * 新元素点击监听器
      */
-    class CreateNewItemListener implements View.OnClickListener {
+    public class CreateNewItemListener implements View.OnClickListener {
 
         /***
          * 创建新元素

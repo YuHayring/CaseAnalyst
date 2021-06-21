@@ -8,18 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cn.hayring.caseanalyst.domain.Avatars;
 import cn.hayring.caseanalyst.domain.Case;
 import cn.hayring.caseanalyst.domain.Evidence;
-import cn.hayring.caseanalyst.domain.Avatars;
 import cn.hayring.caseanalyst.domain.Listable;
 import cn.hayring.caseanalyst.domain.Organization;
 import cn.hayring.caseanalyst.domain.Person;
 import cn.hayring.caseanalyst.domain.Relationable;
-import cn.hayring.caseanalyst.view.listener.RecyclerItemDeleteDialogListener;
 import cn.hayring.caseanalyst.utils.Pointer;
+import cn.hayring.caseanalyst.view.listener.RecyclerItemDeleteDialogListener;
 
 /***
  * 案件列表设置器
@@ -205,7 +204,7 @@ public class MyListAdapter<T extends Listable> extends RecyclerView.Adapter<List
         notifyItemRemoved(position);
     }
 
-    public void addAllItem(ArrayList<T> items) {
+    public void addAllItem(List<T> items) {
         this.items.addAll(items);
         notifyDataSetChanged();
     }

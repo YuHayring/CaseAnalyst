@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
@@ -20,7 +19,6 @@ import cn.hayring.caseanalyst.domain.Case;
 
 public class Splash extends AppCompatActivity {
 
-    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,49 +32,14 @@ public class Splash extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
 
-/*        Thread myThread = new Thread() {//创建子线程
-            @Override
-            public void run() {
-                try {
-                    //使程序休眠1秒
+        new Handler().postDelayed(readTask, 1500L);
 
-                    sleep(1000);
-
-                    //关闭当前活动
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };*/
-        handler = new ReadHandler();
-        handler.sendEmptyMessage(0);
-        //new ReadThread().start();
     }
 
+    Runnable readTask = new Runnable() {
 
-/*    class ReadThread extends Thread {
         @Override
         public void run() {
-            Message msg = handler.obtainMessage();
-            handler.sendMessage(msg);
-            try {
-                //使程序休眠1秒
-
-                sleep(1000);
-
-                //关闭当前活动
-                finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
-    }*/
-
-    class ReadHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
             ArrayList<Case> caseList = new ArrayList();
             int i = 0;
             FileInputStream fi;
@@ -108,10 +71,15 @@ public class Splash extends AppCompatActivity {
 
             Intent it = new Intent(getApplicationContext(), CaseListActivity.class);
             it.putExtra("DATA", caseList);
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             startActivity(it);
             finish();
         }
-    }
+    };
 
 
 }

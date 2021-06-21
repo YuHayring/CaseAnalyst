@@ -8,6 +8,13 @@ import java.util.ArrayList;
  * @author Hayring
  */
 public class Case implements Listable {
+
+    /**
+     * id
+     */
+    private Long id;
+
+
     /***
      * 名字
      */
@@ -252,6 +259,14 @@ public class Case implements Listable {
         isShortTimeCase = shortTimeCase;
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     /***
      * 无组织成员
