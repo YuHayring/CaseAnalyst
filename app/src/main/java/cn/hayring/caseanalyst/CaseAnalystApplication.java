@@ -13,7 +13,7 @@ public class CaseAnalystApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CaseAnalystApplication.instance = this;
+        instance = this;
     }
 
     public static CaseAnalystApplication getInstance() {

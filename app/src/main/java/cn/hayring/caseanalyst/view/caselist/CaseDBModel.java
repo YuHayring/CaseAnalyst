@@ -1,6 +1,7 @@
 package cn.hayring.caseanalyst.view.caselist;
 
 import android.app.Application;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -28,11 +29,18 @@ public class CaseDBModel {
      */
     SQLiteDatabase caseDB;
 
+    //列名
+    private static final String ID_COLUMN_NAME = "case_id";
+    private static final String NAME_COLUMN_NAME = "case_name";
+    private static final String INFO_COLUMN_NAME = "case_info";
+
 
     /**
      * 数据库文件名
      */
     private static final String CASE_DB_NAME = "cases.db";
+
+    private static final String TABLE = "case";
 
     /**
      * 建表 SQL
@@ -41,6 +49,12 @@ public class CaseDBModel {
             "\"case\"(case_id integer primary key, " +
             "case_name char(16), " +
             "case_info varchar(64))";
+
+    /**
+     * id where 语句
+     */
+    private static final String ID_WHERE_CLAUSE = "id=?";
+
 
     private CaseDBModel() {
         application = CaseAnalystApplication.getInstance();
@@ -54,6 +68,11 @@ public class CaseDBModel {
     }
 
 
+    /**
+     * 获取案件列表
+     *
+     * @return 案件列表
+     */
     public List<Case> getCases() {
         List<Case> cases = new ArrayList<>();
         Cursor cursor = caseDB.query("case", null, null, null, null, null, null);
@@ -66,6 +85,61 @@ public class CaseDBModel {
         }
         return cases;
     }
+
+    /**
+     * 删除案件
+     *
+     * @param id 案件 id
+     */
+    public void deleteCase(Long id) {
+        caseDB.delete(TABLE, ID_WHERE_CLAUSE, new String[]{id.toString()});
+    }
+
+
+    /**
+     * 获取案件
+     *
+     * @param id 案件 id
+     * @return 案件
+     */
+    public Case getCase(Long id) {
+        Cursor cursor = caseDB.query(TABLE, null, ID_WHERE_CLAUSE, new String[]{id.toString()}, null, null, null);
+        if (cursor.moveToNext()) {
+            Case caxe = new Case();
+            caxe.setId(cursor.getLong(0));
+            caxe.setName(cursor.getString(1));
+            caxe.setInfo(cursor.getString(2));
+            return caxe;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 增加案件
+     *
+     * @param caxe
+     */
+    public void addCase(Case caxe) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID_COLUMN_NAME, caxe.getId());
+        contentValues.put(NAME_COLUMN_NAME, caxe.getName());
+        contentValues.put(INFO_COLUMN_NAME, caxe.getInfo());
+        caseDB.insert(TABLE, NAME_COLUMN_NAME, contentValues);
+    }
+
+    /**
+     * 更新案件信息
+     *
+     * @param caxe
+     */
+    public void updateCase(Case caxe) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME_COLUMN_NAME, caxe.getName());
+        contentValues.put(INFO_COLUMN_NAME, caxe.getInfo());
+        caseDB.update(TABLE, contentValues, ID_WHERE_CLAUSE, new String[]{caxe.getId().toString()});
+    }
+
 
     public static CaseDBModel getInstance() {
         return Singleton.instance;

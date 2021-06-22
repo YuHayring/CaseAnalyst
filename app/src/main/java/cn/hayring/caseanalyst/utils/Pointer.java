@@ -7,6 +7,7 @@ import cn.hayring.caseanalyst.domain.Relationable;
 /***
  * 引用传输类，线程不安全
  */
+@Deprecated
 public class Pointer {
     private static Serializable point;
 

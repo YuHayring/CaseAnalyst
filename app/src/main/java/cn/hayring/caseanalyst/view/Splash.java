@@ -69,8 +69,10 @@ public class Splash extends AppCompatActivity {
 
             }
 
-            Intent it = new Intent(getApplicationContext(), CaseListActivity.class);
-            it.putExtra("DATA", caseList);
+//            Intent it = new Intent(getApplicationContext(), CaseListActivity.class);
+//            it.putExtra("DATA", caseList);
+            Intent it = new Intent(getApplicationContext(), cn.hayring.caseanalyst.view.caselist.CaseListActivity.class);
+
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {

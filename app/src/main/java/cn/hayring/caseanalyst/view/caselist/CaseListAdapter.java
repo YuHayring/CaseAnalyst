@@ -1,4 +1,4 @@
-package cn.hayring.caseanalyst.view;
+package cn.hayring.caseanalyst.view.caselist;
 
 
 import android.content.Context;
@@ -9,33 +9,30 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import cn.hayring.caseanalyst.domain.Avatars;
 import cn.hayring.caseanalyst.domain.Case;
-import cn.hayring.caseanalyst.domain.Evidence;
-import cn.hayring.caseanalyst.domain.Listable;
-import cn.hayring.caseanalyst.domain.Organization;
-import cn.hayring.caseanalyst.domain.Person;
-import cn.hayring.caseanalyst.domain.Relationable;
-import cn.hayring.caseanalyst.utils.Pointer;
+import cn.hayring.caseanalyst.view.AbstractListAdapter;
+import cn.hayring.caseanalyst.view.ListableViewHolder;
+import cn.hayring.caseanalyst.view.MyListActivity;
+import cn.hayring.caseanalyst.view.ValueSetter;
 import cn.hayring.caseanalyst.view.listener.RecyclerItemDeleteDialogListener;
 
 /***
  * 案件列表设置器
  * @author Hayring
  */
-public class MyListAdapter<T extends Listable> extends AbstractListAdapter {
+public class CaseListAdapter extends AbstractListAdapter<Case> {
 
 
     /***
      * Activity引用
      */
-    private MyListActivity mActivity;
+    private CaseListActivity mActivity;
 
     /***
      * 输入数据源构造器
      * @param items
      */
-    public MyListAdapter(MyListActivity mActivity, List<Listable> items) {
+    public CaseListAdapter(CaseListActivity mActivity, List<Case> items) {
         super(items);
         this.mActivity = mActivity;
     }
@@ -66,24 +63,19 @@ public class MyListAdapter<T extends Listable> extends AbstractListAdapter {
          */
         @Override
         public void onClick(View view) {
-            //取出元素
+            //取出元素id
             int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
-            T item = (T) items.get(position);
-
+            Long id = items.get(position).getId();
 
             //注册Activity，ValueSetter
             Intent itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
-
-
             //绑定参数
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
-
-            Pointer.setPoint(item);
-            //itemTransporter.putExtra(ValueSetter.DATA, item);
-            //itemTransporter.putExtra(ValueSetter.POSITION, position);
+            itemTransporter.putExtra(ValueSetter.ID, id);
 
             //启动ValueSetter
             mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUEST_CODE);
+
 
         }
     }
@@ -102,21 +94,9 @@ public class MyListAdapter<T extends Listable> extends AbstractListAdapter {
 
         @Override
         protected void delete(int index) {
-            Class clazz = mActivity.getTClass();
-
-            //若删除的是的有头像的类,删除其图片
-            if (clazz == Evidence.class || clazz == Person.class || clazz == Organization.class) {
-                Avatars instance = (Avatars) items.get(index);
-                if (instance.getImageIndex() != null) {
-                    mActivity.deleteFile(instance.getImageIndex() + ".jpg");
-                }
-            }
-            Listable listable = (Listable) items.get(index);
-            if (!(listable instanceof Case)) {
-                Relationable relationable = (Relationable) listable;
-                relationable.removeSelf();
-            }
-            deleteItem(index);
+            long id = items.get(index).getId();
+            mActivity.getCaseViewModel().deleteCase(id);
+            notifyItemChanged(index);
         }
     }
 
@@ -143,7 +123,6 @@ public class MyListAdapter<T extends Listable> extends AbstractListAdapter {
         v = LayoutInflater.from(mActivity).inflate(mActivity.getSingleLayoutId(), parent, false);
         return new ListableViewHolder(v);
     }
-
 
 
 }

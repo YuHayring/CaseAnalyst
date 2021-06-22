@@ -29,4 +29,6 @@ public class ListableViewHolder extends RecyclerView.ViewHolder {
         info = v.findViewById(R.id.item_list_info_item);
         head = v.findViewById(R.id.head_image);
     }
+
+
 }

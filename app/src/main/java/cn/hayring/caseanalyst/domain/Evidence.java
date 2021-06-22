@@ -11,6 +11,11 @@ public class Evidence implements Avatars {
 
     //Todo证物合成
 
+    /**
+     * id
+     */
+    private Long id;
+
     /***
      * 证物名称
      */
@@ -116,6 +121,15 @@ public class Evidence implements Avatars {
     public void removeSelf() {
         Relationship.removeAllRelationship(manThingRelationships);
         Relationship.removeAllRelationship(orgThingRelationships);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setImageIndex(Integer imageIndex) {

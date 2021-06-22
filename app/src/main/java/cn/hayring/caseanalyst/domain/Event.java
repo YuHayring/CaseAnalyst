@@ -7,6 +7,12 @@ import java.util.ArrayList;
  * @author Hayring
  */
 public class Event implements Relationable {
+
+    /**
+     * id
+     */
+    private Long id;
+
     /***
      * 事件名称
      */
@@ -138,6 +144,15 @@ public class Event implements Relationable {
     public void setEvidences(ArrayList<Evidence> evidences) {
         this.evidences = evidences;
     }*/
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getInfo() {
         return info;

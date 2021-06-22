@@ -44,6 +44,7 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     public static final String TYPE = "type";
     public static final String DATA = "data";
     public static final String CREATE_OR_NOT = "create_or_not";
+    public static final String ID = "id";
     public static final String POSITION = "position";
     public static final String IS_E = "is_e";
     protected Intent requestInfo;

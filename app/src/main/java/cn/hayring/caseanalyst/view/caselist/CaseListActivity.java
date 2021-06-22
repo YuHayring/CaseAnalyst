@@ -1,6 +1,5 @@
 package cn.hayring.caseanalyst.view.caselist;
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
@@ -9,22 +8,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.hayring.caseanalyst.R;
+import cn.hayring.caseanalyst.databinding.ActivityListBinding;
 import cn.hayring.caseanalyst.domain.Case;
 import cn.hayring.caseanalyst.view.MainActivity;
 import cn.hayring.caseanalyst.view.MyListActivity;
-import cn.hayring.caseanalyst.view.MyListAdapter;
 
 /**
  * @author hayring
  * @date 6/21/21 5:40 PM
  */
 public class CaseListActivity extends MyListActivity<Case> {
+
+
+    ActivityListBinding viewBinding;
 
     SQLiteDatabase caseDb;
 
@@ -49,20 +52,23 @@ public class CaseListActivity extends MyListActivity<Case> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewBinding = ActivityListBinding.inflate(LayoutInflater.from(this));
+        setContentView(viewBinding.getRoot());
+        initView();
 
     }
 
 
-    ViewModelProvider.Factory videoViewModelFactory = new ViewModelProvider.Factory() {
+    ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             try {
-                Constructor constructor = modelClass.getConstructor(Activity.class);
-                return (T) constructor.newInstance(CaseListActivity.this);
+                Constructor constructor = modelClass.getConstructor();
+                return (T) constructor.newInstance();
             } catch (Exception e) {
-                IllegalArgumentException ile = new IllegalArgumentException("" + modelClass + "is not" + CaseViewModel.class);
+                IllegalArgumentException ile = new IllegalArgumentException("" + modelClass + " is not" + CaseViewModel.class);
                 ile.initCause(e);
                 throw ile;
             }
@@ -79,22 +85,20 @@ public class CaseListActivity extends MyListActivity<Case> {
         //注册
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        createItemButton = findViewById(R.id.add_item_button);
-        createItemButton.setOnClickListener(new CreateNewItemListener());
+        viewBinding.addItemButton.setOnClickListener(new CreateNewItemListener());
         //初始化数据源
         List<Case> items = new ArrayList<Case>();
         //绑定数据源
-        itemListRecycler = findViewById(R.id.recycler_list);
-        itemListRecycler.setLayoutManager(new LinearLayoutManager(this));
-        itemListRecycler.setItemAnimator(new DefaultItemAnimator());
-        mainItemListAdapter = new MyListAdapter(this, items);
+        viewBinding.contentList.recyclerList.setLayoutManager(new LinearLayoutManager(this));
+        viewBinding.contentList.recyclerList.setItemAnimator(new DefaultItemAnimator());
+        mainItemListAdapter = new CaseListAdapter(this, items);
 
 
-        itemListRecycler.setAdapter(mainItemListAdapter);
+        viewBinding.contentList.recyclerList.setAdapter(mainItemListAdapter);
 
 
-        caseViewModel = new ViewModelProvider(this, videoViewModelFactory).get(CaseViewModel.class);
-        caseViewModel.caseListData.observe(this, caseListObserver);
+        caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
+        caseViewModel.getCaseListData().observe(this, caseListObserver);
     }
 
     private final Observer<List<Case>> caseListObserver = new Observer<List<Case>>() {
@@ -104,5 +108,7 @@ public class CaseListActivity extends MyListActivity<Case> {
         }
     };
 
-
+    public CaseViewModel getCaseViewModel() {
+        return caseViewModel;
+    }
 }

@@ -11,6 +11,11 @@ import java.util.ArrayList;
  */
 public class Organization implements Avatars {
 
+    /**
+     * id
+     */
+    private Long id;
+
     /***
      * 头像资源id
      */
@@ -96,6 +101,15 @@ public class Organization implements Avatars {
         this.info = info;
     }
 
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {

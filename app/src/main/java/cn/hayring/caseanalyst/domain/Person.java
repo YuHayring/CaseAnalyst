@@ -7,6 +7,12 @@ import java.util.ArrayList;
  * @author Hayring
  */
 public class Person implements Avatars {
+
+    /**
+     * id
+     */
+    private Long id;
+
     /***
      * 姓名
      */
@@ -197,6 +203,14 @@ public class Person implements Avatars {
         }
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setImageIndex(Integer imageIndex) {
         this.imageIndex = imageIndex;

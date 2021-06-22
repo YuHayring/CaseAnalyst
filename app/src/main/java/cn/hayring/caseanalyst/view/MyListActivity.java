@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.domain.Listable;
 import cn.hayring.caseanalyst.utils.Pointer;
+import cn.hayring.caseanalyst.view.caselist.CaseListActivity;
 
 /***
  * 自定义ListActivity
@@ -63,7 +64,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     /***
      * 列表适配器
      */
-    protected MyListAdapter<T> mainItemListAdapter;
+    protected AbstractListAdapter<T> mainItemListAdapter;
 
     public RecyclerView getItemListRecycler() {
         return itemListRecycler;
@@ -75,8 +76,10 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        initView();
+        if (!(this instanceof CaseListActivity)) {
+            setContentView(R.layout.activity_list);
+            initView();
+        }
     }
 
     /***
@@ -169,4 +172,10 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
 
 
     }
+
+    protected void superOnCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
 }

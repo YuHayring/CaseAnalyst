@@ -7,6 +7,12 @@ import java.io.Serializable;
  * @author Hayring
  */
 public class Place implements Serializable, Listable {
+
+    /**
+     * id
+     */
+    private Long id;
+
     /***
      * 地点名称
      */
@@ -22,6 +28,14 @@ public class Place implements Serializable, Listable {
         this.info = info;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
