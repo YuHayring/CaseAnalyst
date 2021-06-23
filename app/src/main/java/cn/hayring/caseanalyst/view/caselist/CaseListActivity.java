@@ -3,6 +3,7 @@ package cn.hayring.caseanalyst.view.caselist;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +18,8 @@ import java.util.List;
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.databinding.ActivityListBinding;
 import cn.hayring.caseanalyst.domain.Case;
-import cn.hayring.caseanalyst.view.MainActivity;
 import cn.hayring.caseanalyst.view.MyListActivity;
+import cn.hayring.caseanalyst.view.casemanager.CaseManagerActivity;
 
 /**
  * @author hayring
@@ -46,7 +47,7 @@ public class CaseListActivity extends MyListActivity<Case> {
 
     @Override
     public Class getValueSetterClass() {
-        return MainActivity.class;
+        return CaseManagerActivity.class;
     }
 
     @Override
@@ -99,16 +100,29 @@ public class CaseListActivity extends MyListActivity<Case> {
 
         caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
         caseViewModel.getCaseListData().observe(this, caseListObserver);
+        caseViewModel.getCaseList();
     }
 
     private final Observer<List<Case>> caseListObserver = new Observer<List<Case>>() {
         @Override
         public void onChanged(List<Case> cases) {
+            mainItemListAdapter.deleteAll();
             mainItemListAdapter.addAllItem(cases);
         }
     };
 
     public CaseViewModel getCaseViewModel() {
         return caseViewModel;
+    }
+
+    /***
+     * 编辑完成调用
+     * @author Hayring
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
+        super.onActivityResult(requestCode, resultCode, itemTransporter);
+        caseViewModel.getCaseList();
+
     }
 }

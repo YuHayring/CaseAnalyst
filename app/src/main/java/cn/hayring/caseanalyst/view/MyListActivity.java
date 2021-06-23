@@ -150,7 +150,7 @@ public abstract class MyListActivity<T extends Listable> extends AppCompatActivi
         super.onActivityResult(requestCode, resultCode, itemTransporter);
 
         //未改变就结束
-        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true)) {
+        if (!itemTransporter.getBooleanExtra(ValueSetter.CHANGED, true) || this instanceof CaseListActivity) {
             return;
         }
 

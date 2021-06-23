@@ -1,6 +1,5 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
@@ -43,7 +42,7 @@ public class CaseManagerActivity extends AppCompatActivity {
     protected Case caseInstance;
 
 
-    CaseViewModel caseViewModel;
+//    CaseViewModel caseViewModel;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -79,10 +78,12 @@ public class CaseManagerActivity extends AppCompatActivity {
         requestInfo = getIntent();
         isCreate = requestInfo.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true);
 
+//        caseViewModel = new ViewModelProvider(this, videoViewModelFactory).get(CaseViewModel.class);
+//        caseViewModel.getSingleCase().observe(this, caseObserver);
+
         //获取案件数据
         if (!isCreate) {
-            Long id = requestInfo.getLongExtra(ValueSetter.ID, 0L);
-            caseViewModel.getCase(id);
+            caseInstance = (Case) requestInfo.getSerializableExtra(ValueSetter.CASE);
         } else {
             caseInstance = new Case();
             caseInstance.setId(new Random().nextLong());
@@ -93,8 +94,6 @@ public class CaseManagerActivity extends AppCompatActivity {
 
     protected void initView() {
         bottomNavigationView = findViewById(R.id.navigation);
-        caseViewModel = new ViewModelProvider(this, videoViewModelFactory).get(CaseViewModel.class);
-        caseViewModel.getSingleCase().observe(this, caseObserver);
     }
 
     private void initFragment() {
@@ -103,7 +102,7 @@ public class CaseManagerActivity extends AppCompatActivity {
 //        events = new EventListFragment();
 //        evidences = new EvidenceListFragment();
 //        organizations = new OrgListFragment();
-        info = new InfoSetterFragment();
+        info = new InfoFragment();
 //        if (isCreate) {
         lastFragment = info;
         getSupportFragmentManager().beginTransaction().replace(R.id.mainview, info).show(info).commit();
@@ -190,11 +189,11 @@ public class CaseManagerActivity extends AppCompatActivity {
         }
     };
 
-    private final Observer<Case> caseObserver = new Observer<Case>() {
-
-        @Override
-        public void onChanged(Case caxe) {
-            caseInstance = caxe;
-        }
-    };
+//    private final Observer<Case> caseObserver = new Observer<Case>() {
+//
+//        @Override
+//        public void onChanged(Case caxe) {
+//            caseInstance = caxe;
+//        }
+//    };
 }

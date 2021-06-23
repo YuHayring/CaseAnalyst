@@ -3,6 +3,7 @@ package cn.hayring.caseanalyst.view.caselist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
     public CaseListAdapter(CaseListActivity mActivity, List<Case> items) {
         super(items);
         this.mActivity = mActivity;
+        deleteItemListener = new DeleteItemListener(mActivity);
     }
 
     /**
@@ -64,14 +66,14 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
         @Override
         public void onClick(View view) {
             //取出元素id
-            int position = mActivity.getItemListRecycler().getChildAdapterPosition(view);
-            Long id = items.get(position).getId();
+            int position = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+            Case caxe = items.get(position);
 
             //注册Activity，ValueSetter
             Intent itemTransporter = new Intent(mActivity, mActivity.getValueSetterClass());
             //绑定参数
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
-            itemTransporter.putExtra(ValueSetter.ID, id);
+            itemTransporter.putExtra(ValueSetter.CASE, caxe);
 
             //启动ValueSetter
             mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUEST_CODE);
@@ -81,7 +83,7 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
     }
 
 
-    DeleteItemListener deleteItemListener = new DeleteItemListener(mActivity);
+    DeleteItemListener deleteItemListener;
 
     /***
      * 元素删除监听器
@@ -96,6 +98,7 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
         protected void delete(int index) {
             long id = items.get(index).getId();
             mActivity.getCaseViewModel().deleteCase(id);
+            items.remove(index);
             notifyItemChanged(index);
         }
     }

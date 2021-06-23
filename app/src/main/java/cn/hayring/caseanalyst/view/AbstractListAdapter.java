@@ -99,5 +99,10 @@ public abstract class AbstractListAdapter<T extends Listable> extends RecyclerVi
         notifyDataSetChanged();
     }
 
+    public void deleteAll() {
+        this.items.clear();
+        notifyDataSetChanged();
+    }
+
 
 }

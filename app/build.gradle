@@ -16,12 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility sourceCompatibility2
-        targetCompatibility targetCompatibility2
+    buildFeatures {
+        viewBinding {
+            enabled = true
+        }
     }
-    viewBinding {
-        enabled = true
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

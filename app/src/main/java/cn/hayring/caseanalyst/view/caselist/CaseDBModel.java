@@ -40,7 +40,7 @@ public class CaseDBModel {
      */
     private static final String CASE_DB_NAME = "cases.db";
 
-    private static final String TABLE = "case";
+    private static final String TABLE = "\"case\"";
 
     /**
      * 建表 SQL
@@ -53,7 +53,7 @@ public class CaseDBModel {
     /**
      * id where 语句
      */
-    private static final String ID_WHERE_CLAUSE = "id=?";
+    private static final String ID_WHERE_CLAUSE = ID_COLUMN_NAME + "=?";
 
 
     private CaseDBModel() {
@@ -75,7 +75,7 @@ public class CaseDBModel {
      */
     public List<Case> getCases() {
         List<Case> cases = new ArrayList<>();
-        Cursor cursor = caseDB.query("case", null, null, null, null, null, null);
+        Cursor cursor = caseDB.query(TABLE, null, null, null, null, null, null);
         while (cursor.moveToNext()) {
             Case caxe = new Case();
             caxe.setId(cursor.getLong(0));

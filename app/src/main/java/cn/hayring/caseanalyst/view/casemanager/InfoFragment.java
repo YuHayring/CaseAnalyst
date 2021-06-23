@@ -1,6 +1,5 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
@@ -18,7 +17,6 @@ import java.lang.reflect.Constructor;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.domain.Case;
-import cn.hayring.caseanalyst.view.MainActivity;
 import cn.hayring.caseanalyst.view.caselist.CaseViewModel;
 
 public class InfoFragment extends Fragment {
@@ -27,9 +25,9 @@ public class InfoFragment extends Fragment {
     /***
      * activity引用
      */
-    protected MainActivity mainActivity;
+    protected CaseManagerActivity mainActivity;
 
-    public MainActivity getMainActivity() {
+    public CaseManagerActivity getMainActivity() {
         return mainActivity;
     }
 
@@ -70,8 +68,8 @@ public class InfoFragment extends Fragment {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             try {
-                Constructor constructor = modelClass.getConstructor(Activity.class);
-                return (T) constructor.newInstance(this);
+                Constructor constructor = modelClass.getConstructor();
+                return (T) constructor.newInstance();
             } catch (Exception e) {
                 IllegalArgumentException ile = new IllegalArgumentException("" + modelClass + "is not" + CaseViewModel.class);
                 ile.initCause(e);
@@ -88,7 +86,7 @@ public class InfoFragment extends Fragment {
      * 初始化view
      */
     protected void initView(View view) {
-        mainActivity = (MainActivity) getContext();
+        mainActivity = (CaseManagerActivity) getContext();
 
         caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
         caseViewModel.getSingleCase().observe(this, caseObserver);
@@ -99,11 +97,14 @@ public class InfoFragment extends Fragment {
         view.findViewById(R.id.org_list_enter).setVisibility(View.GONE);
 
 
-        //注册控件,信息显示
+        //注册控件
         nameInputer = view.findViewById(R.id.case_name_inputer);
         infoInputer = view.findViewById(R.id.case_info_inputer);
         saveButton = view.findViewById(R.id.case_save_button);
         shortTimeCaseSetter = view.findViewById(R.id.short_time_case_switcher);
+        //信息显示
+        nameInputer.setText(mainActivity.getCaseInstance().getName());
+        infoInputer.setText(mainActivity.getCaseInstance().getInfo());
 
 
     }

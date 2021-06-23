@@ -47,6 +47,7 @@ public abstract class ValueSetter<T extends Serializable> extends AppCompatActiv
     public static final String ID = "id";
     public static final String POSITION = "position";
     public static final String IS_E = "is_e";
+    public static final String CASE = "case";
     protected Intent requestInfo;
     protected LinearLayout rootLayout;
     protected ScrollView sonView;
