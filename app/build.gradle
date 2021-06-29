@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.google.guava:guava:26.0-jre'
 
-    // https://mvnrepository.com/artifact/org.neo4j/neo4j
-//    implementation group: 'org.neo4j', name: 'neo4j', version: '3.5.25'
+// https://mvnrepository.com/artifact/org.neo4j.driver/neo4j-java-driver
+    implementation group: 'org.neo4j.driver', name: 'neo4j-java-driver', version: '4.2.7'
+
 }

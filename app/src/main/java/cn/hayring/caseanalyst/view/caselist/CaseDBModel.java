@@ -17,7 +17,7 @@ import static android.content.Context.MODE_PRIVATE;
  * @author hayring
  * @date 6/21/21 7:36 PM
  */
-public class CaseDBModel {
+public class CaseDBModel implements CaseRepository {
 
     /**
      * 全局 application
