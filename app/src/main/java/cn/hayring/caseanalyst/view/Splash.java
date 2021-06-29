@@ -32,7 +32,7 @@ public class Splash extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(readTask, 1500L);
+        new Handler().postDelayed(readTask, 1000L);
 
     }
 

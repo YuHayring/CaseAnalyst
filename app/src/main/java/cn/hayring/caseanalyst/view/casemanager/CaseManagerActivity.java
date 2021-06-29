@@ -1,17 +1,18 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import java.lang.reflect.Constructor;
-import java.util.Random;
 
 import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.domain.Case;
@@ -42,7 +43,7 @@ public class CaseManagerActivity extends AppCompatActivity {
     protected Case caseInstance;
 
 
-//    CaseViewModel caseViewModel;
+    CaseViewModel caseViewModel;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -78,15 +79,15 @@ public class CaseManagerActivity extends AppCompatActivity {
         requestInfo = getIntent();
         isCreate = requestInfo.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true);
 
-//        caseViewModel = new ViewModelProvider(this, videoViewModelFactory).get(CaseViewModel.class);
-//        caseViewModel.getSingleCase().observe(this, caseObserver);
+        caseViewModel = new ViewModelProvider(this, videoViewModelFactory).get(CaseViewModel.class);
+        caseViewModel.getAutoincrementId().observe(this, insertIdObserver);
 
         //获取案件数据
         if (!isCreate) {
             caseInstance = (Case) requestInfo.getSerializableExtra(ValueSetter.CASE);
         } else {
             caseInstance = new Case();
-            caseInstance.setId(new Random().nextLong());
+            caseViewModel.addCase();
         }
         initView();
         initFragment();
@@ -189,11 +190,11 @@ public class CaseManagerActivity extends AppCompatActivity {
         }
     };
 
-//    private final Observer<Case> caseObserver = new Observer<Case>() {
-//
-//        @Override
-//        public void onChanged(Case caxe) {
-//            caseInstance = caxe;
-//        }
-//    };
+    private final Observer<Long> insertIdObserver = new Observer<Long>() {
+
+        @Override
+        public void onChanged(@Nullable Long id) {
+            caseInstance.setId(id);
+        }
+    };
 }

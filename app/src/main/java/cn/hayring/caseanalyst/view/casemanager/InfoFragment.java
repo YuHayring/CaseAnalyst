@@ -132,21 +132,9 @@ public class InfoFragment extends Fragment {
      * 写入
      */
     public void writeInstance() {
-//        mainActivity.getCaseInstance().setName(nameInputer.getText().toString());
-//        mainActivity.getCaseInstance().setInfo(infoInputer.getText().toString());
-//        int index = shortTimeCaseSetter.getSelectedItemPosition();
-//        if (index == 0) {
-//            mainActivity.getCaseInstance().setShortTimeCase(true);
-//        } else if (index == 1) {
-//            mainActivity.getCaseInstance().setShortTimeCase(false);
-//        }
         mainActivity.getCaseInstance().setName(nameInputer.getText().toString());
         mainActivity.getCaseInstance().setInfo(infoInputer.getText().toString());
-        if (mainActivity.isCreate()) {
-            caseViewModel.addCase(mainActivity.getCaseInstance());
-        } else {
-            caseViewModel.updateCase(mainActivity.getCaseInstance());
-        }
+        caseViewModel.updateCase(mainActivity.getCaseInstance());
     }
 
 

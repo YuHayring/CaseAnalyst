@@ -46,7 +46,7 @@ public class CaseDBModel {
      * 建表 SQL
      */
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " +
-            "\"case\"(case_id integer primary key, " +
+            "\"case\"(case_id integer primary key AUTOINCREMENT, " +
             "case_name char(16), " +
             "case_info varchar(64))";
 
@@ -83,6 +83,7 @@ public class CaseDBModel {
             caxe.setInfo(cursor.getString(2));
             cases.add(caxe);
         }
+        cursor.close();
         return cases;
     }
 
@@ -104,34 +105,43 @@ public class CaseDBModel {
      */
     public Case getCase(Long id) {
         Cursor cursor = caseDB.query(TABLE, null, ID_WHERE_CLAUSE, new String[]{id.toString()}, null, null, null);
-        if (cursor.moveToNext()) {
-            Case caxe = new Case();
-            caxe.setId(cursor.getLong(0));
-            caxe.setName(cursor.getString(1));
-            caxe.setInfo(cursor.getString(2));
-            return caxe;
-        } else {
-            return null;
+        try {
+            if (cursor.moveToNext()) {
+                Case caxe = new Case();
+                caxe.setId(cursor.getLong(0));
+                caxe.setName(cursor.getString(1));
+                caxe.setInfo(cursor.getString(2));
+                return caxe;
+            } else {
+                return null;
+            }
+        } finally {
+            cursor.close();
         }
     }
 
     /**
-     * 增加案件
-     *
-     * @param caxe
+     * 增加空案件，返回自增id
+     * @return 案件 id
      */
-    public void addCase(Case caxe) {
+    public long addCase() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ID_COLUMN_NAME, caxe.getId());
-        contentValues.put(NAME_COLUMN_NAME, caxe.getName());
-        contentValues.put(INFO_COLUMN_NAME, caxe.getInfo());
+        contentValues.put(NAME_COLUMN_NAME, "");
+        contentValues.put(INFO_COLUMN_NAME, "");
         caseDB.insert(TABLE, NAME_COLUMN_NAME, contentValues);
+        Cursor cursor = caseDB.rawQuery("select last_insert_rowid() from \"case\"", null);
+        long id = 0L;
+        if (cursor.moveToFirst()) id = cursor.getLong(0);
+        cursor.close();
+        return id;
+
+
     }
 
     /**
      * 更新案件信息
      *
-     * @param caxe
+     * @param caxe 更新后的案件
      */
     public void updateCase(Case caxe) {
         ContentValues contentValues = new ContentValues();

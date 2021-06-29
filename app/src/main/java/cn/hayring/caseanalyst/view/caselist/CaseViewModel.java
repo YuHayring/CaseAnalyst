@@ -32,6 +32,11 @@ public class CaseViewModel extends ViewModel {
      */
     MutableLiveData<Case> singleCase = new MutableLiveData<>();
 
+    /**
+     * 上一次插入的自增 id
+     */
+    MutableLiveData<Long> autoincrementId = new MutableLiveData<>();
+
 
     /**
      * 获取案件列表
@@ -54,7 +59,7 @@ public class CaseViewModel extends ViewModel {
     /**
      * 查询单个案件
      *
-     * @param id
+     * @param id 案件 id
      */
     public void getCase(Long id) {
         Case caxe = caseModel.getCase(id);
@@ -66,10 +71,14 @@ public class CaseViewModel extends ViewModel {
         caseModel.updateCase(caxe);
     }
 
-    public void addCase(Case caxe) {
-        caseModel.addCase(caxe);
+    public void addCase() {
+        long id = caseModel.addCase();
+        autoincrementId.postValue(id);
     }
 
+    public MutableLiveData<Long> getAutoincrementId() {
+        return autoincrementId;
+    }
 
     public LiveData<List<Case>> getCaseListData() {
         return caseListData;
