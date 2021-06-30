@@ -3,17 +3,18 @@ package cn.hayring.caseanalyst.view.caselist;
 import java.util.List;
 
 import cn.hayring.caseanalyst.domain.Case;
+import cn.hayring.caseanalyst.viewmodel.AsyncCallBack;
 
 public interface CaseRepository {
 
-    List<Case> getCases();
+    void getCases(AsyncCallBack<List<Case>> callBack);
 
-    void deleteCase(Long id);
+    void deleteCase(Long id, AsyncCallBack<Boolean> callBack);
 
-    Case getCase(Long id);
+    void getCase(Long id, AsyncCallBack<Case> callBack);
 
-    long addCase();
+    void addCase(AsyncCallBack<Long> callBack);
 
-    void updateCase(Case caxe);
+    void updateCase(Case caxe, AsyncCallBack<Boolean> callBack);
 
 }

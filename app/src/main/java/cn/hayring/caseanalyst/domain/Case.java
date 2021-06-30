@@ -51,13 +51,13 @@ public class Case implements Listable {
     boolean isShortTimeCase = true;
 
     public Case() {
-        organizations = new ArrayList<Organization>();
-        persons = new ArrayList<Person>();
-        evidences = new ArrayList<Evidence>();
-        events = new ArrayList<Event>();
-
-        //-------------
-        nonOrgPersons = new ArrayList<Person>();
+//        organizations = new ArrayList<Organization>();
+//        persons = new ArrayList<Person>();
+//        evidences = new ArrayList<Evidence>();
+//        events = new ArrayList<Event>();
+//
+//        //-------------
+//        nonOrgPersons = new ArrayList<Person>();
     }
 
     public Case(String name, String info) {

@@ -3,10 +3,12 @@ package cn.hayring.caseanalyst.view.caselist;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import java.util.List;
 
 import cn.hayring.caseanalyst.domain.Case;
+import cn.hayring.caseanalyst.viewmodel.AsyncCallBack;
 
 /**
  * @author hayring
@@ -20,7 +22,7 @@ public class CaseViewModel extends ViewModel {
     /**
      * model 层单例
      */
-    CaseDBModel caseModel = CaseDBModel.getInstance();
+    CaseRepository caseModel = CaseModel.getInstance();
 
     /**
      * 带有案件列表的 livedata
@@ -42,9 +44,17 @@ public class CaseViewModel extends ViewModel {
      * 获取案件列表
      */
     public void getCaseList() {
-        List<Case> cases = caseModel.getCases();
-        caseListData.postValue(cases);
+//        List<Case> cases = caseModel.getCases();
+//        caseListData.postValue(cases);
+        caseModel.getCases(getCaseListCallback);
     }
+
+    private final AsyncCallBack<List<Case>> getCaseListCallback = new AsyncCallBack<List<Case>>() {
+        @Override
+        public void callBack(List<Case> cases) {
+            caseListData.postValue(cases);
+        }
+    };
 
 
     /**
@@ -53,8 +63,17 @@ public class CaseViewModel extends ViewModel {
      * @param id 案件 id
      */
     public void deleteCase(Long id) {
-        caseModel.deleteCase(id);
+        caseModel.deleteCase(id, deleteCaseListCallback);
     }
+
+
+    private final AsyncCallBack<Boolean> deleteCaseListCallback = new AsyncCallBack<Boolean>() {
+        @Override
+        public void callBack(Boolean bool) {
+            Log.i("delete", bool.toString());
+        }
+    };
+
 
     /**
      * 查询单个案件
@@ -62,19 +81,40 @@ public class CaseViewModel extends ViewModel {
      * @param id 案件 id
      */
     public void getCase(Long id) {
-        Case caxe = caseModel.getCase(id);
-        singleCase.postValue(caxe);
+        caseModel.getCase(id, caseAsyncCallBack);
     }
+
+    private final AsyncCallBack<Case> caseAsyncCallBack = new AsyncCallBack<Case>() {
+        @Override
+        public void callBack(Case caxe) {
+            Log.i("getCase", caxe.toString());
+        }
+    };
 
 
     public void updateCase(Case caxe) {
-        caseModel.updateCase(caxe);
+        caseModel.updateCase(caxe, updateCaseListCallback);
     }
 
+    private final AsyncCallBack<Boolean> updateCaseListCallback = new AsyncCallBack<Boolean>() {
+        @Override
+        public void callBack(Boolean bool) {
+            Log.i("update", bool.toString());
+        }
+    };
+
+
     public void addCase() {
-        long id = caseModel.addCase();
-        autoincrementId.postValue(id);
+        caseModel.addCase(addCaseListCallback);
     }
+
+    private final AsyncCallBack<Long> addCaseListCallback = new AsyncCallBack<Long>() {
+        @Override
+        public void callBack(Long id) {
+            autoincrementId.postValue(id);
+        }
+    };
+
 
     public MutableLiveData<Long> getAutoincrementId() {
         return autoincrementId;

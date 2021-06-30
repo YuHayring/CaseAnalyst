@@ -48,4 +48,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.neo4j.driver/neo4j-java-driver
     implementation group: 'org.neo4j.driver', name: 'neo4j-java-driver', version: '4.2.7'
 
+//    /*toasty框架*/
+//    implementation 'com.github.GrenderG:Toasty:1.5.0'
+
 }

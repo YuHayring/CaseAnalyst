@@ -100,7 +100,6 @@ public class CaseListActivity extends MyListActivity<Case> {
 
         caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
         caseViewModel.getCaseListData().observe(this, caseListObserver);
-        caseViewModel.getCaseList();
     }
 
     private final Observer<List<Case>> caseListObserver = new Observer<List<Case>>() {
@@ -108,6 +107,17 @@ public class CaseListActivity extends MyListActivity<Case> {
         public void onChanged(List<Case> cases) {
             mainItemListAdapter.deleteAll();
             mainItemListAdapter.addAllItem(cases);
+        }
+    };
+
+    private final Observer<Boolean> caseDeletedObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(Boolean success) {
+            if (success) {
+
+            } else {
+
+            }
         }
     };
 
@@ -124,5 +134,11 @@ public class CaseListActivity extends MyListActivity<Case> {
         super.onActivityResult(requestCode, resultCode, itemTransporter);
         caseViewModel.getCaseList();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        caseViewModel.getCaseList();
     }
 }
