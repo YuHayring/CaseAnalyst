@@ -7,7 +7,7 @@
     android:layout_margin="20dp"
     android:id="@+id/relationship_window">
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/t_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,14 +16,14 @@
         android:textSize="25dp"
         android:layout_marginTop="15dp" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:text="@string/key"
         android:layout_gravity="center" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/e_name"

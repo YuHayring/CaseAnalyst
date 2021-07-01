@@ -1,7 +1,7 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
