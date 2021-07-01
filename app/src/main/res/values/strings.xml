@@ -94,7 +94,7 @@
     <string name="same_pserson">同一个人</string>
 
 
-    <string name="title_activity_d_b_network_settings">DBNetworkSettingsActivity</string>
+    <string name="title_activity_d_b_network_settings">设置</string>
 
     <string name="neo4j_setting_header">Neo4j 数据库设置</string>
     <string name="neo4j_setting_domain">域名/ip</string>

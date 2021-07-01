@@ -1,21 +1,18 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.MenuItem;
 
 import java.lang.reflect.Constructor;
 
@@ -173,6 +170,8 @@ public class CaseManagerActivity extends AppCompatActivity {
 //                ((InfoSetterFragment) info).writeInstance();
 //            }
 //        }
+        ((InfoFragment) info).writeInstance();
+        requestInfo.putExtra(ValueSetter.CASE, caseInstance);
         setResult(2, requestInfo);
         super.finish();
     }

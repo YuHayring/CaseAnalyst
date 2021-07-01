@@ -51,20 +51,6 @@ public class Neo4jRepository {
         private static Neo4jRepository instance = new Neo4jRepository();
     }
 
-    /**
-     * 初始化驱动
-     *
-     * @param url      地址
-     * @param username 用户名
-     * @param password 密码
-     */
-    public static void initInstance(String url, String username, String password) {
-        Neo4jRepository instance = Singleton.instance;
-        //释放driver
-        if (instance.driver != null) instance.driver.close();
-        instance.driver = GraphDatabase.driver(url, AuthTokens.basic(username, password));
-    }
-
 
     /**
      * 获取持久层单例
@@ -72,16 +58,13 @@ public class Neo4jRepository {
      * @return 单例
      */
     public static Neo4jRepository getInstance() {
-
-        reloadDriver();
+        if (Singleton.instance.driver == null) reloadDriver();
         return Singleton.instance;
-
     }
 
     public static void reloadDriver() {
         Application application = CaseAnalystApplication.getInstance();
         SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(application);
-
         String url = "bolt://" + spf.getString("domain", "127.0.0.1") + ":" + spf.getString("port", "7687");
         String username = spf.getString("username", "neo4j");
         String password = spf.getString("password", "neo4j");

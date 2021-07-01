@@ -3,12 +3,11 @@ package cn.hayring.caseanalyst.view.caselist;
 
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -76,6 +75,7 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
             //绑定参数
             itemTransporter.putExtra(ValueSetter.CREATE_OR_NOT, false);
             itemTransporter.putExtra(ValueSetter.CASE, caxe);
+            itemTransporter.putExtra(ValueSetter.INDEX, position);
 
             //启动ValueSetter
             mActivity.startActivityForResult(itemTransporter, MyListActivity.REQUEST_CODE);
@@ -127,6 +127,12 @@ public class CaseListAdapter extends AbstractListAdapter<Case> {
         View v;
         v = LayoutInflater.from(mActivity).inflate(mActivity.getSingleLayoutId(), parent, false);
         return new ListableViewHolder(v);
+    }
+
+
+    public void setItem(int index, Case caxe) {
+        items.set(index, caxe);
+        notifyItemChanged(index);
     }
 
 

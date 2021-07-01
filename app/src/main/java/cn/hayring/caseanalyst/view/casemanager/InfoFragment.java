@@ -1,20 +1,18 @@
 package cn.hayring.caseanalyst.view.casemanager;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.lang.reflect.Constructor;
 
@@ -92,7 +90,7 @@ public class InfoFragment extends Fragment {
         mainActivity = (CaseManagerActivity) getContext();
 
         caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
-        caseViewModel.getSingleCase().observe(this, caseObserver);
+        caseViewModel.getSingleCase().observe(getViewLifecycleOwner(), caseObserver);
         //关闭旧入口
         view.findViewById(R.id.event_list_enter).setVisibility(View.GONE);
         view.findViewById(R.id.evidence_list_enter).setVisibility(View.GONE);
@@ -104,6 +102,7 @@ public class InfoFragment extends Fragment {
         nameInputer = view.findViewById(R.id.case_name_inputer);
         infoInputer = view.findViewById(R.id.case_info_inputer);
         saveButton = view.findViewById(R.id.case_save_button);
+        saveButton.setVisibility(View.INVISIBLE);
         shortTimeCaseSetter = view.findViewById(R.id.short_time_case_switcher);
         //信息显示
         nameInputer.setText(mainActivity.getCaseInstance().getName());
@@ -117,26 +116,20 @@ public class InfoFragment extends Fragment {
         initView(view);
     }
 
-    /***
-     * 保存按钮监听器
+
+    /**
+     * 将输入框的值写入内存
      */
-    class FinishEditListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            writeInstance();
-            mainActivity.setSaved(true);
-//            view.setVisibility(View.GONE);
-        }
-
+    public void setCaseValue() {
+        mainActivity.getCaseInstance().setName(nameInputer.getText().toString());
+        mainActivity.getCaseInstance().setInfo(infoInputer.getText().toString());
     }
 
     /***
-     * 写入
+     * 写入数据库
      */
     public void writeInstance() {
-        mainActivity.getCaseInstance().setName(nameInputer.getText().toString());
-        mainActivity.getCaseInstance().setInfo(infoInputer.getText().toString());
+        setCaseValue();
         caseViewModel.updateCase(mainActivity.getCaseInstance());
     }
 
@@ -154,7 +147,7 @@ public class InfoFragment extends Fragment {
 
     @Override
     public void onPause() {
+        setCaseValue();
         super.onPause();
-        writeInstance();
     }
 }

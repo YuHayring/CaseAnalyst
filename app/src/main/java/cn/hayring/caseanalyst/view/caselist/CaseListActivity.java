@@ -3,6 +3,7 @@ package cn.hayring.caseanalyst.view.caselist;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import cn.hayring.caseanalyst.R;
 import cn.hayring.caseanalyst.databinding.ActivityListBinding;
 import cn.hayring.caseanalyst.domain.Case;
 import cn.hayring.caseanalyst.view.MyListActivity;
+import cn.hayring.caseanalyst.view.ValueSetter;
 import cn.hayring.caseanalyst.view.casemanager.CaseManagerActivity;
 import cn.hayring.caseanalyst.view.settings.DBNetworkSettingsActivity;
 import es.dmoral.toasty.Toasty;
@@ -61,6 +63,7 @@ public class CaseListActivity extends MyListActivity<Case> {
         viewBinding = ActivityListBinding.inflate(LayoutInflater.from(this));
         setContentView(viewBinding.getRoot());
         initView();
+
 
     }
 
@@ -105,15 +108,21 @@ public class CaseListActivity extends MyListActivity<Case> {
 
         caseViewModel = new ViewModelProvider(this, factory).get(CaseViewModel.class);
         caseViewModel.getCaseListData().observe(this, caseListObserver);
+        caseViewModel.getCaseList();
     }
 
     private final Observer<List<Case>> caseListObserver = new Observer<List<Case>>() {
         @Override
         public void onChanged(List<Case> cases) {
-            if (cases == null) Toasty.error(CaseListActivity.this, "网络错误");
-            else {
-                if (cases.size() == 0) Toasty.info(CaseListActivity.this, "没有结果");
-                else {
+            if (cases == null) {
+                Log.i("CaseListObserver", "cases is null");
+                Toasty.error(CaseListActivity.this, "网络错误").show();
+            } else {
+                if (cases.size() == 0) {
+                    Log.i("CaseListObserver", "cases is empty");
+                    Toasty.info(CaseListActivity.this, "没有结果").show();
+                } else {
+                    Log.i("CaseListObserver", "cases contain objects");
                     mainItemListAdapter.deleteAll();
                     mainItemListAdapter.addAllItem(cases);
                 }
@@ -141,19 +150,18 @@ public class CaseListActivity extends MyListActivity<Case> {
      * 编辑完成调用
      * @author Hayring
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
-        super.onActivityResult(requestCode, resultCode, itemTransporter);
-        caseViewModel.getCaseList();
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
+//        super.onActivityResult(requestCode, resultCode, itemTransporter);
+//        caseViewModel.getCaseList();
+//
+//    }
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        caseViewModel.getCaseList();
-    }
-
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        caseViewModel.getCaseList();
+//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("数据库设置");
@@ -169,5 +177,20 @@ public class CaseListActivity extends MyListActivity<Case> {
         Intent intent = new Intent(this, DBNetworkSettingsActivity.class);
         startActivity(intent);
         return true;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent itemTransporter) {
+        super.onActivityResult(requestCode, resultCode, itemTransporter);
+
+        Case caxe = (Case) itemTransporter.getSerializableExtra(ValueSetter.CASE);
+        if (itemTransporter.getBooleanExtra(ValueSetter.CREATE_OR_NOT, true)) {
+            mainItemListAdapter.addItem(caxe);
+        } else {
+            int index = itemTransporter.getIntExtra(ValueSetter.INDEX, mainItemListAdapter.getItemCount());
+            mainItemListAdapter.setItem(index, caxe);
+        }
+
     }
 }

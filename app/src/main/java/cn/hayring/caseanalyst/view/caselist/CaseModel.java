@@ -60,13 +60,13 @@ public class CaseModel implements CaseRepository {
 
     @Override
     public void getCases(AsyncCallBack<List<Case>> asyncCallBack) {
+        Log.i("getCases_MainThread", Thread.currentThread().getName());
         Driver driver = neo4jdao.getDriver();
 
         String query = "MATCH (c:Case) RETURN c";
 
         AsyncSession session = driver.asyncSession();
 
-        Log.i("thread", Thread.currentThread().getName());
 
         session.runAsync(query)
                 .thenCompose(cursor -> cursor.listAsync(record -> {
@@ -75,7 +75,7 @@ public class CaseModel implements CaseRepository {
                     caxe.setId(node.id());
                     caxe.setName(node.get(PROPERTY_NAME).asString());
                     caxe.setInfo(node.get(PROPERTY_INFO).asString());
-                    Log.i("thread", Thread.currentThread().getName());
+                    Log.i("getCases_Thread", Thread.currentThread().getName());
                     return caxe;
                 }))
                 .exceptionally(error ->
@@ -85,7 +85,7 @@ public class CaseModel implements CaseRepository {
                     return null;
                 })
                 .thenAccept(list -> {
-                    Log.i("thread", Thread.currentThread().getName());
+                    Log.i("getCasesFinished_Thread", Thread.currentThread().getName());
                     session.closeAsync();
                     asyncCallBack.callBack(list);
                 });
@@ -94,10 +94,11 @@ public class CaseModel implements CaseRepository {
 
     @Override
     public void deleteCase(Long id, AsyncCallBack<Boolean> callBack) {
+        Log.i("deleteCase_MainThread", Thread.currentThread().getName());
         Driver driver = neo4jdao.getDriver();
-        String queryDeleteRelationship = "MATCH (c)-[]->(e)-[r]->() WHERE id(c) = {ID} delete r";
-        String queryDeleteNode = "MATCH (c)-[r]->(e) WHERE id(c) = {ID} delete r,e";
-        String queryDeleteCase = "MATCH (c) WHERE id(c) = {ID} delete c";
+        String queryDeleteRelationship = "MATCH (c)-[]->(e)-[r]->() WHERE id(c) = $ID delete r";
+        String queryDeleteNode = "MATCH (c)-[r]->(e) WHERE id(c) = $ID delete r,e";
+        String queryDeleteCase = "MATCH (c) WHERE id(c) = $ID delete c";
         Map<String, Object> parameters = Collections.singletonMap(PARAMTER_ID, id);
         AsyncSession session = driver.asyncSession();
         session.beginTransactionAsync()
@@ -122,15 +123,19 @@ public class CaseModel implements CaseRepository {
                                     return null;
                                 })
                                 .thenApply(ignore -> tx))
-                .thenComposeAsync(tx ->
-                        tx.commitAsync().thenRun(session::closeAsync)
-                );
+                .thenAcceptAsync(tx -> {
+
+                    Log.i("deleteCaseFinished_Thread", Thread.currentThread().getName());
+                    tx.commitAsync().thenRun(session::closeAsync);
+
+                });
     }
 
     @Override
     public void getCase(Long id, AsyncCallBack<Case> callBack) {
+        Log.i("getCase_MainThread", Thread.currentThread().getName());
         Driver driver = neo4jdao.getDriver();
-        String query = "MATCH (c:Case) WHERE id(c) = {ID} RETURN c";
+        String query = "MATCH (c:Case) WHERE id(c) = $ID RETURN c";
         Map<String, Object> parameters = Collections.singletonMap(PARAMTER_ID, id);
 
         AsyncSession session = driver.asyncSession();
@@ -144,6 +149,7 @@ public class CaseModel implements CaseRepository {
                     return null;
                 })
                 .thenAccept(record -> {
+                    Log.i("getCaseFinished_Thread", Thread.currentThread().getName());
                     InternalNode node = (InternalNode) record.get(0).asNode();
                     Case caxe = new Case();
                     caxe.setId(node.id());
@@ -156,6 +162,7 @@ public class CaseModel implements CaseRepository {
 
     @Override
     public void addCase(AsyncCallBack<Long> callBack) {
+        Log.i("addCase_MainThread", Thread.currentThread().getName());
         Driver driver = neo4jdao.getDriver();
         String query = "CREATE (c:Case) return id(c)";
 
@@ -169,6 +176,7 @@ public class CaseModel implements CaseRepository {
                     return null;
                 })
                 .thenAccept(record -> {
+                    Log.i("addCaseFinished_Thread", Thread.currentThread().getName());
                     Long id = Long.valueOf(record.get(0).toString());
                     session.closeAsync();
                     callBack.callBack(id);
@@ -177,23 +185,28 @@ public class CaseModel implements CaseRepository {
 
     @Override
     public void updateCase(Case caxe, AsyncCallBack<Boolean> callBack) {
+        Log.i("updateCase_MainThread", Thread.currentThread().getName());
         Driver driver = neo4jdao.getDriver();
-        String query = "MATCH (c) WHERE id(c) = {ID} SET c.name = \"{NAME}\", c.info = \"{INFO}\" ";
+        String query = "MATCH (c) WHERE id(c) = $ID SET c.name = $NAME, c.info = $INFO ";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(PARAMTER_ID, caxe.getId());
         parameters.put(PARAMTER_NAME, caxe.getName());
         parameters.put(PARAMETER_INFO, caxe.getInfo());
         AsyncSession session = driver.asyncSession();
-        session.runAsync(query, parameters)
-                .exceptionally(error ->
-                {
-                    // query execution failed, print error and fallback to empty list of titles
-                    error.printStackTrace();
-                    return null;
-                })
-                .thenRun(() -> {
-                    session.closeAsync();
-                    callBack.callBack(true);
-                });
+        session.writeTransactionAsync(tx -> {
+            Log.i("updateCase_Thread", Thread.currentThread().getName());
+            tx.runAsync(query, parameters)
+                    .exceptionally(error -> {
+                        // query execution failed, print error and fallback to empty list of titles
+                        error.printStackTrace();
+                        return null;
+                    })
+                    .thenAccept(resultCursor -> {
+                        Log.i("updateCaseFinished_Thread", Thread.currentThread().getName());
+                        callBack.callBack(resultCursor != null);
+                    });
+            return null;
+        });
+        Log.i("updateCase_MainThread_Finished", Thread.currentThread().getName());
     }
 }

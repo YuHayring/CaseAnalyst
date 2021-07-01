@@ -35,8 +35,8 @@ public class DBNetworkSettingsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onStop() {
-            super.onStop();
+        public void onPause() {
+            super.onPause();
             Neo4jRepository.reloadDriver();
         }
     }

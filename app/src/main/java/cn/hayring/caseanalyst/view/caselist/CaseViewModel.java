@@ -1,11 +1,12 @@
 package cn.hayring.caseanalyst.view.caselist;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Log;
-
+import java.util.Collections;
 import java.util.List;
 
 import cn.hayring.caseanalyst.domain.Case;
@@ -53,6 +54,8 @@ public class CaseViewModel extends ViewModel {
     private final AsyncCallBack<List<Case>> getCaseListCallback = new AsyncCallBack<List<Case>>() {
         @Override
         public void callBack(List<Case> cases) {
+            //反转使最新的在下面
+            Collections.reverse(cases);
             caseListData.postValue(cases);
         }
     };
