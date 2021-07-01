@@ -82,7 +82,7 @@ public class CaseModel implements CaseRepository {
                 {
                     // query execution failed, print error and fallback to empty list of titles
                     error.printStackTrace();
-                    return Collections.emptyList();
+                    return null;
                 })
                 .thenAccept(list -> {
                     Log.i("thread", Thread.currentThread().getName());

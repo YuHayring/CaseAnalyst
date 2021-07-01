@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
@@ -21,6 +23,8 @@ import cn.hayring.caseanalyst.databinding.ActivityListBinding;
 import cn.hayring.caseanalyst.domain.Case;
 import cn.hayring.caseanalyst.view.MyListActivity;
 import cn.hayring.caseanalyst.view.casemanager.CaseManagerActivity;
+import cn.hayring.caseanalyst.view.settings.DBNetworkSettingsActivity;
+import es.dmoral.toasty.Toasty;
 
 /**
  * @author hayring
@@ -106,8 +110,15 @@ public class CaseListActivity extends MyListActivity<Case> {
     private final Observer<List<Case>> caseListObserver = new Observer<List<Case>>() {
         @Override
         public void onChanged(List<Case> cases) {
-            mainItemListAdapter.deleteAll();
-            mainItemListAdapter.addAllItem(cases);
+            if (cases == null) Toasty.error(CaseListActivity.this, "网络错误");
+            else {
+                if (cases.size() == 0) Toasty.info(CaseListActivity.this, "没有结果");
+                else {
+                    mainItemListAdapter.deleteAll();
+                    mainItemListAdapter.addAllItem(cases);
+                }
+            }
+
         }
     };
 
@@ -141,5 +152,22 @@ public class CaseListActivity extends MyListActivity<Case> {
     protected void onStart() {
         super.onStart();
         caseViewModel.getCaseList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("数据库设置");
+        return true;
+    }
+
+    /**
+     * 菜单的点击事件
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getTitle() ==)
+        Intent intent = new Intent(this, DBNetworkSettingsActivity.class);
+        startActivity(intent);
+        return true;
     }
 }

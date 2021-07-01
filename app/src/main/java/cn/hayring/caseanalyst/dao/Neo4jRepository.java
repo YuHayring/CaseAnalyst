@@ -1,8 +1,15 @@
 package cn.hayring.caseanalyst.dao;
 
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
+
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
+
+import cn.hayring.caseanalyst.CaseAnalystApplication;
 
 /**
  * @author hayring
@@ -66,11 +73,19 @@ public class Neo4jRepository {
      */
     public static Neo4jRepository getInstance() {
 
-        Singleton.instance.driver = GraphDatabase.driver("bolt://192.168.216.130:7687", AuthTokens.basic("neo4j", "123456"));
-
-        if (Singleton.instance.driver == null) return null;
+        reloadDriver();
         return Singleton.instance;
 
+    }
+
+    public static void reloadDriver() {
+        Application application = CaseAnalystApplication.getInstance();
+        SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(application);
+
+        String url = "bolt://" + spf.getString("domain", "127.0.0.1") + ":" + spf.getString("port", "7687");
+        String username = spf.getString("username", "neo4j");
+        String password = spf.getString("password", "neo4j");
+        Singleton.instance.driver = GraphDatabase.driver(url, AuthTokens.basic(username, password));
     }
 
 
